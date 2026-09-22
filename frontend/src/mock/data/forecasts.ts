@@ -1,0 +1,48 @@
+import type { DemandForecast } from '@/types/forecast'
+
+export const mockDemandForecasts: DemandForecast[] = [
+  {
+    id: 'fc-1',
+    serviceCategoryId: 'cat-plumbing',
+    serviceCategoryName: 'Plumbing',
+    area: 'Bengaluru South & East',
+    period: 'Next 7 Days (Monsoon Season)',
+    forecastDemand: 'HIGH',
+    availableCapacity: 'MEDIUM',
+    capacityGap: 'GAP',
+    recommendation: 'Mobilize 4 additional certified plumbing workers through society onboarding to cover anticipated drainage & seepage requests.',
+  },
+  {
+    id: 'fc-2',
+    serviceCategoryId: 'cat-electrical',
+    serviceCategoryName: 'Electrical',
+    area: 'Bengaluru East',
+    period: 'Next 7 Days',
+    forecastDemand: 'MEDIUM',
+    availableCapacity: 'HIGH',
+    capacityGap: 'OPTIMAL',
+    recommendation: 'Current cooperative workforce capacity matches predicted seasonal demand comfortably.',
+  },
+  {
+    id: 'fc-3',
+    serviceCategoryId: 'cat-cleaning',
+    serviceCategoryName: 'Cleaning',
+    area: 'Bengaluru Central & South',
+    period: 'Festival Period (Upcoming)',
+    forecastDemand: 'HIGH',
+    availableCapacity: 'LOW',
+    capacityGap: 'GAP',
+    recommendation: 'Capacity deficit detected. Alert Shivajinagar & South societies to verify waiting cleaning candidates.',
+  },
+  {
+    id: 'fc-4',
+    serviceCategoryId: 'cat-gardening',
+    serviceCategoryName: 'Gardening',
+    area: 'Bengaluru North',
+    period: 'Next 14 Days',
+    forecastDemand: 'LOW',
+    availableCapacity: 'HIGH',
+    capacityGap: 'SURPLUS',
+    recommendation: 'Surplus capacity available. Recommend cross-skill training in household domestic help.',
+  },
+]

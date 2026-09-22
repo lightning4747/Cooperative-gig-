@@ -1,0 +1,443 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/audit",
+    "role": "Admin",
+    "result": "Audit entry[]",
+    "note": "After cursor; ordered, up to 100.",
+    "schema": "",
+    "params": "query: after"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/config",
+    "role": "Admin",
+    "result": "Configuration",
+    "note": "Current allocation/pricing configuration and optimistic version.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/config",
+    "role": "Admin",
+    "result": "Configuration",
+    "note": "Version must match; three allocation weights sum to 1; snapshots of existing jobs remain unchanged.",
+    "schema": "Config",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/forecast",
+    "role": "Admin",
+    "result": "Forecast",
+    "note": "Horizon 1\u201330 days; 503 until model provider configured; provisional adapter contract.",
+    "schema": "ForecastRequest",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/jobs/{id}/allocation",
+    "role": "Admin",
+    "result": "Allocation audit",
+    "note": "Current offers, manualDispatch and history; earlier retry offers are in audit archive.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/jobs/{id}/eligible-workers",
+    "role": "Admin",
+    "result": "Candidate[]",
+    "note": "Current eligible workers, contact and distance/load data; eligibility checked again when assigning.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/jobs/{id}/manual-dispatch",
+    "role": "Admin",
+    "result": "Job",
+    "note": "EXPIRED \u2192 ACCEPTED; eligible worker only; method/note retained in audit.",
+    "schema": "Manual",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/metrics",
+    "role": "Admin",
+    "result": "Metrics",
+    "note": "Optional societyId; online can include busy workers; available excludes busy.",
+    "schema": "",
+    "params": "query: societyId"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/subservices/{id}/price",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "Set basePrice, emergencySupported and active explicitly; old quotes retain price.",
+    "schema": "Price",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/unfulfilled",
+    "role": "Admin",
+    "result": "Unfulfilled job[]",
+    "note": "EXPIRED jobs; page of 100.",
+    "schema": "",
+    "params": "query: page"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/welfare",
+    "role": "Admin",
+    "result": "Welfare entry[]",
+    "note": "Optional societyId; page of 100; contribution ledger, not benefit disbursement.",
+    "schema": "",
+    "params": "query: societyId, query: page"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/workers",
+    "role": "Admin",
+    "result": "Worker summary[]",
+    "note": "Optional societyId/status; page of 100. No full UAN.",
+    "schema": "",
+    "params": "query: societyId, query: status, query: page"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/workers/{id}/insurance",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "Record manual enrollment state and audit evidence reference.",
+    "schema": "Insurance",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/workers/{id}/verification",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "ACTIVE/REJECTED/SUSPENDED; verify declared skills only; ACTIVE requires at least one.",
+    "schema": "Verification",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/challenges",
+    "role": "Public",
+    "result": "Challenge",
+    "note": "Development challenge; 5 min expiry, max 5 requests/phone/10 min. Production delivery absent (503).",
+    "schema": "Challenge",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "role": "Public",
+    "result": "Session",
+    "note": "Rotate refresh token; reuse revokes the whole session family.",
+    "schema": "Refresh",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/verify",
+    "role": "Public",
+    "result": "Session",
+    "note": "Verify 6 digits; max 5 wrong attempts. Existing account keeps its role.",
+    "schema": "Verify",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/categories",
+    "role": "Public",
+    "result": "Category[]",
+    "note": "Service categories; use returned UUIDs.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/subservices",
+    "role": "Public",
+    "result": "Subservice[]",
+    "note": "Active subservices; optional categoryId filter; INR prices.",
+    "schema": "",
+    "params": "query: categoryId"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/events",
+    "role": "Authenticated",
+    "result": "Event[]",
+    "note": "Own durable events after cursor; ordered, up to 100.",
+    "schema": "",
+    "params": "query: after"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs",
+    "role": "Owner / assigned / admin",
+    "result": "Job summary[]",
+    "note": "Own customer jobs, assigned worker jobs, or all admin jobs; page/size; societyId effective only for admin.",
+    "schema": "",
+    "params": "query: page, query: size, query: societyId"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs",
+    "role": "Customer",
+    "result": "Job",
+    "note": "Requires Idempotency-Key; consumes one valid quote owned by caller; dispatch may change state immediately.",
+    "schema": "CreateJob",
+    "params": "header: Idempotency-Key (required)"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}",
+    "role": "Owner / assigned / admin",
+    "result": "Job",
+    "note": "Authoritative lifecycle, worker, financial snapshot and history; never includes doorstep code.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/accept",
+    "role": "Worker",
+    "result": "Job",
+    "note": "Pending valid offer and current eligibility required; first acceptance wins. Same assigned worker may replay.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/arrive",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "TRAVELLING \u2192 ARRIVED; issues customer-only code for 10 minutes.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/cancel",
+    "role": "Customer owner / admin",
+    "result": "Job",
+    "note": "Allowed before IN_PROGRESS, including EXPIRED; clears pending offers and code.",
+    "schema": "Cancel",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/complete",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "IN_PROGRESS \u2192 COMPLETED; payment is separate.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/decline",
+    "role": "Worker",
+    "result": "Empty",
+    "note": "Decline pending offer; advance sequential dispatch or expire exhausted broadcast.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/doorstep-code",
+    "role": "Customer owner",
+    "result": "Doorstep code",
+    "note": "ARRIVED only; otp, expiresAt, attemptsRemaining. Do not log or cache.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/doorstep-code/renew",
+    "role": "Customer owner",
+    "result": "Doorstep code",
+    "note": "ARRIVED only, after expiry; resets attempts and returns replacement.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/invoice",
+    "role": "Owner / assigned / admin",
+    "result": "Invoice",
+    "note": "Immutable demonstration receipt JSON; 404 before payment; no PDF or assessed tax.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/payment",
+    "role": "Owner / assigned / admin",
+    "result": "Payment",
+    "note": "404 until recorded payment exists.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/payments/simulate",
+    "role": "Customer owner",
+    "result": "Payment",
+    "note": "COMPLETED only; development sandbox required; repeated calls return the existing payment.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/rating",
+    "role": "Customer owner",
+    "result": "Empty",
+    "note": "COMPLETED only; once per job; updates worker all-time average.",
+    "schema": "Rating",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/retry",
+    "role": "Customer owner / admin",
+    "result": "Job",
+    "note": "EXPIRED only, maximum 3 retries; radius 100\u201320,000 m; optional emergency \u2192 on-demand fallback preserves price.",
+    "schema": "Retry",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/start",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "ARRIVED \u2192 IN_PROGRESS with valid code; max 5 wrong attempts persist.",
+    "schema": "Start",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/tracking",
+    "role": "Owner / assigned / admin",
+    "result": "Tracking",
+    "note": "Only ACCEPTED/TRAVELLING/ARRIVED/IN_PROGRESS; includes freshness, no route or ETA.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/travel",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "ACCEPTED \u2192 TRAVELLING.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "role": "Authenticated",
+    "result": "User",
+    "note": "Current account id, phone, role, name and preferredLang.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/me",
+    "role": "Authenticated",
+    "result": "User",
+    "note": "Replace name and language preference.",
+    "schema": "Profile",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/me/logout",
+    "role": "Authenticated",
+    "result": "Empty",
+    "note": "Revoke current session family, including access tokens.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/quotes",
+    "role": "Customer",
+    "result": "Quote",
+    "note": "Five-minute immutable financial snapshot; emergency must be supported by subservice.",
+    "schema": "QuoteRequest",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/societies",
+    "role": "Public",
+    "result": "Society[]",
+    "note": "Reference societies for onboarding and administrative filters.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "404 before onboarding. Masked UAN, verification, skills, insurance, availability and GPS.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/workers/me/availability",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "Only ACTIVE workers may change availability; fresh GPS is additionally required for dispatch.",
+    "schema": "Availability",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me/earnings",
+    "role": "Worker",
+    "result": "Earnings",
+    "note": "Recorded simulated totals and latest 100 payments; not a real payout statement.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/workers/me/location",
+    "role": "Worker",
+    "result": "Empty",
+    "note": "Save latest coordinates and server timestamp.",
+    "schema": "Location",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me/offers",
+    "role": "Worker",
+    "result": "Offer[]",
+    "note": "Unexpired pending offers with area, price split and distance; no doorstep code or exact address.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/workers/me/onboarding",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "Create once; UAN encrypted, skills await manual verification.",
+    "schema": "Onboard",
+    "params": ""
+  }
+]

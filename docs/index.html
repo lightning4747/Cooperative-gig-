@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cooperative Gig · Backend field guide</title>
+<style>
+:root{--ink:#172a2e;--muted:#536b70;--paper:#f3f5ef;--white:#fff;--line:#cdd8d0;--green:#145944;--mint:#d9eddf;--amber:#fff0cd;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:25px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,sans-serif}a{color:var(--green);text-underline-offset:3px}button,input,select{font:inherit}button,select{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ce7000;outline-offset:3px}header{background:var(--ink);color:white;padding:22px max(24px,calc((100vw - 1160px)/2))}header a{color:#deefe3}nav{display:flex;gap:22px;flex-wrap:wrap;font-size:14px}.brand{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}.brand strong{letter-spacing:.07em;font-size:14px}.pill{border:1px solid #6a8c7a;border-radius:30px;padding:4px 12px;font-size:12px}main{max-width:1208px;padding:0 24px 70px;margin:auto}.hero{padding:56px 0 32px;display:grid;grid-template-columns:1.6fr 1fr;gap:50px;align-items:center}.eyebrow{font:12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(35px,5vw,62px);line-height:1.08;letter-spacing:-.04em;margin:14px 0 20px;max-width:750px}h2{font-size:29px;line-height:1.2;letter-spacing:-.025em;margin:10px 0}h3{font-size:18px;line-height:1.4;margin:0 0 10px}p{margin:10px 0 16px}.muted{color:var(--muted)}.hero p{max-width:640px;font-size:18px}.stats{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden}.stat{padding:24px;background:white;border-bottom:1px solid var(--line)}.stat:nth-child(odd){border-right:1px solid var(--line)}.stat:nth-last-child(-n+2){border-bottom:0}.stat b{display:block;font-size:32px;line-height:1.2}.stat span{font-size:13px;color:var(--muted)}section{margin-top:48px}.section-top{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}.section-top p{max-width:490px;color:var(--muted);margin:0}.panel{border:1px solid var(--line);border-radius:12px;background:white;padding:28px}.note{padding:14px 18px;border-left:4px solid var(--green);background:var(--mint);font-size:14px}.note.amber{background:var(--amber);border-color:#b87a22}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.node{padding:18px;border:1px solid var(--line);border-radius:9px;min-width:0}.node strong{display:block}.node small{display:block;color:var(--muted);margin-top:6px}.layer-label{font:12px var(--mono);text-transform:uppercase;color:var(--muted);margin-bottom:12px}.arrow{text-align:center;color:var(--green);font:14px var(--mono);margin:13px}.api-layer{background:var(--mint);border:1px solid #9ecab1;padding:18px;border-radius:9px}.api-layer .grid{margin-top:14px;grid-template-columns:repeat(4,1fr)}.api-layer .node{background:#f6fcf8;border:0;font-size:14px}.boundary{border:1px dashed #ae8b4c;background:#fffbf1}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.tabs button,.step{border:1px solid var(--line);background:white;color:var(--ink);border-radius:6px;padding:10px 16px;font-size:14px}.tabs button[aria-pressed=true],.step[aria-pressed=true]{background:var(--green);border-color:var(--green);color:white}.mode-description{min-height:75px}.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:16px 0}.step{font:12px var(--mono);padding:13px 12px}.connector{color:#7f9887}.detail{background:var(--paper);border-radius:9px;padding:22px;min-height:165px}.detail .tag{font:12px var(--mono);color:var(--green)}.detail h3{margin:7px 0}.branch{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.branch div{font-size:14px;padding:16px;border:1px dashed var(--line);border-radius:8px}.calc{display:grid;grid-template-columns:1fr 1.15fr;gap:30px}.fields{display:grid;gap:16px}label{display:block;font-size:14px;font-weight:600}input,select{display:block;width:100%;border:1px solid #9eafa4;border-radius:6px;padding:10px 12px;background:white;color:var(--ink);margin-top:7px}.field-help{font-size:12px;color:var(--muted);margin-top:5px}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.money{background:var(--paper);border-radius:8px;padding:18px}.money b{font-size:27px;display:block}.money small{color:var(--muted)}.money.total{grid-column:1/-1;background:var(--green);color:white}.money.total small{color:#deeee3}.bar{display:flex;height:24px;overflow:hidden;border-radius:5px;margin-top:20px;background:#e8b85f}.bar span{background:var(--green);width:100%;transition:width .2s}.legend{font-size:13px;margin-top:8px}.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:end}.count{font:12px var(--mono);color:var(--muted);margin:20px 0 10px}.operation{border-top:1px solid var(--line);padding:15px 0}.operation summary{cursor:pointer;display:flex;align-items:center;gap:12px;flex-wrap:wrap;list-style:none}.operation summary::after{content:'＋';margin-left:auto;color:var(--green)}.operation[open] summary::after{content:'−'}.verb{font:11px var(--mono);width:55px;text-align:center;padding:4px 6px;border-radius:4px;background:var(--mint);color:var(--green)}.verb.post{background:#fff0cd;color:#6f4e1d}.verb.put,.verb.patch{background:#e7eafa;color:#404e86}.path{font:13px var(--mono);overflow-wrap:anywhere}.role{font-size:12px;color:var(--muted)}.op-detail{font-size:14px;margin:14px 0 0 68px}.op-detail dl{display:grid;grid-template-columns:100px 1fr;gap:8px}.op-detail dt{color:var(--muted)}.op-detail dd{margin:0}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{display:block;text-decoration:none;border:1px solid var(--line);padding:22px;border-radius:9px;background:white;color:var(--ink)}.card:hover{border-color:var(--green);background:#edf6ee}.card p{font-size:14px;color:var(--muted);margin:8px 0 0}.card .eyebrow{font-size:11px}.checklist{padding-left:20px;font-size:14px}.checklist li{margin:9px 0}.foot{margin-top:40px;border-top:1px solid var(--line);padding-top:20px;font-size:13px;color:var(--muted)}code{font-family:var(--mono);font-size:.85em;overflow-wrap:anywhere}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}noscript{display:block;background:var(--amber);padding:15px}@media(max-width:760px){.hero{grid-template-columns:1fr;gap:22px;padding-top:35px}.hero p{font-size:16px}.stat{padding:16px}.section-top{display:block}.section-top p{margin-top:12px}.grid,.cards{grid-template-columns:1fr}.api-layer .grid{grid-template-columns:1fr 1fr}.calc,.branch,.toolbar{grid-template-columns:1fr}.panel{padding:18px}.brand{align-items:start;flex-direction:column;gap:10px}.op-detail{margin-left:0}main{padding-left:16px;padding-right:16px}.step{padding:10px;font-size:11px}.money b{font-size:23px}.role{width:100%;padding-left:67px}nav{gap:15px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar span{transition:none}}@media print{header{background:white;color:black}nav,.toolbar,.tabs{display:none}section{break-inside:avoid}.hero{padding-top:10px}.panel{padding:15px}.cards{grid-template-columns:1fr 1fr}.operation{font-size:11px}}
+</style></head><body>
+<header><div class="brand"><strong>COOPERATIVE GIG / ENGINEERING</strong><span class="pill">Java 21 · Spring Boot · PostgreSQL + PostGIS</span></div><nav aria-label="Documentation sections"><a href="#architecture">Architecture</a><a href="#lifecycle">Job lifecycle</a><a href="#pricing">Pricing</a><a href="#api">API explorer</a><a href="#handoff">Frontend handoff</a><a href="#documents">Documents</a></nav></header>
+<main><div class="hero"><div><div class="eyebrow">Backend field guide · 19 September 2026</div><h1>From booking<br>to worker earnings.</h1><p class="muted">An implemented Spring Boot backend, with explicit contracts for the customer, worker and federation interfaces.</p><a href="../README.md">Run the backend →</a></div><div class="stats"><div class="stat"><b>49</b><span>API operations</span></div><div class="stat"><b>16</b><span>passing integration tests</span></div><div class="stat"><b>3</b><span>booking modes</span></div><div class="stat"><b>0</b><span>default emergency surcharge</span></div></div></div>
+<div class="note amber"><strong>Delivery boundary.</strong> Core backend flows are implemented and locally tested. The repository has no frontend application. SMS, real payment settlement, government verification and the forecasting model still require integration. <a href="gaps.md">See the separate gap register.</a></div>
+<noscript>Enable JavaScript for lifecycle exploration, pricing calculations and API search. All contracts are also available in the linked Markdown documents.</noscript>
+<section id="architecture"><div class="section-top"><div><div class="eyebrow">01 / Structure</div><h2>One service. Clear boundaries.</h2></div><p>A modular backend keeps dispatch, authorization and financial records inside explicit transactions.</p></div><div class="panel"><div class="layer-label">Frontend team owns these interfaces</div><div class="grid"><div class="node"><strong>Customer application</strong><small>Quote · book · authorize · pay · rate</small></div><div class="node"><strong>Worker application</strong><small>Onboard · go online · accept · complete</small></div><div class="node"><strong>Federation dashboard</strong><small>Verify · monitor · dispatch · configure</small></div></div><div class="arrow">↓ HTTPS / JSON · bearer token · role + ownership checks ↓</div><div class="api-layer"><strong>Spring Boot API + durable dispatch scheduler</strong><div class="grid"><div class="node">Identity & sessions</div><div class="node">Catalog & quotes</div><div class="node">Workforce & GPS</div><div class="node">Dispatch & lifecycle</div><div class="node">OTP authorization</div><div class="node">Payment simulation</div><div class="node">Welfare & audit</div><div class="node">Forecast adapter</div></div></div><div class="arrow">↓ transactional writes · database locks · uniqueness constraints ↓</div><div class="grid"><div class="node"><strong>PostgreSQL + PostGIS</strong><small>Accounts, workers, location, quotes, jobs, offers, payment records, audit</small></div><div class="node"><strong>Durable event feed</strong><small>Authenticated polling with a cursor. Reconnect and refetch job state in the UI.</small></div><div class="node boundary"><strong>External integration boundary</strong><small>SMS · payment gateway/payouts · push · ML model · provider verification</small></div></div></div></section>
+<section id="lifecycle"><div class="section-top"><div><div class="eyebrow">02 / Workflow</div><h2>Explore the job lifecycle.</h2></div><p>Select a booking mode, then a state to see the backend rule and the frontend action.</p></div><div class="panel"><div class="tabs" role="group" aria-label="Booking mode"><button data-mode="STANDARD" aria-pressed="false">Standard / scheduled</button><button data-mode="ON_DEMAND" aria-pressed="true">On demand</button><button data-mode="EMERGENCY" aria-pressed="false">Emergency</button></div><div id="mode-description" class="mode-description" aria-live="polite"></div><div id="flow" class="flow" role="group" aria-label="Job lifecycle states"></div><div id="state-detail" class="detail" aria-live="polite"></div><div class="branch"><div><strong>EXPIRED → retry or manual assignment</strong><br>No eligible worker or exhausted offers. Customer/admin can retry up to 3 times; an admin can assign an eligible worker with an audited reason.</div><div><strong>Before work starts → CANCELLED</strong><br>Customer/admin cancellation closes offers. Cancellation after IN_PROGRESS requires a future incident/refund policy.</div></div></div></section>
+<section id="pricing"><div class="section-top"><div><div class="eyebrow">03 / Financial contract</div><h2>Fixed price is the default.</h2></div><p>Welfare comes from surplus. With a zero surcharge, the current formula funds no welfare contribution.</p></div><div class="panel calc"><div class="fields"><label>Booking mode<select id="price-mode"><option value="STANDARD">STANDARD</option><option value="ON_DEMAND" selected>ON_DEMAND</option><option value="EMERGENCY">EMERGENCY</option></select></label><label>Base service price (INR)<input id="base" type="number" min="0.01" max="99999999.99" step="0.01" value="500"></label><label>Configured emergency surcharge (INR)<input id="surcharge" type="number" min="0" max="99999999.99" step="0.01" value="0"><span class="field-help">Applied only to emergency bookings. Default: 0.</span></label><label>Welfare share of surplus (%)<input id="welfare" type="number" min="0" max="100" step="0.1" value="50"></label><p class="field-help">Illustration only; this does not change the backend. Quote snapshots lock financial terms. Seeded INR 500 prices are demo values.</p></div><div aria-live="polite" aria-atomic="true"><div class="split"><div class="money total"><small>Customer total</small><b id="gross-value">₹500.00</b></div><div class="money"><small>Worker earnings</small><b id="earning-value">₹500.00</b></div><div class="money"><small>Welfare contribution</small><b id="welfare-value">₹0.00</b></div></div><div class="bar" aria-hidden="true"><span id="earning-bar"></span></div><div class="legend">Green: worker earnings · Amber: welfare</div><p id="price-explanation" class="note"></p><p class="field-help">Welfare = round((gross − base) × welfare rate, 2). Worker earnings = gross − welfare. Platform fee is 0. Tax is not assessed; current payment records are simulated.</p></div></div></section>
+<section id="api"><div class="section-top"><div><div class="eyebrow">04 / Integration surface</div><h2>Find the endpoint you need.</h2></div><p>Open a route for its caller, request and outcome. <a href="api-contract.md">Read payloads and examples</a> or <a href="api/openapi.json">download OpenAPI</a>.</p></div><div class="panel"><div class="toolbar"><label>Search routes or behavior<input id="api-search" type="search" placeholder="Try: quote, OTP, verification, welfare…"></label><label>Caller role<select id="api-role"><option value="all">All roles</option><option value="public">Public</option><option value="customer">Customer</option><option value="worker">Worker</option><option value="admin">Admin</option></select></label></div><div id="api-count" class="count" aria-live="polite"></div><div id="operations"></div></div></section>
+<section id="handoff"><div class="section-top"><div><div class="eyebrow">05 / Frontend team handoff</div><h2>The backend is ready for wiring.</h2></div><p>Build against server state and explicit unavailable states. <a href="frontend-handoff.md">Full screen-by-screen acceptance checklist →</a></p></div><div class="grid"><div class="panel"><h3>Customer team</h3><ul class="checklist"><li>Use catalog UUIDs and server quotes.</li><li>Persist one idempotency key per booking attempt.</li><li>Render SEARCHING, EXPIRED and retry paths.</li><li>Reveal doorstep code only to its owner.</li><li>Label simulation and demo receipts visibly.</li></ul></div><div class="panel"><h3>Worker team</h3><ul class="checklist"><li>Separate onboarding, pending and ACTIVE states.</li><li>Submit GPS with permission and freshness feedback.</li><li>Count down offers; handle a losing acceptance.</li><li>Enforce travel → arrive → OTP → start → complete.</li><li>Show gross, welfare and worker earnings distinctly.</li></ul></div><div class="panel"><h3>Admin team</h3><ul class="checklist"><li>Verify declared skills and record evidence.</li><li>Filter society metrics without claiming tenant isolation.</li><li>Handle unfulfilled jobs with audited manual dispatch.</li><li>Refresh config after a stale-version conflict.</li><li>Show forecast unavailable when no model is connected.</li></ul></div></div><div class="note" style="margin-top:16px">Shared integration rules: coordinate refresh token rotation; poll <code>/events</code> with a cursor; refetch authoritative job data; handle empty 200 responses; render en/hi/ta; never log doorstep codes or full worker identifiers.</div></section>
+<section id="documents"><div class="section-top"><div><div class="eyebrow">06 / Separate documentation</div><h2>Go deeper where it matters.</h2></div><p>Diagrams, tables, examples and acceptance criteria are split by audience.</p></div><div class="cards"><a class="card" href="architecture.md"><div class="eyebrow">System design</div><h3>Architecture & diagrams ↗</h3><p>Components, data model, allocation, lifecycle, authentication and payment.</p></a><a class="card" href="api-contract.md"><div class="eyebrow">Integration</div><h3>API contract ↗</h3><p>49 routes, request schemas, examples, error handling and ownership.</p></a><a class="card" href="frontend-handoff.md"><div class="eyebrow">Frontend action</div><h3>Screen-by-screen handoff ↗</h3><p>What is implemented and what each frontend team must now build.</p></a><a class="card" href="gaps.md"><div class="eyebrow">Delivery truth</div><h3>Coverage & remaining gaps ↗</h3><p>18 specification sections and 19 remaining gaps with owners and completion criteria.</p></a><a class="card" href="decisions.md"><div class="eyebrow">Policy</div><h3>Decision register ↗</h3><p>Fixed default pricing, configurable surcharge and open product decisions.</p></a><a class="card" href="operations.md"><div class="eyebrow">Platform</div><h3>Operations & deployment ↗</h3><p>Configuration, migrations, secrets, recovery and production prerequisites.</p></a><a class="card" href="testing.md"><div class="eyebrow">Evidence</div><h3>Testing & limitations ↗</h3><p>16 real PostgreSQL integration tests and the behavior they do not establish.</p></a><a class="card" href="forecast-contract.md"><div class="eyebrow">ML team</div><h3>Forecast adapter ↗</h3><p>Provisional provider payload, response, timeouts and missing model work.</p></a><a class="card" href="../README.md"><div class="eyebrow">Get started</div><h3>Run & verify ↗</h3><p>Java and Docker startup, development login, Swagger and test commands.</p></a></div></section><footer class="foot">Cooperative Gig · Local implementation reference · Works offline, with no external scripts, fonts or analytics. Documentation does not imply production certification.</footer></main>
+<script id="api-data" type="application/json">[
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/audit",
+    "role": "Admin",
+    "result": "Audit entry[]",
+    "note": "After cursor; ordered, up to 100.",
+    "schema": "",
+    "params": "query: after"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/config",
+    "role": "Admin",
+    "result": "Configuration",
+    "note": "Current allocation/pricing configuration and optimistic version.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/config",
+    "role": "Admin",
+    "result": "Configuration",
+    "note": "Version must match; three allocation weights sum to 1; snapshots of existing jobs remain unchanged.",
+    "schema": "Config",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/forecast",
+    "role": "Admin",
+    "result": "Forecast",
+    "note": "Horizon 1\u201330 days; 503 until model provider configured; provisional adapter contract.",
+    "schema": "ForecastRequest",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/jobs/{id}/allocation",
+    "role": "Admin",
+    "result": "Allocation audit",
+    "note": "Current offers, manualDispatch and history; earlier retry offers are in audit archive.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/jobs/{id}/eligible-workers",
+    "role": "Admin",
+    "result": "Candidate[]",
+    "note": "Current eligible workers, contact and distance/load data; eligibility checked again when assigning.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/jobs/{id}/manual-dispatch",
+    "role": "Admin",
+    "result": "Job",
+    "note": "EXPIRED \u2192 ACCEPTED; eligible worker only; method/note retained in audit.",
+    "schema": "Manual",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/metrics",
+    "role": "Admin",
+    "result": "Metrics",
+    "note": "Optional societyId; online can include busy workers; available excludes busy.",
+    "schema": "",
+    "params": "query: societyId"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/subservices/{id}/price",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "Set basePrice, emergencySupported and active explicitly; old quotes retain price.",
+    "schema": "Price",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/unfulfilled",
+    "role": "Admin",
+    "result": "Unfulfilled job[]",
+    "note": "EXPIRED jobs; page of 100.",
+    "schema": "",
+    "params": "query: page"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/welfare",
+    "role": "Admin",
+    "result": "Welfare entry[]",
+    "note": "Optional societyId; page of 100; contribution ledger, not benefit disbursement.",
+    "schema": "",
+    "params": "query: societyId, query: page"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/workers",
+    "role": "Admin",
+    "result": "Worker summary[]",
+    "note": "Optional societyId/status; page of 100. No full UAN.",
+    "schema": "",
+    "params": "query: societyId, query: status, query: page"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/workers/{id}/insurance",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "Record manual enrollment state and audit evidence reference.",
+    "schema": "Insurance",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/workers/{id}/verification",
+    "role": "Admin",
+    "result": "Empty",
+    "note": "ACTIVE/REJECTED/SUSPENDED; verify declared skills only; ACTIVE requires at least one.",
+    "schema": "Verification",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/challenges",
+    "role": "Public",
+    "result": "Challenge",
+    "note": "Development challenge; 5 min expiry, max 5 requests/phone/10 min. Production delivery absent (503).",
+    "schema": "Challenge",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "role": "Public",
+    "result": "Session",
+    "note": "Rotate refresh token; reuse revokes the whole session family.",
+    "schema": "Refresh",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/verify",
+    "role": "Public",
+    "result": "Session",
+    "note": "Verify 6 digits; max 5 wrong attempts. Existing account keeps its role.",
+    "schema": "Verify",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/categories",
+    "role": "Public",
+    "result": "Category[]",
+    "note": "Service categories; use returned UUIDs.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/subservices",
+    "role": "Public",
+    "result": "Subservice[]",
+    "note": "Active subservices; optional categoryId filter; INR prices.",
+    "schema": "",
+    "params": "query: categoryId"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/events",
+    "role": "Authenticated",
+    "result": "Event[]",
+    "note": "Own durable events after cursor; ordered, up to 100.",
+    "schema": "",
+    "params": "query: after"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs",
+    "role": "Owner / assigned / admin",
+    "result": "Job summary[]",
+    "note": "Own customer jobs, assigned worker jobs, or all admin jobs; page/size; societyId effective only for admin.",
+    "schema": "",
+    "params": "query: page, query: size, query: societyId"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs",
+    "role": "Customer",
+    "result": "Job",
+    "note": "Requires Idempotency-Key; consumes one valid quote owned by caller; dispatch may change state immediately.",
+    "schema": "CreateJob",
+    "params": "header: Idempotency-Key (required)"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}",
+    "role": "Owner / assigned / admin",
+    "result": "Job",
+    "note": "Authoritative lifecycle, worker, financial snapshot and history; never includes doorstep code.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/accept",
+    "role": "Worker",
+    "result": "Job",
+    "note": "Pending valid offer and current eligibility required; first acceptance wins. Same assigned worker may replay.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/arrive",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "TRAVELLING \u2192 ARRIVED; issues customer-only code for 10 minutes.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/cancel",
+    "role": "Customer owner / admin",
+    "result": "Job",
+    "note": "Allowed before IN_PROGRESS, including EXPIRED; clears pending offers and code.",
+    "schema": "Cancel",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/complete",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "IN_PROGRESS \u2192 COMPLETED; payment is separate.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/decline",
+    "role": "Worker",
+    "result": "Empty",
+    "note": "Decline pending offer; advance sequential dispatch or expire exhausted broadcast.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/doorstep-code",
+    "role": "Customer owner",
+    "result": "Doorstep code",
+    "note": "ARRIVED only; otp, expiresAt, attemptsRemaining. Do not log or cache.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/doorstep-code/renew",
+    "role": "Customer owner",
+    "result": "Doorstep code",
+    "note": "ARRIVED only, after expiry; resets attempts and returns replacement.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/invoice",
+    "role": "Owner / assigned / admin",
+    "result": "Invoice",
+    "note": "Immutable demonstration receipt JSON; 404 before payment; no PDF or assessed tax.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/payment",
+    "role": "Owner / assigned / admin",
+    "result": "Payment",
+    "note": "404 until recorded payment exists.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/payments/simulate",
+    "role": "Customer owner",
+    "result": "Payment",
+    "note": "COMPLETED only; development sandbox required; repeated calls return the existing payment.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/rating",
+    "role": "Customer owner",
+    "result": "Empty",
+    "note": "COMPLETED only; once per job; updates worker all-time average.",
+    "schema": "Rating",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/retry",
+    "role": "Customer owner / admin",
+    "result": "Job",
+    "note": "EXPIRED only, maximum 3 retries; radius 100\u201320,000 m; optional emergency \u2192 on-demand fallback preserves price.",
+    "schema": "Retry",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/start",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "ARRIVED \u2192 IN_PROGRESS with valid code; max 5 wrong attempts persist.",
+    "schema": "Start",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/jobs/{id}/tracking",
+    "role": "Owner / assigned / admin",
+    "result": "Tracking",
+    "note": "Only ACCEPTED/TRAVELLING/ARRIVED/IN_PROGRESS; includes freshness, no route or ETA.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/jobs/{id}/travel",
+    "role": "Assigned worker",
+    "result": "Job",
+    "note": "ACCEPTED \u2192 TRAVELLING.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "role": "Authenticated",
+    "result": "User",
+    "note": "Current account id, phone, role, name and preferredLang.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/me",
+    "role": "Authenticated",
+    "result": "User",
+    "note": "Replace name and language preference.",
+    "schema": "Profile",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/me/logout",
+    "role": "Authenticated",
+    "result": "Empty",
+    "note": "Revoke current session family, including access tokens.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/quotes",
+    "role": "Customer",
+    "result": "Quote",
+    "note": "Five-minute immutable financial snapshot; emergency must be supported by subservice.",
+    "schema": "QuoteRequest",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/societies",
+    "role": "Public",
+    "result": "Society[]",
+    "note": "Reference societies for onboarding and administrative filters.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "404 before onboarding. Masked UAN, verification, skills, insurance, availability and GPS.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/workers/me/availability",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "Only ACTIVE workers may change availability; fresh GPS is additionally required for dispatch.",
+    "schema": "Availability",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me/earnings",
+    "role": "Worker",
+    "result": "Earnings",
+    "note": "Recorded simulated totals and latest 100 payments; not a real payout statement.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/workers/me/location",
+    "role": "Worker",
+    "result": "Empty",
+    "note": "Save latest coordinates and server timestamp.",
+    "schema": "Location",
+    "params": ""
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/workers/me/offers",
+    "role": "Worker",
+    "result": "Offer[]",
+    "note": "Unexpired pending offers with area, price split and distance; no doorstep code or exact address.",
+    "schema": "",
+    "params": ""
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/workers/me/onboarding",
+    "role": "Worker",
+    "result": "Worker profile",
+    "note": "Create once; UAN encrypted, skills await manual verification.",
+    "schema": "Onboard",
+    "params": ""
+  }
+]
+</script>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const modes={STANDARD:{text:'Schedule 15 minutes to 90 days ahead. Dispatch begins 15 minutes before the appointment, offering one ranked worker at a time. This does not reserve capacity.',states:['SCHEDULED','SEARCHING','ACCEPTED','TRAVELLING','ARRIVED','IN_PROGRESS','COMPLETED']},ON_DEMAND:{text:'Dispatch immediately to one eligible worker at a time. Rank by proximity, rating and workload; each offer lasts 60 seconds. Exhausted candidates move the job to EXPIRED.',states:['SEARCHING','ACCEPTED','TRAVELLING','ARRIVED','IN_PROGRESS','COMPLETED']},EMERGENCY:{text:'Broadcast to all eligible workers within the configured radius. No ranking score is applied. The first valid acceptance wins; the default deadline is 60 seconds (configurable to 90).',states:['SEARCHING','ACCEPTED','TRAVELLING','ARRIVED','IN_PROGRESS','COMPLETED']}};
+const states={SCHEDULED:['Customer → system','Scheduled booking saved','Backend waits until 15 minutes before scheduledTime. Frontend shows the appointment time without promising a reserved worker.'],SEARCHING:['System → eligible workers','Dispatch in progress','Only ACTIVE, available workers with a verified matching skill, fresh GPS and no active assignment qualify. Frontend polls durable events and refetches the job; handle immediate EXPIRED when no worker qualifies.'],ACCEPTED:['Worker accepts','Assignment locked','Transactional locking and a database constraint protect first acceptance and one active job per worker. Customer gets assigned-worker details. Losing workers handle a conflict and clear their offers.'],TRAVELLING:['Assigned worker → travel','Worker is on the way','Tracking returns latest coordinates and freshness. Frontend supplies the map and GPS updates; the backend does not calculate routes or ETA.'],ARRIVED:['Assigned worker → arrive','Customer authorizes the start','Backend issues a 6-digit code for 10 minutes. Only the customer owner can read it. Worker submits the code; 5 wrong attempts block further starts until expiry and customer renewal.'],IN_PROGRESS:['Assigned worker → start','Work has started','A valid code authorizes the transition and clears the stored code. Show completion controls to the worker. Post-start cancellation and disputes are open product/backend gaps.'],COMPLETED:['Assigned worker → complete','Service finished; payment is separate','Customer may record a simulated payment and submit one rating. Payment, welfare ledger and immutable demo receipt are written atomically. No real settlement or payout occurs.']};
+let currentMode='ON_DEMAND',currentState='SEARCHING';
+function showState(state){currentState=state;document.querySelectorAll('.step').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.state===state)));const d=states[state];$('state-detail').replaceChildren();const tag=document.createElement('div');tag.className='tag';tag.textContent=state+' / '+d[0];const h=document.createElement('h3');h.textContent=d[1];const p=document.createElement('p');p.textContent=d[2];$('state-detail').append(tag,h,p);}
+function showMode(mode){currentMode=mode;document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));$('mode-description').textContent=modes[mode].text;$('flow').replaceChildren();modes[mode].states.forEach((state,i)=>{if(i){const c=document.createElement('span');c.className='connector';c.textContent='→';c.setAttribute('aria-hidden','true');$('flow').append(c);}const b=document.createElement('button');b.className='step';b.dataset.state=state;b.textContent=state;b.onclick=()=>showState(state);$('flow').append(b);});showState(modes[mode].states.includes(currentState)?currentState:modes[mode].states[0]);}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{currentState=modes[b.dataset.mode].states[0];showMode(b.dataset.mode);});showMode(currentMode);
+const money=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2});
+function calculate(){const inputs=['base','surcharge','welfare'];if(inputs.some(id=>!$(id).value||!$(id).checkValidity())){$('price-explanation').textContent='Enter valid amounts and a welfare percentage from 0 to 100.';['gross-value','earning-value','welfare-value'].forEach(id=>$(id).textContent='—');return;}const base=Math.round(Number($('base').value)*100);const surplus=$('price-mode').value==='EMERGENCY'?Math.round(Number($('surcharge').value)*100):0;const rate=Math.round(Number($('welfare').value)*10);const welfare=Math.floor((surplus*rate+500)/1000);const gross=base+surplus;const earning=gross-welfare;$('gross-value').textContent=money.format(gross/100);$('earning-value').textContent=money.format(earning/100);$('welfare-value').textContent=money.format(welfare/100);$('earning-bar').style.width=(earning/gross*100)+'%';$('price-explanation').textContent=surplus===0?'No surplus → no welfare contribution. The worker receives the full fixed service price.':'Surplus of '+money.format(surplus/100)+' funds '+money.format(welfare/100)+' of welfare. Base service pay remains protected.';}
+['base','surcharge','welfare','price-mode'].forEach(id=>$(id).addEventListener('input',calculate));calculate();
+const operations=JSON.parse($('api-data').textContent);
+function forRole(op,role){const r=op.role.toLowerCase();return role==='all'||(role==='public'?r==='public':r==='public'||r==='authenticated'||(role==='customer'?r.includes('customer')||r.includes('owner'):role==='worker'?r.includes('worker')||r.includes('assigned'):r.includes('admin')));}
+function renderOperations(){const q=$('api-search').value.toLowerCase().trim(),role=$('api-role').value;const list=operations.filter(op=>forRole(op,role)&&Object.values(op).join(' ').toLowerCase().includes(q));$('api-count').textContent=list.length+' of '+operations.length+' operations · role filters include public and shared access · expand any route';$('operations').replaceChildren();if(!list.length){const p=document.createElement('p');p.textContent='No matching routes. Try another keyword or role.';$('operations').append(p);}list.forEach(op=>{const d=document.createElement('details');d.className='operation';const s=document.createElement('summary');const v=document.createElement('span');v.className='verb '+op.method.toLowerCase();v.textContent=op.method;const path=document.createElement('span');path.className='path';path.textContent=op.path;const role=document.createElement('span');role.className='role';role.textContent=op.role;s.append(v,path,role);const body=document.createElement('div');body.className='op-detail';const p=document.createElement('p');p.textContent=op.note;const dl=document.createElement('dl');[['Caller',op.role],['Request',op.schema||'No JSON body'],['Parameters',op.params||'Path identifiers only, where shown'],['Success','200 · '+op.result]].forEach(([label,value])=>{const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=value;dl.append(dt,dd);});const a=document.createElement('a');a.href='api-contract.md'+(op.schema?'#'+op.schema.toLowerCase():'');a.textContent='Contract details →';body.append(p,dl,a);d.append(s,body);$('operations').append(d);});}
+$('api-search').addEventListener('input',renderOperations);$('api-role').addEventListener('change',renderOperations);renderOperations();
+</script></body></html>

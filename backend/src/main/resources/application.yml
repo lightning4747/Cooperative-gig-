@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: cooperative-services
+  flyway:
+    ignore-missing-migrations: true
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/cooperative}
+    username: ${DATABASE_USER:cooperative}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 12
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  mvc:
+    problemdetails:
+      enabled: true
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+app:
+  jwt-secret: ${JWT_SECRET}
+  encryption-key: ${ENCRYPTION_KEY}
+  dev-auth: false
+  sandbox-payments: false
+  cors-origins: ${CORS_ORIGINS:http://localhost:5173}
+  bootstrap-admin-phone: ${BOOTSTRAP_ADMIN_PHONE:}
+  forecast-url: ${FORECAST_URL:}
+  forecast-token: ${FORECAST_TOKEN:}
+  scheduling-enabled: true
+springdoc:
+  swagger-ui:
+    path: /docs/api
