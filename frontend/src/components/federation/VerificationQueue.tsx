@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Clock, CheckCircle2, XCircle, FileText, Phone, Building2 } from 'lucide-react'
 import type { WorkerProfile, WorkerStatus } from '@/types/worker'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { formatPhone } from '@/lib/utils'
 
 interface VerificationQueueProps {
   pendingWorkers: WorkerProfile[]
@@ -96,7 +97,7 @@ export function VerificationQueue({
                   </div>
                   <span className="text-xs text-muted-foreground font-mono flex items-center gap-1.5">
                     <Phone className="w-3 h-3" />
-                    +91 {worker.phone}
+                    {formatPhone(worker.phone)}
                   </span>
                 </div>
               </div>

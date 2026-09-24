@@ -11,9 +11,9 @@ interface StarRatingProps {
 }
 
 const SIZE_MAP = {
-  sm: 'w-3.5 h-3.5',
-  md: 'w-5 h-5',
-  lg: 'w-7 h-7',
+  sm: 'w-4 h-4',
+  md: 'w-6 h-6',
+  lg: 'w-8 h-8',
 }
 
 export function StarRating({
@@ -40,9 +40,8 @@ export function StarRating({
             onMouseEnter={() => !readOnly && setHoverValue(star)}
             onMouseLeave={() => !readOnly && setHoverValue(null)}
             className={cn(
-              'p-0.5 transition-transform focus:outline-none',
-              !readOnly && 'hover:scale-110 cursor-pointer',
-              readOnly && 'cursor-default'
+              'transition-transform focus:outline-none flex items-center justify-center select-none',
+              !readOnly ? 'min-w-[48px] min-h-[48px] hover:scale-110 cursor-pointer active:scale-95' : 'cursor-default p-0.5'
             )}
             aria-label={`${star} star`}
           >

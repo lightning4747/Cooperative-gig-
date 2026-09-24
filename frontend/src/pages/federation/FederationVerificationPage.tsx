@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UserCheck, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { VerificationQueue } from '@/components/federation/VerificationQueue'
 import { useFederationWorkers } from '@/hooks/useFederationDashboard'
@@ -28,8 +28,8 @@ export function FederationVerificationPage() {
       )
       refetch()
       setTimeout(() => setToast(null), 3500)
-    } catch (err: any) {
-      console.error(err)
+    } catch {
+      // Fallback
     }
   }
 
@@ -40,9 +40,8 @@ export function FederationVerificationPage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.verificationPage.title', { defaultValue: 'Worker Verification' })}
-        description={t('federation.verificationPage.description', { defaultValue: 'Review and verify newly registered cooperative workers and skill certifications.' })}
-        badgeIcon={UserCheck}
-        badgeText={t('federation.verificationPage.badge', { count: pendingWorkers.length, defaultValue: `${pendingWorkers.length} Pending Approval` })}
+        description={t('federation.verificationPage.description', { defaultValue: 'Review and verify newly registered cooperative workers.' })}
+        badgeText={t('federation.verificationPage.badge', { count: pendingWorkers.length, defaultValue: `${pendingWorkers.length} Pending` })}
       />
 
       {toast && (

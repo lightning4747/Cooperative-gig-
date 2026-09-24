@@ -42,7 +42,7 @@ const CATEGORY_META: Record<string, { icon: string; description: string }> = {
     description: 'Furniture repair, custom woodwork, and fittings',
   },
   Cleaning: {
-    icon: 'Sparkles',
+    icon: 'Brush',
     description: 'Deep home cleaning, sanitation, and hygiene services',
   },
   'Domestic Help': {

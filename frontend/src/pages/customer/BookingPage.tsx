@@ -82,12 +82,12 @@ export function BookingPage() {
       <div className="flex items-center gap-3">
         <Link
           to={`/customer/services/${category.id}`}
-          className="p-2 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl font-black tracking-tight text-foreground">
+          <h1 className="text-xl font-bold tracking-tight text-foreground">
             {t('booking.step1Title', { defaultValue: 'Configure Service Booking' })}
           </h1>
         </div>
@@ -107,11 +107,8 @@ export function BookingPage() {
               <Clock className="w-3.5 h-3.5" />
               ~{subservice.estimatedDurationMinutes} {t('common.mins', { defaultValue: 'mins' })}
             </span>
-            <span>•</span>
-
           </div>
         </div>
-
       </div>
 
       {/* Booking Type Selector Component */}
@@ -144,7 +141,7 @@ export function BookingPage() {
                 value={scheduledDate}
                 min={new Date().toISOString().split('T')[0]}
                 onChange={(e) => setScheduledDate(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[48px]"
               />
             </div>
             <div>
@@ -154,7 +151,7 @@ export function BookingPage() {
               <select
                 value={scheduledTime}
                 onChange={(e) => setScheduledTime(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[48px]"
               >
                 <option value="09:00">{t('booking.slots.morning', { defaultValue: '09:00 AM - 11:00 AM' })}</option>
                 <option value="11:30">{t('booking.slots.midday', { defaultValue: '11:30 AM - 01:30 PM' })}</option>
@@ -171,7 +168,7 @@ export function BookingPage() {
       <button
         type="button"
         onClick={handleProceed}
-        className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
+        className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all cursor-pointer min-h-[48px]"
       >
         <span>{t('booking.proceedLocation', { defaultValue: 'Proceed to Location Selection' })}</span>
         <ArrowRight className="w-4 h-4" />

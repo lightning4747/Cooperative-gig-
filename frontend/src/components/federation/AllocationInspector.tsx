@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import type { Job } from '@/types/job'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { cn } from '@/lib/utils'
+import { cn, formatPhone } from '@/lib/utils'
 
 interface AllocationInspectorProps {
   jobs: Job[]
@@ -131,7 +131,7 @@ export function AllocationInspector({
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 truncate">
                 <span>{selectedJob.workerName}</span>
                 <span className="text-xs font-normal text-slate-400 font-mono">
-                  (+91 {selectedJob.workerPhone || '9876543210'})
+                  ({formatPhone(selectedJob.workerPhone || '9876543210')})
                 </span>
               </h2>
               <div className="flex items-center gap-1.5 text-xs text-slate-500">
@@ -139,10 +139,9 @@ export function AllocationInspector({
                 <span className="truncate">{selectedJob.location.formattedAddress || selectedJob.location.area}</span>
               </div>
             </div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 shrink-0">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Matched Allocation</span>
-            </div>
+            <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-muted text-foreground border border-border shrink-0">
+              Matched Allocation
+            </span>
           </div>
 
           {/* Core Scoring Breakdown Matrix */}

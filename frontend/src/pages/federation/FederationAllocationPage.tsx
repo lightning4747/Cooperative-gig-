@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { Scale } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { AllocationInspector } from '@/components/federation/AllocationInspector'
 import { useJobs } from '@/hooks/useJob'
@@ -15,9 +14,7 @@ export function FederationAllocationPage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.allocationPage.title', { defaultValue: 'Job Dispatch Review' })}
-        description={t('federation.allocationPage.description', { defaultValue: 'Review how service requests are matched fairly based on distance, worker skills, and daily workload.' })}
-        badgeIcon={Scale}
-        badgeText={t('federation.allocationPage.badge', { defaultValue: 'Fair Work Allocation' })}
+        description={t('federation.allocationPage.description', { defaultValue: 'Review task allocation based on distance, verified skills, and workload.' })}
       />
 
       <AllocationInspector jobs={jobs} />

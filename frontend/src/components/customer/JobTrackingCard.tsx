@@ -34,15 +34,15 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
       </div>
 
       {/* Status Headline Banner */}
-      <div className="rounded-xl border border-border border-l-4 border-l-amber-500 bg-card p-4 sm:p-5 shadow-xs space-y-3">
+      <div className="rounded-xl border border-border border-l-4 border-l-primary bg-card p-4 sm:p-5 shadow-xs space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-black text-foreground">{headlineTitle}</h2>
+          <h2 className="text-lg font-bold text-foreground">{headlineTitle}</h2>
         </div>
 
         {/* Location & Wage Floor & Customer Paid Badges */}
         <div className="pt-2 border-t border-border/60 flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-1.5 text-muted-foreground">
-            <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+            <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
             <span className="truncate max-w-[200px]">{job.location?.formattedAddress || 'Gandhipuram, Coimbatore'}</span>
           </div>
           <div className="flex items-center gap-3 font-mono text-xs">
@@ -57,7 +57,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
                   {formatCurrency(job.paidAmount || job.grossAmount || job.basePrice || 500)}
                 </strong>
               ) : (
-                <span className="text-amber-600 dark:text-amber-400 font-bold">Pending</span>
+                <span className="text-primary font-bold">Pending</span>
               )}
             </span>
           </div>
@@ -66,20 +66,20 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
 
       {/* Advance Payment Action when ACCEPTED and Unpaid */}
       {job.status === 'ACCEPTED' && !job.isPaid && (
-        <div className="p-5 rounded-2xl border border-border border-l-4 border-l-amber-500 bg-card space-y-4 shadow-xs">
+        <div className="p-5 rounded-xl border border-border border-l-4 border-l-primary bg-card space-y-4 shadow-xs">
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
-              <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 inline-flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/40 flex items-center justify-center shrink-0">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground inline-flex items-center gap-1.5">
+                <div className="w-6 h-6 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
                   <CreditCard className="w-3.5 h-3.5" />
                 </div>
                 {t('job.paymentRequiredTitle', { defaultValue: 'Advance Payment Required' })}
               </span>
-              <h3 className="text-base font-black text-foreground">
+              <h3 className="text-base font-bold text-foreground">
                 {t('job.payToAuthorize', { defaultValue: 'Pay to Authorize Departure' })}
               </h3>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 font-mono text-xs font-bold shrink-0 border border-amber-200/60 dark:border-amber-800/40">
+            <span className="px-2.5 py-1 rounded-full bg-primary/10 text-foreground font-mono text-xs font-bold shrink-0 border border-primary/20">
               Payment Pending
             </span>
           </div>
@@ -87,7 +87,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
           <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
             <Link
               to={`/customer/jobs/${job.id}/payment`}
-              className="flex-1 min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+              className="flex-1 min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm shadow-xs transition-all cursor-pointer"
             >
               <CreditCard className="w-4 h-4" />
               <span>
@@ -145,7 +145,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
             <CheckCircle className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h4 className="text-sm font-black text-foreground">
+            <h4 className="text-sm font-bold text-foreground">
               {job.isPaid
                 ? t('job.serviceSettled', { defaultValue: 'Service Completed' })
                 : t('job.serviceCompleted', { defaultValue: 'Service Completed' })}
@@ -155,23 +155,23 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
             <div className="grid grid-cols-2 gap-2 pt-1">
               <Link
                 to={`/customer/jobs/${job.id}/invoice`}
-                className="h-11 flex items-center justify-center gap-1.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 transition-all"
+                className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 transition-all"
               >
                 <FileText className="w-4 h-4" />
                 <span>{t('job.viewInvoice', { defaultValue: 'Official Invoice' })}</span>
               </Link>
               <Link
                 to={`/customer/jobs/${job.id}/rating`}
-                className="h-11 flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-bold text-xs shadow-xs transition-all"
+                className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-bold text-xs shadow-xs transition-all"
               >
-                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <Star className="w-4 h-4 text-primary fill-primary" />
                 <span>{t('job.rateWorker', { defaultValue: 'Rate Service' })}</span>
               </Link>
             </div>
           ) : (
             <Link
               to={`/customer/jobs/${job.id}/payment`}
-              className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all"
+              className="w-full min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all"
             >
               <CreditCard className="w-4 h-4" />
               <span>{t('job.proceedPayment', { defaultValue: 'Proceed to Payment & Invoice' })}</span>
@@ -182,19 +182,19 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
 
       {/* Expired Status Helper & Action */}
       {job.status === 'EXPIRED' && (
-        <div className="p-5 rounded-2xl border border-border border-l-4 border-l-amber-500 bg-card space-y-3 text-center shadow-xs">
-          <div className="inline-flex p-2.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/40">
+        <div className="p-5 rounded-xl border border-border border-l-4 border-l-primary bg-card space-y-3 text-center shadow-xs">
+          <div className="inline-flex p-2.5 rounded-full bg-primary/10 text-primary">
             <AlertCircle className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h4 className="text-sm font-black text-foreground">
+            <h4 className="text-sm font-bold text-foreground">
               {t('job.noWorkerFoundTitle', { defaultValue: 'No Workers Available Nearby' })}
             </h4>
           </div>
           <div className="pt-2 flex flex-col sm:flex-row justify-center gap-2.5">
             <Link
               to="/customer/services"
-              className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-all inline-flex items-center justify-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs shadow-xs transition-all inline-flex items-center justify-center gap-1.5 min-h-[48px]"
             >
               <span>{t('common.browseServices', { defaultValue: 'Browse Services & Re-Book' })}</span>
             </Link>
@@ -207,7 +207,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
         <button
           type="button"
           onClick={onCancel}
-          className="w-full min-h-[44px] px-4 py-2.5 rounded-xl border border-destructive/30 bg-destructive/5 hover:bg-destructive/10 text-destructive text-xs font-bold text-center transition-all cursor-pointer shadow-2xs active:scale-[0.99] flex items-center justify-center gap-2"
+          className="w-full min-h-[48px] px-4 py-2.5 rounded-xl border border-destructive/30 bg-destructive/5 hover:bg-destructive/10 text-destructive text-xs font-bold text-center transition-all cursor-pointer shadow-2xs active:scale-[0.99] flex items-center justify-center gap-2"
         >
           {t('job.cancelBooking', { defaultValue: 'Cancel this booking request' })}
         </button>

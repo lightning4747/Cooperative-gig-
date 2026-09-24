@@ -186,7 +186,7 @@ export function WorkerDashboard() {
             {activeJob.status === 'ACCEPTED' && (
               <Link
                 to={`/worker/jobs/${activeJob.id}`}
-                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all min-h-[44px]"
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold shadow-xs transition-all min-h-[48px]"
               >
                 <span>1. Start Travelling</span>
               </Link>
@@ -195,7 +195,7 @@ export function WorkerDashboard() {
             {activeJob.status === 'TRAVELLING' && (
               <Link
                 to={`/worker/jobs/${activeJob.id}/travelling`}
-                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all min-h-[44px]"
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold shadow-xs transition-all min-h-[48px]"
               >
                 <span>2. Reached Location</span>
               </Link>
@@ -204,7 +204,7 @@ export function WorkerDashboard() {
             {activeJob.status === 'ARRIVED' && (
               <Link
                 to={`/worker/jobs/${activeJob.id}/arrival`}
-                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all min-h-[44px]"
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold shadow-xs transition-all min-h-[48px]"
               >
                 <span>3. Enter Customer Code</span>
               </Link>
@@ -213,7 +213,7 @@ export function WorkerDashboard() {
             {activeJob.status === 'IN_PROGRESS' && (
               <Link
                 to={`/worker/jobs/${activeJob.id}/complete`}
-                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all min-h-[44px]"
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold shadow-xs transition-all min-h-[48px]"
               >
                 <span>4. Finish Job & Get Paid</span>
               </Link>

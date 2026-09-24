@@ -19,8 +19,8 @@ export function RatingPage() {
   const handleSubmit = async (rating: number, feedback: string) => {
     try {
       await jobService.submitRating(targetId, rating as 1 | 2 | 3 | 4 | 5, feedback)
-    } catch (err) {
-      console.error('Failed to submit rating:', err)
+    } catch {
+      // Fallback
     } finally {
       setSubmitted(true)
       setTimeout(() => {

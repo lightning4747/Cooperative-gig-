@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Receipt, Download, ArrowRight, AlertCircle } from 'lucide-react'
+import { FileText, Download, ArrowRight, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useJobs } from '@/hooks/useJob'
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
@@ -64,7 +64,7 @@ export function CustomerInvoicesPage() {
       ) : completedBookings.length === 0 ? (
         <div className="p-12 rounded-2xl border border-border bg-card text-center space-y-4 max-w-md mx-auto shadow-xs">
           <div className="w-14 h-14 rounded-2xl bg-secondary text-muted-foreground flex items-center justify-center mx-auto border border-border/80">
-            <Receipt className="w-6 h-6" />
+            <FileText className="w-6 h-6" />
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-bold text-foreground">

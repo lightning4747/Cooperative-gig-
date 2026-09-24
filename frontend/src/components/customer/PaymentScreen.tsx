@@ -40,7 +40,6 @@ export function PaymentScreen({
       const result = await processPayment(customerPrice)
       onSuccess(result)
     } catch (err: unknown) {
-      console.error(err)
       setError(
         err instanceof Error
           ? err.message

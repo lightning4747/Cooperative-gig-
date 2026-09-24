@@ -376,7 +376,7 @@ const baseServiceCategories: ServiceCategory[] = [
     id: 'cat-cleaning',
     name: 'services.category.cleaning',
     description: 'Deep residential cleaning, bathroom sanitation, and overhead water tank service',
-    icon: 'Sparkles',
+    icon: 'Brush',
     subservices: [
       {
         id: 'sub-clean-01',

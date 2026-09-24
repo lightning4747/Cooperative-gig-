@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import type { Job } from '@/types/job'
 import { StatusBadge } from '@/components/shared/StatusBadge'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatPhone } from '@/lib/utils'
 import { calculatePayment } from '@/lib/paymentCalc'
 import {
   getTranslatedCategoryName,
@@ -89,7 +89,7 @@ export function JobDetailFederation({
               </div>
               <div className="text-muted-foreground font-mono text-[11px] flex items-center gap-1.5">
                 <Phone className="w-3 h-3" />
-                +91 {job.customerPhone}
+                {formatPhone(job.customerPhone)}
               </div>
               <div className="text-muted-foreground flex items-start gap-1.5 pt-0.5 text-[11px]">
                 <MapPin className="w-3 h-3 text-muted-foreground shrink-0 mt-0.5" />
@@ -111,7 +111,7 @@ export function JobDetailFederation({
                 </div>
                 <div className="text-muted-foreground font-mono text-[11px] flex items-center gap-1.5">
                   <Phone className="w-3 h-3" />
-                  +91 {job.workerPhone || '9876543210'}
+                  {formatPhone(job.workerPhone || '9876543210')}
                 </div>
                 {job.otp && (
                   <div className="pt-1 flex items-center gap-1.5">

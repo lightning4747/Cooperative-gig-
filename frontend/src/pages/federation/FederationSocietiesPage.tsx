@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { Building2 } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { SocietyList } from '@/components/federation/SocietyList'
 import { useFederationDashboard } from '@/hooks/useFederationDashboard'
@@ -16,8 +15,7 @@ export function FederationSocietiesPage() {
       <FederationPageHeader
         title={t('federation.societiesPage.title', { defaultValue: 'Member Cooperatives' })}
         description={t('federation.societiesPage.description', { defaultValue: 'Directory of primary labour and artisan cooperative societies.' })}
-        badgeIcon={Building2}
-        badgeText={t('federation.societiesPage.badge', { count: societies.length, defaultValue: `${societies.length} Member Societies` })}
+        badgeText={t('federation.societiesPage.badge', { count: societies.length, defaultValue: `${societies.length} Societies` })}
       />
 
       <SocietyList societies={societies} />

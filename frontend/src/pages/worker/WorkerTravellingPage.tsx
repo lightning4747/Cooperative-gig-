@@ -143,10 +143,10 @@ export function WorkerTravellingPage() {
           {/* Quick Call Action */}
           <a
             href={`tel:${customerPhone}`}
-            className="p-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 flex items-center justify-center shrink-0 transition-colors"
+            className="min-h-[48px] min-w-[48px] rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 flex items-center justify-center shrink-0 transition-colors"
             title="Call Customer for Landmark Guidance"
           >
-            <Phone className="w-4 h-4 text-slate-800" />
+            <Phone className="w-5 h-5 text-slate-800" />
           </a>
         </div>
 
@@ -156,7 +156,7 @@ export function WorkerTravellingPage() {
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 min-h-[44px] py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors"
+            className="flex-1 min-h-[48px] py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors"
           >
             <Navigation className="w-4 h-4 text-white" />
             <span>Navigate in Google Maps (Turn-by-Turn)</span>
@@ -170,10 +170,10 @@ export function WorkerTravellingPage() {
         type="button"
         onClick={handleArrived}
         disabled={isUpdating}
-        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-all min-h-[46px] cursor-pointer active:scale-[0.99] disabled:opacity-60"
+        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm shadow-xs transition-all min-h-[48px] cursor-pointer active:scale-[0.99] disabled:opacity-60"
       >
         {isUpdating ? (
-          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
         ) : (
           <>
             <span>{t('worker.execution.arrivedAtDoorstep', '2. I Have Reached Doorstep')}</span>

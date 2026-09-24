@@ -14,7 +14,7 @@ import {
 import type { Job } from '@/types/job'
 import type { WorkerProfile } from '@/types/worker'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { formatDate } from '@/lib/utils'
+import { formatDate, formatPhone } from '@/lib/utils'
 import { federationService } from '@/services/federationService'
 
 interface EmergencyDispatchPanelProps {
@@ -222,19 +222,19 @@ export function EmergencyDispatchPanel({
                     {availableWorkers.length > 0 ? (
                       availableWorkers.map((w) => (
                         <option key={w.userId} value={w.userId}>
-                          {w.name} (+91 {w.phone}) - {w.societyName}
+                          {w.name} ({formatPhone(w.phone)}) - {w.societyName}
                         </option>
                       ))
                     ) : (
                       <>
                         <option value="bb97f076-d171-48df-9982-68bc3e9cfee5">
-                          Arun Electrician (+91 9876543211) - Coimbatore City Labour & Artisans Cooperative Society
+                          Arun Electrician (+91 98765 43211) - Coimbatore City Labour & Artisans Cooperative Society
                         </option>
                         <option value="a1111111-1111-1111-1111-111111111112">
-                          Karthik Plumber (+91 9876543212) - RS Puram Cooperative Workers Union
+                          Karthik Plumber (+91 98765 43212) - RS Puram Cooperative Workers Union
                         </option>
                         <option value="a1111111-1111-1111-1111-111111111113">
-                          Selvam Carpenter (+91 9876543213) - Peelamedu Cooperative Services Guild
+                          Selvam Carpenter (+91 98765 43213) - Peelamedu Cooperative Services Guild
                         </option>
                       </>
                     )}

@@ -9,8 +9,7 @@ import {
   Edit3,
   Bell,
   LogOut,
-  Sparkles,
-  Receipt,
+  FileText,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useCustomerProfile } from '@/hooks/useCustomerProfile'
@@ -84,7 +83,7 @@ export function CustomerProfilePage() {
       subtitle: t('customer.profile.menu.recentBookingsSub', {
         defaultValue: 'Task history and receipts',
       }),
-      icon: Receipt,
+      icon: FileText,
       badge: t('customer.profile.menu.invoices', { defaultValue: 'Invoices' }),
       action: () => setShowRecentBookingsModal(true),
     },
@@ -189,8 +188,7 @@ export function CustomerProfilePage() {
       <div className="p-5 sm:p-6 rounded-2xl border border-border bg-card shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
               {t('customer.profile.patronageTitle', { defaultValue: 'Cooperative Patronage' })}
             </span>
           </div>

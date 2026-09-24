@@ -1,0 +1,17 @@
+{
+  "short_name": "CoopGig",
+  "name": "Cooperative Gig Services Platform",
+  "description": "Verified Cooperative Gig Services Platform for Rural & Tier-2 Communities",
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "type": "image/png",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "theme_color": "#F59E0B",
+  "display": "standalone",
+  "orientation": "portrait"
+}

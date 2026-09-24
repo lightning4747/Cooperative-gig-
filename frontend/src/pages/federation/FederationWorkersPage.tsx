@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Users, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { WorkerTable } from '@/components/federation/WorkerTable'
 import { useFederationWorkers } from '@/hooks/useFederationDashboard'
@@ -35,9 +35,8 @@ export function FederationWorkersPage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.workersPage.title', { defaultValue: 'Worker Directory' })}
-        description={t('federation.workersPage.description', { defaultValue: 'Member directory across affiliated cooperative societies with verified skills.' })}
-        badgeIcon={Users}
-        badgeText={t('federation.workersPage.badge', { count: workers.length, defaultValue: `${workers.length} Registered Workers` })}
+        description={t('federation.workersPage.description', { defaultValue: 'Member directory across affiliated cooperative societies.' })}
+        badgeText={t('federation.workersPage.badge', { count: workers.length, defaultValue: `${workers.length} Workers` })}
       />
 
       {successToast && (

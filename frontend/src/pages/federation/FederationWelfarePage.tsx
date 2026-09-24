@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { HeartHandshake } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { WelfareAdmin } from '@/components/federation/WelfareAdmin'
 
@@ -10,9 +9,7 @@ export function FederationWelfarePage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.welfarePage.title', { defaultValue: 'Worker Welfare Fund' })}
-        description={t('federation.welfarePage.description', { defaultValue: 'Collective protection fund supported by extra customer payments while keeping base worker wages 100% protected.' })}
-        badgeIcon={HeartHandshake}
-        badgeText={t('federation.welfarePage.badge', { defaultValue: 'Protected Wage Guarantee' })}
+        description={t('federation.welfarePage.description', { defaultValue: 'Worker welfare reserves, insurance cover, and surplus contribution records.' })}
       />
 
       <WelfareAdmin />

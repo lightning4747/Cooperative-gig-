@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ClipboardList } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { JobsTable } from '@/components/federation/JobsTable'
 import { JobDetailFederation } from '@/components/federation/JobDetailFederation'
@@ -20,8 +19,7 @@ export function FederationJobsPage() {
       <FederationPageHeader
         title={t('federation.jobsPage.title', { defaultValue: 'Job Operations' })}
         description={t('federation.jobsPage.description', { defaultValue: 'All service bookings across scheduled, on-demand, and emergency channels.' })}
-        badgeIcon={ClipboardList}
-        badgeText={t('federation.jobsPage.badge', { count: jobs.length, defaultValue: `${jobs.length} Jobs Logged` })}
+        badgeText={t('federation.jobsPage.badge', { count: jobs.length, defaultValue: `${jobs.length} Bookings` })}
       />
 
       <JobsTable

@@ -59,7 +59,7 @@ export function WorkerCompletePage() {
       <div className="flex items-center gap-3">
         <Link
           to={`/worker/jobs/${targetId}`}
-          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
+          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground min-h-[48px] min-w-[48px] flex items-center justify-center transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>
@@ -122,10 +122,10 @@ export function WorkerCompletePage() {
           type="button"
           onClick={handleComplete}
           disabled={isFinishing}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 transition-all min-h-[44px]"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all min-h-[48px] cursor-pointer"
         >
           {isFinishing ? (
-            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
           ) : (
             <>
               <CheckCircle2 className="w-4 h-4" />

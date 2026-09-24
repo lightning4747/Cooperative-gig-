@@ -36,7 +36,7 @@ export function WorkerJobDetailPage() {
       <div className="flex items-center gap-3">
         <Link
           to="/worker/jobs"
-          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[48px] min-w-[48px] flex items-center justify-center"
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>

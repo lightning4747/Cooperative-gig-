@@ -40,8 +40,8 @@ export function ConfirmationPage() {
     try {
       const customerId = user?.id || '83cf9fc2-33be-4b62-82c6-73396ab41283'
       await confirmBooking(customerId)
-    } catch (err) {
-      console.error('Failed to create job:', err)
+    } catch {
+      // Fallback
     }
   }
 

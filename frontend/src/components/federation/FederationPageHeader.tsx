@@ -22,24 +22,24 @@ export function FederationPageHeader({
   return (
     <div
       className={cn(
-        'pb-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4',
+        'pb-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
         className
       )}
     >
-      <div className="space-y-1 min-w-0">
-        <div className="flex items-center gap-2.5">
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">
+      <div className="space-y-0.5 min-w-0">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-semibold tracking-tight text-foreground">
             {title}
           </h1>
           {badgeText && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/80">
-              {BadgeIcon && <BadgeIcon className="w-3.5 h-3.5 text-blue-600 shrink-0" />}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-muted text-muted-foreground border border-border">
+              {BadgeIcon && <BadgeIcon className="w-3 h-3 text-muted-foreground shrink-0" />}
               <span>{badgeText}</span>
             </span>
           )}
         </div>
         {description && (
-          <p className="text-xs text-slate-500 max-w-3xl leading-relaxed">
+          <p className="text-xs text-muted-foreground max-w-2xl">
             {description}
           </p>
         )}

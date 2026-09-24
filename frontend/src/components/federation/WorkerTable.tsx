@@ -4,6 +4,7 @@ import { Search, User } from 'lucide-react'
 import type { WorkerProfile, WorkerStatus } from '@/types/worker'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { formatPhone } from '@/lib/utils'
 
 
 interface WorkerTableProps {
@@ -135,7 +136,7 @@ export function WorkerTable({
                             {worker.name}
                           </span>
                           <span className="text-[11px] text-muted-foreground font-mono tabular-nums">
-                            +91 {worker.phone}
+                            {formatPhone(worker.phone)}
                           </span>
                         </div>
                       </div>

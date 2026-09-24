@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { Sliders } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { ConfigurationPanel } from '@/components/federation/ConfigurationPanel'
 
@@ -10,9 +9,7 @@ export function FederationConfigPage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.configPage.title', { defaultValue: 'Rates & Welfare Settings' })}
-        description={t('federation.configPage.description', { defaultValue: 'Manage minimum service rates and welfare fund contribution rules across member cooperatives.' })}
-        badgeIcon={Sliders}
-        badgeText={t('federation.configPage.badge', { defaultValue: 'Fair Wage Rules' })}
+        description={t('federation.configPage.description', { defaultValue: 'Minimum service rates and welfare fund contribution rules.' })}
       />
 
       <ConfigurationPanel />

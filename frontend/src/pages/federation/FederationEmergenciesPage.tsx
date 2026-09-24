@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { AlertTriangle } from 'lucide-react'
 import { FederationPageHeader } from '@/components/federation/FederationPageHeader'
 import { EmergencyDispatchPanel } from '@/components/federation/EmergencyDispatchPanel'
 import { useFederationDashboard, useFederationWorkers } from '@/hooks/useFederationDashboard'
@@ -20,9 +19,8 @@ export function FederationEmergenciesPage() {
     <div className="space-y-6">
       <FederationPageHeader
         title={t('federation.emergenciesPage.title', { defaultValue: 'Emergency Requests' })}
-        description={t('federation.emergenciesPage.description', { defaultValue: 'Monitoring urgent emergency requests with direct worker dispatch.' })}
-        badgeIcon={AlertTriangle}
-        badgeText={t('federation.emergenciesPage.badge', { count: emergencies.length, defaultValue: `${emergencies.length} Urgent Alerts` })}
+        description={t('federation.emergenciesPage.description', { defaultValue: 'Urgent service requests requiring direct worker dispatch.' })}
+        badgeText={t('federation.emergenciesPage.badge', { count: emergencies.length, defaultValue: `${emergencies.length} Active` })}
       />
 
       <EmergencyDispatchPanel

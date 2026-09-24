@@ -6,7 +6,7 @@ import {
   Clock,
   Wrench,
   KeyRound,
-  Receipt,
+  FileText,
   Star,
   ArrowRight,
   RefreshCw,
@@ -307,7 +307,7 @@ function BookingCard({ booking }: { booking: Job }) {
                 to={`/customer/jobs/${booking.id}/invoice`}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border hover:bg-muted text-foreground transition-colors font-semibold"
               >
-                <Receipt className="w-3.5 h-3.5 text-primary" />
+                <FileText className="w-3.5 h-3.5 text-primary" />
                 <span>{t('customer.viewInvoice', { defaultValue: 'Invoice' })}</span>
               </Link>
               <Link

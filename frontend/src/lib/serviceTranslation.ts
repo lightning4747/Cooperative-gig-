@@ -61,7 +61,7 @@ export const CATEGORY_MAP: Record<string, CategoryMetadata> = {
     code: 'cleaning',
     name: 'Cleaning',
     subTasks: 'Deep Clean, Tank, Sanitize',
-    icon: 'Sparkles',
+    icon: 'Brush',
   },
   '248fe068-d549-5927-9eb6-0487a501c33a': {
     code: 'technician',
@@ -123,7 +123,7 @@ export const CATEGORY_MAP: Record<string, CategoryMetadata> = {
     code: 'cleaning',
     name: 'Cleaning',
     subTasks: 'Deep Clean, Tank, Sanitize',
-    icon: 'Sparkles',
+    icon: 'Brush',
   },
   'cat-technician': {
     code: 'technician',
@@ -191,7 +191,7 @@ export const CATEGORY_MAP: Record<string, CategoryMetadata> = {
     code: 'cleaning',
     name: 'Cleaning',
     subTasks: 'Deep Clean, Tank, Sanitize',
-    icon: 'Sparkles',
+    icon: 'Brush',
   },
   technician: {
     code: 'technician',

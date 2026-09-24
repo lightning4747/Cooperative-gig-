@@ -60,8 +60,8 @@ export function WorkerPassbookPage() {
             }
           }
         }
-      } catch (err) {
-        console.warn('Could not query completed jobs for settlements:', err)
+      } catch {
+        // Fallback silently
       }
 
       // Also merge any local completed settlements from this browser session

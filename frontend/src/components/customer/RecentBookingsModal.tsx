@@ -4,7 +4,6 @@ import {
   X,
   Clock,
   CheckCircle2,
-  Receipt,
   Droplets,
   Zap,
   Hammer,
@@ -76,7 +75,7 @@ export function RecentBookingsModal({ isOpen, onClose }: RecentBookingsModalProp
         <div className="flex items-center justify-between border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-xl bg-primary/10 text-primary">
-              <Receipt className="w-4 h-4" />
+              <FileText className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-sm font-bold text-foreground">

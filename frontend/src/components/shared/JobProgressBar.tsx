@@ -1,5 +1,11 @@
 import { useTranslation } from 'react-i18next'
-import { Check } from 'lucide-react'
+import {
+  Clock,
+  UserCheck,
+  Wrench,
+  CheckCircle2,
+  Check,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { JobStatus } from '@/types/job'
 
@@ -9,119 +15,105 @@ interface JobProgressBarProps {
   className?: string
 }
 
-const STANDARD_STEPS: JobStatus[] = [
-  'SEARCHING',
-  'OFFERED',
-  'ACCEPTED',
-  'TRAVELLING',
-  'ARRIVED',
-  'IN_PROGRESS',
-  'COMPLETED',
-]
+type TimelineStage = 'PENDING' | 'ACCEPTED' | 'IN_PROGRESS' | 'COMPLETED'
 
-const EMERGENCY_STEPS: JobStatus[] = [
-  'SEARCHING',
-  'BROADCAST',
-  'ACCEPTED',
-  'TRAVELLING',
-  'ARRIVED',
-  'IN_PROGRESS',
-  'COMPLETED',
-]
-
-interface StepItemProps {
-  step: JobStatus
-  index: number
-  currentIndex: number
-  isLast: boolean
+interface StageConfig {
+  key: TimelineStage
   label: string
+  icon: typeof Clock
 }
 
-function StepItem({ step, index, currentIndex, isLast, label }: StepItemProps) {
-  const isDone = currentIndex > index
-  const isCurrent = currentIndex === index
+const TIMELINE_STAGES: StageConfig[] = [
+  { key: 'PENDING', label: 'Pending', icon: Clock },
+  { key: 'ACCEPTED', label: 'Accepted', icon: UserCheck },
+  { key: 'IN_PROGRESS', label: 'In Progress', icon: Wrench },
+  { key: 'COMPLETED', label: 'Completed', icon: CheckCircle2 },
+]
 
-  return (
-    <div key={step} className="flex flex-1 items-start last:flex-none">
-      <div className="flex flex-col items-center flex-1 min-w-[72px] px-1">
-        <div
-          className={cn(
-            'w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0',
-            isDone && 'bg-primary text-primary-foreground',
-            isCurrent && 'bg-primary/20 text-primary ring-2 ring-primary ring-offset-2 animate-pulse',
-            !isDone && !isCurrent && 'bg-secondary text-muted-foreground border border-border'
-          )}
-        >
-          {isDone ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : index + 1}
-        </div>
-        <span
-          className={cn(
-            'mt-1.5 text-[10px] sm:text-[11px] font-medium text-center leading-snug whitespace-normal break-words',
-            isCurrent ? 'text-primary font-bold' : isDone ? 'text-foreground' : 'text-muted-foreground'
-          )}
-        >
-          {label}
-        </span>
-      </div>
-      {!isLast && (
-        <div
-          className={cn(
-            'h-[2px] flex-1 mt-3.5 sm:mt-4 -mx-1 transition-colors shrink-0',
-            isDone ? 'bg-primary' : 'bg-border'
-          )}
-        />
-      )}
-    </div>
-  )
+function getStageIndex(status: JobStatus): number {
+  switch (status) {
+    case 'SEARCHING':
+    case 'OFFERED':
+    case 'BROADCAST':
+      return 0
+    case 'ACCEPTED':
+    case 'TRAVELLING':
+      return 1
+    case 'ARRIVED':
+    case 'IN_PROGRESS':
+      return 2
+    case 'COMPLETED':
+      return 3
+    default:
+      return 0
+  }
 }
 
 export function JobProgressBar({
   status,
-  isEmergency = false,
   className,
 }: JobProgressBarProps) {
   const { t } = useTranslation()
-  const steps = isEmergency ? EMERGENCY_STEPS : STANDARD_STEPS
-  const currentIndex = steps.indexOf(status)
 
   if (status === 'CANCELLED' || status === 'EXPIRED') {
     return (
-      <div className={cn('p-3 rounded-lg bg-slate-100 border border-slate-200 text-center text-sm font-medium text-slate-700', className)}>
-        {t(`job.status.${status.toLowerCase()}`, { defaultValue: status })}
+      <div className={cn('p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-center text-xs font-semibold text-destructive', className)}>
+        {status === 'CANCELLED' ? 'Booking Request Cancelled' : 'Booking Expired — No worker assigned'}
       </div>
     )
   }
 
-  const progressPercent = ((Math.max(0, currentIndex) + 1) / steps.length) * 100
+  const currentStageIndex = getStageIndex(status)
 
   return (
-    <div className={cn('w-full py-2', className)}>
-      {/* Mobile condensed bar */}
-      <div className="md:hidden space-y-1.5">
-        <div className="flex justify-between text-xs font-semibold text-muted-foreground">
-          <span>{t('common.status')}: <span className="text-foreground">{t(`job.status.${status.toLowerCase()}`, { defaultValue: status })}</span></span>
-          <span>{Math.max(1, currentIndex + 1)} / {steps.length}</span>
-        </div>
-        <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-          <div
-            className="bg-primary h-full transition-all duration-300 rounded-full"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
-      </div>
+    <div className={cn('w-full py-1', className)}>
+      <div className="flex items-center justify-between w-full">
+        {TIMELINE_STAGES.map((stage, idx) => {
+          const isDone = currentStageIndex > idx
+          const isCurrent = currentStageIndex === idx
+          const isLast = idx === TIMELINE_STAGES.length - 1
+          const Icon = stage.icon
 
-      {/* Desktop stepper track */}
-      <div className="hidden md:flex items-center justify-between w-full">
-        {steps.map((step, idx) => (
-          <StepItem
-            key={step}
-            step={step}
-            index={idx}
-            currentIndex={currentIndex}
-            isLast={idx === steps.length - 1}
-            label={t(`job.status.${step.toLowerCase()}`, { defaultValue: step })}
-          />
-        ))}
+          return (
+            <div key={stage.key} className="flex flex-1 items-center last:flex-none">
+              {/* Stage Node */}
+              <div className="flex flex-col items-center flex-1 min-w-[64px] px-1 text-center">
+                <div
+                  className={cn(
+                    'w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all shrink-0',
+                    isDone && 'bg-primary text-primary-foreground font-bold shadow-2xs',
+                    isCurrent && 'bg-primary text-primary-foreground ring-4 ring-primary/25 font-bold animate-pulse',
+                    !isDone && !isCurrent && 'bg-secondary text-muted-foreground border border-border'
+                  )}
+                >
+                  {isDone ? (
+                    <Check className="w-4 h-4 stroke-[3]" />
+                  ) : (
+                    <Icon className="w-4 h-4" />
+                  )}
+                </div>
+                <span
+                  className={cn(
+                    'mt-1.5 text-[11px] sm:text-xs font-semibold tracking-tight leading-tight',
+                    isCurrent ? 'text-primary font-bold' : isDone ? 'text-foreground' : 'text-muted-foreground'
+                  )}
+                >
+                  {t(`job.timeline.${stage.key.toLowerCase()}`, { defaultValue: stage.label })}
+                </span>
+              </div>
+
+              {/* Connecting Line */}
+              {!isLast && (
+                <div
+                  className={cn(
+                    'h-1 flex-1 -mx-2 mb-4 transition-colors shrink-0 rounded-full',
+                    isDone ? 'bg-primary' : 'bg-secondary'
+                  )}
+                />
+              )}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

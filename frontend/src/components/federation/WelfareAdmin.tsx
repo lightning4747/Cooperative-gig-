@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Search,
-  CheckCircle2,
   Building2,
   Phone,
   Clock,
 } from 'lucide-react'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency, formatDate, formatPhone } from '@/lib/utils'
 import { federationService } from '@/services/federationService'
 import type { WorkerProfile } from '@/types/worker'
 import { cn } from '@/lib/utils'
@@ -136,82 +135,58 @@ export function WelfareAdmin() {
 
   return (
     <div className="space-y-6">
-      {/* Crisp Institutional Stat Panel */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Minimal Stat Panel */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Total Welfare Pool */}
         <div className="p-4 rounded-md border border-border bg-card space-y-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
-            Collective Welfare Pool
+            Welfare Pool
           </span>
-          <div className="space-y-0.5">
-            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
-              {formatCurrency(totalPool)}
-            </span>
-            <span className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" />
-              100% Floor Guaranteed
-            </span>
-          </div>
-          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
-            Surplus funded · Zero wage deduction
-          </p>
+          <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
+            {formatCurrency(totalPool)}
+          </span>
+          <span className="text-xs text-muted-foreground block">
+            Collective reserve balance
+          </span>
         </div>
 
         {/* PMSBY Coverage */}
         <div className="p-4 rounded-md border border-border bg-card space-y-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
-            PMSBY Coverage
+            Accident Cover (PMSBY)
           </span>
-          <div className="space-y-0.5">
-            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
-              100% Subsidised
-            </span>
-            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-              Universal Accidental Cover
-            </span>
-          </div>
-          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
-            ₹2,00,000 disability & accident cover
-          </p>
+          <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
+            ₹2,00,000
+          </span>
+          <span className="text-xs text-muted-foreground block">
+            Subsidised per member
+          </span>
         </div>
 
         {/* PMJJBY Life Insurance */}
         <div className="p-4 rounded-md border border-border bg-card space-y-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
-            PMJJBY Life Cover
+            Life Cover (PMJJBY)
           </span>
-          <div className="space-y-0.5">
-            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
-              Active Reserve
-            </span>
-            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-              Federation Retained
-            </span>
-          </div>
-          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
-            Automatic annual welfare fund reserve
-          </p>
+          <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
+            Active
+          </span>
+          <span className="text-xs text-muted-foreground block">
+            Annual member reserve
+          </span>
         </div>
 
         {/* Total Ledger Entries */}
         <div className="p-4 rounded-md border border-border bg-card space-y-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
-            Surplus Audits
+            Contributions
           </span>
-          <div className="space-y-0.5">
-            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
-              {workerWelfareList.reduce((acc, w) => acc + (w.entriesCount || 1), 0)} Logged
-            </span>
-            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-              Auditable Ledger
-            </span>
-          </div>
-          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
-            Cryptographically signed audit trail
-          </p>
+          <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
+            {workerWelfareList.reduce((acc, w) => acc + (w.entriesCount || 1), 0)}
+          </span>
+          <span className="text-xs text-muted-foreground block">
+            Recorded surplus entries
+          </span>
         </div>
       </div>
 
@@ -274,7 +249,7 @@ export function WelfareAdmin() {
                         <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                           <span className="truncate">{getTranslatedSocietyName(t, w.societyName)}</span>
                           <span>·</span>
-                          <span className="font-mono text-[10px] shrink-0">+91 {w.phone}</span>
+                          <span className="font-mono text-[10px] shrink-0">{formatPhone(w.phone)}</span>
                         </div>
                       </div>
                     </div>
@@ -284,7 +259,7 @@ export function WelfareAdmin() {
                         {formatCurrency(w.balance)}
                       </span>
                       <span className="text-[10px] text-muted-foreground font-mono">
-                        {w.entriesCount || 1} logs
+                        {(w.entriesCount || 1) === 1 ? '1 contribution' : `${w.entriesCount || 1} contributions`}
                       </span>
                     </div>
                   </div>
@@ -309,11 +284,11 @@ export function WelfareAdmin() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Building2 className="w-3 h-3 text-muted-foreground" />
+                  <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
                   <span>{getTranslatedSocietyName(t, selectedWorker.societyName)}</span>
                   <span>·</span>
-                  <Phone className="w-3 h-3 text-muted-foreground" />
-                  <span className="font-mono text-[11px]">+91 {selectedWorker.phone}</span>
+                  <Phone className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="font-mono text-[11px]">{formatPhone(selectedWorker.phone)}</span>
                 </div>
               </div>
 
@@ -326,10 +301,9 @@ export function WelfareAdmin() {
                     {formatCurrency(selectedWorker.balance)}
                   </span>
                 </div>
-                <div className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[11px] font-medium flex items-center gap-1 shrink-0">
-                  <CheckCircle2 className="w-3 h-3" />
-                  <span>PMSBY Enrolled</span>
-                </div>
+                <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-muted text-foreground border border-border shrink-0">
+                  PMSBY Enrolled
+                </span>
               </div>
             </div>
           ) : null}
@@ -342,11 +316,11 @@ export function WelfareAdmin() {
                   Transaction Ledger
                 </h3>
                 <p className="text-[11px] text-muted-foreground">
-                  Contribution logs from customer surplus with society references
+                  Recent surplus contributions with society references
                 </p>
               </div>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-muted text-muted-foreground border border-border">
-                {entriesToRender.length} Audited Entries
+                {entriesToRender.length} Entries
               </span>
             </div>
 
@@ -367,21 +341,18 @@ export function WelfareAdmin() {
                         <span className="font-medium text-foreground block">
                           {entry.serviceName}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">
-                          Customer Surplus Allocation
-                        </span>
                       </td>
 
                       <td className="px-3 py-2.5 text-muted-foreground">
                         <div className="flex items-center gap-1.5">
-                          <Building2 className="w-3 h-3 text-muted-foreground shrink-0" />
+                          <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                           <span className="truncate">{entry.societyRef}</span>
                         </div>
                       </td>
 
                       <td className="px-3 py-2.5 text-muted-foreground font-mono text-[11px]">
                         <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-muted-foreground shrink-0" />
+                          <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                           <span>{formatDate(entry.date)}</span>
                         </div>
                       </td>

@@ -351,10 +351,10 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
                 type="button"
                 onClick={handleStartTravelling}
                 disabled={isUpdating}
-                className="w-full min-h-[44px] py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-primary/90 active:scale-[0.99] transition-all cursor-pointer"
+                className="w-full min-h-[48px] py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs hover:bg-primary/90 active:scale-[0.99] transition-all cursor-pointer"
               >
                 {isUpdating ? (
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
                     <Navigation className="w-4 h-4" />
@@ -379,7 +379,7 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <Link
                   to={`/worker/jobs/${job.id}/travelling`}
-                  className="min-h-[44px] py-2.5 px-4 rounded-xl border border-border bg-secondary/70 hover:bg-secondary text-foreground font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                  className="min-h-[48px] py-2.5 px-4 rounded-xl border border-border bg-secondary/70 hover:bg-secondary text-foreground font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
                 >
                   <Navigation className="w-4 h-4 text-primary" />
                   <span>View Map</span>
@@ -389,10 +389,10 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
                   type="button"
                   onClick={handleProceedToArrival}
                   disabled={isUpdating}
-                  className="min-h-[44px] py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs hover:bg-primary/90 transition-all"
+                  className="min-h-[48px] py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
                 >
                   {isUpdating ? (
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       <span>2. I Have Reached</span>
@@ -406,17 +406,17 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
 
           {/* STEP 3: ARRIVED -> ENTER MUTUAL OTP */}
           {job.status === 'ARRIVED' && (
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-3 shadow-xs">
+            <div className="p-4 rounded-xl bg-primary/10 border border-primary/30 space-y-3 shadow-xs">
               <div className="space-y-1">
-                <span className="text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-                  <KeyRound className="w-4 h-4" />
+                <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                  <KeyRound className="w-4 h-4 text-primary" />
                   Step 3: Enter Customer Code
                 </span>
               </div>
 
               <Link
                 to={`/worker/jobs/${job.id}/arrival`}
-                className="w-full min-h-[44px] py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99]"
+                className="w-full min-h-[48px] py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99]"
               >
                 <KeyRound className="w-4 h-4" />
                 <span>3. Enter Customer Code</span>
@@ -440,7 +440,7 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
 
               <Link
                 to={`/worker/jobs/${job.id}/complete`}
-                className="w-full min-h-[44px] py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99]"
+                className="w-full min-h-[48px] py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99]"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>4. Finish Work & Get Paid</span>

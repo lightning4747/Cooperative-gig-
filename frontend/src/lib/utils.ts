@@ -34,3 +34,13 @@ export function cleanAddress(address?: string): string {
   // Remove coordinates like "(12.9236° N, 77.6754° E)" from the address
   return address.replace(/\s*\(\d+\.\d+°\s*[NS],\s*\d+\.\d+°\s*[EW]\)/gi, '').trim()
 }
+
+export function formatPhone(phone?: string | null): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length >= 10) {
+    const last10 = digits.slice(-10)
+    return `+91 ${last10.slice(0, 5)} ${last10.slice(5)}`
+  }
+  return phone
+}

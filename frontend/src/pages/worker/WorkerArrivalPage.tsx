@@ -86,10 +86,10 @@ export function WorkerArrivalPage() {
           type="button"
           onClick={handleVerify}
           disabled={isVerifying || otp.length < 6}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 transition-all min-h-[44px] disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs hover:bg-primary/90 transition-all min-h-[48px] disabled:opacity-60 cursor-pointer"
         >
           {isVerifying ? (
-            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
           ) : (
             <>
               <CheckCircle2 className="w-4 h-4" />
