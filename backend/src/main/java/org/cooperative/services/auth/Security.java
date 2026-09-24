@@ -75,6 +75,8 @@ public class Security {
           if (path.startsWith("/api/v1/auth/")
               || path.startsWith("/api/v1/catalog")
               || path.startsWith("/api/v1/societies")
+              || path.startsWith("/api/demo/")
+              || path.startsWith("/api/v1/demo/")
               || path.startsWith("/actuator")
               || path.startsWith("/v3/api-docs")
               || path.startsWith("/swagger-ui")
@@ -92,6 +94,8 @@ public class Security {
                 a.requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
                     .requestMatchers(
+                        "/api/demo/**",
+                        "/api/v1/demo/**",
                         "/api/v1/auth/**",
                         "/api/v1/catalog/**",
                         "/api/v1/societies",
@@ -123,7 +127,7 @@ public class Security {
     var config = new CorsConfiguration();
     config.setAllowedOrigins(Arrays.asList(origins.split(",")));
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "OPTIONS"));
-    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Idempotency-Key"));
+    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Idempotency-Key", "X-Demo-Reset-Token"));
     config.setExposedHeaders(List.of("X-Request-Id", "Retry-After"));
     config.setAllowCredentials(false);
     var source = new UrlBasedCorsConfigurationSource();

@@ -40,9 +40,9 @@ const ROLES: RoleOption[] = [
 ]
 
 const DEMO_ACCOUNTS: Record<UserRole, { phone: string; name: string }> = {
-  CUSTOMER: { phone: '9876543210', name: 'Ravi Kumar' },
-  WORKER: { phone: '9876543211', name: 'Arun Electrician' },
-  FEDERATION_ADMIN: { phone: '9876543200', name: 'Federation Administrator' },
+  CUSTOMER: { phone: '9000000001', name: 'Meena' },
+  WORKER: { phone: '9000000011', name: 'Arun Electrician' },
+  FEDERATION_ADMIN: { phone: '9000000000', name: 'Federation Administrator' },
 }
 
 export function LoginPage() {

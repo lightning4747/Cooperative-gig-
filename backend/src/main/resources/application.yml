@@ -37,6 +37,8 @@ app:
   forecast-url: ${FORECAST_URL:}
   forecast-token: ${FORECAST_TOKEN:}
   scheduling-enabled: true
+  demo-mode: ${DEMO_MODE:true}
+  demo-reset-token: ${DEMO_RESET_TOKEN:cooperative-demo-reset-2026}
 springdoc:
   swagger-ui:
     path: /docs/api

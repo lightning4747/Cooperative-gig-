@@ -1,0 +1,8 @@
+{
+  "name": "cooperative-gig-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "demo:reset": "node scripts/demo-reset.js"
+  }
+}

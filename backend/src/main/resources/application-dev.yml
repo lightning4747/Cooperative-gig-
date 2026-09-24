@@ -8,3 +8,5 @@ app:
   encryption-key: ${ENCRYPTION_KEY:ZGV2ZWxvcG1lbnQta2V5LTMyLWJ5dGVzLWxvbmcxMjM=}
   dev-auth: true
   sandbox-payments: true
+  demo-mode: ${DEMO_MODE:true}
+  demo-reset-token: ${DEMO_RESET_TOKEN:cooperative-demo-reset-2026}

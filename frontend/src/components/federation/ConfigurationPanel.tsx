@@ -5,6 +5,8 @@ import {
   HeartHandshake,
   Save,
   Loader2,
+  RotateCcw,
+  AlertTriangle,
 } from 'lucide-react'
 import { catalogService } from '@/services/catalogService'
 import { federationService, type AllocationConfig } from '@/services/federationService'
@@ -22,6 +24,12 @@ export function ConfigurationPanel() {
   const [welfareSaved, setWelfareSaved] = useState(false)
   const [isSavingPricing, setIsSavingPricing] = useState(false)
   const [isSavingWelfare, setIsSavingWelfare] = useState(false)
+
+  const isDemoMode = import.meta.env.VITE_DEMO_MODE !== 'false'
+  const [isResetting, setIsResetting] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [resetSuccess, setResetSuccess] = useState<string | null>(null)
+  const [resetError, setResetError] = useState<string | null>(null)
 
   useEffect(() => {
     let isMounted = true
@@ -108,6 +116,32 @@ export function ConfigurationPanel() {
       setTimeout(() => setWelfareSaved(false), 3000)
     } finally {
       setIsSavingWelfare(false)
+    }
+  }
+
+  const handleResetDemoData = async () => {
+    setIsResetting(true)
+    setResetSuccess(null)
+    setResetError(null)
+    try {
+      const token = import.meta.env.VITE_DEMO_RESET_TOKEN || 'cooperative-demo-reset-2026'
+      const res = await fetch('/api/demo/reset', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Demo-Reset-Token': token,
+        },
+      })
+      if (!res.ok) {
+        throw new Error(`Server returned HTTP ${res.status}`)
+      }
+      setResetSuccess('Demo data successfully restored to fresh baseline.')
+      setShowResetConfirm(false)
+      setTimeout(() => setResetSuccess(null), 5000)
+    } catch (err: any) {
+      setResetError(err?.message || 'Failed to reset demo dataset')
+    } finally {
+      setIsResetting(false)
     }
   }
 
@@ -275,6 +309,86 @@ export function ConfigurationPanel() {
           </div>
         </div>
       </div>
+
+      {/* Section 3: Demo Dataset Reset (visible when DEMO_MODE=true) */}
+      {isDemoMode && (
+        <div className="p-5 rounded-md border border-amber-500/30 bg-amber-500/5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/20 pb-3.5">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                <RotateCcw className="w-4 h-4 text-amber-600 dark:text-amber-500" />
+                <span>3. Demo Dataset Controls</span>
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Reset the platform to the initial verified demo state (24 trade workers, 3 societies, historical bookings).
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowResetConfirm(true)}
+              disabled={isResetting}
+              className="h-8 px-3 rounded-md bg-amber-600 text-white hover:bg-amber-700 font-medium text-xs inline-flex items-center gap-1.5 transition-colors disabled:opacity-50 shrink-0"
+            >
+              {isResetting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+              <span>{isResetting ? 'Resetting...' : 'Reset Demo Data'}</span>
+            </button>
+          </div>
+
+          {resetSuccess && (
+            <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>{resetSuccess}</span>
+            </div>
+          )}
+
+          {resetError && (
+            <div className="p-2.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-center gap-2">
+              <AlertTriangle className="w-3.5 h-3.5" />
+              <span>{resetError}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Confirmation Dialog */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-lg space-y-4 animate-in zoom-in-95">
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-500">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold text-foreground">Restore Demo Dataset?</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  This will restore the demo dataset. Any live data will be replaced. Continue?
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setShowResetConfirm(false)}
+                disabled={isResetting}
+                className="h-8 px-3 rounded-md border border-border bg-background hover:bg-muted text-xs font-medium text-foreground transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleResetDemoData}
+                disabled={isResetting}
+                className="h-8 px-3 rounded-md bg-amber-600 text-white hover:bg-amber-700 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors disabled:opacity-50"
+              >
+                {isResetting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                <span>{isResetting ? 'Restoring...' : 'Confirm Reset'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

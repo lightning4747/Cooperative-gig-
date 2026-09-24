@@ -64,6 +64,7 @@ export function LocationPicker({
   const [searchQuery, setSearchQuery] = useState('')
   const [isLocating, setIsLocating] = useState(false)
   const [showPresets, setShowPresets] = useState(false)
+  const [fallbackToast, setFallbackToast] = useState(false)
 
   // Filtered recommendations
   const filteredPresets = PRESET_LOCATIONS.filter((item) =>
@@ -73,7 +74,9 @@ export function LocationPicker({
 
   const handleUseGPS = () => {
     if (!navigator.geolocation) {
-      alert(t('location.noGeolocation', { defaultValue: 'Geolocation is not supported by your browser.' }))
+      setCurrentLocation(PRESET_LOCATIONS[0])
+      setFallbackToast(true)
+      setTimeout(() => setFallbackToast(false), 4500)
       return
     }
 
@@ -81,21 +84,37 @@ export function LocationPicker({
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setIsLocating(false)
-        const gpsLoc: SelectedLocation = {
-          latitude: Number(pos.coords.latitude.toFixed(4)),
-          longitude: Number(pos.coords.longitude.toFixed(4)),
-          formattedAddress: `Current GPS Location (${pos.coords.latitude.toFixed(4)}° N, ${pos.coords.longitude.toFixed(4)}° E)`,
-          area: 'Current Area',
+        const lat = pos.coords.latitude
+        const lng = pos.coords.longitude
+        // Coimbatore bounding box: roughly 10.90 to 11.15 N, 76.85 to 77.15 E
+        const isWithinCoimbatore = lat >= 10.90 && lat <= 11.15 && lng >= 76.85 && lng <= 77.15
+
+        if (isWithinCoimbatore) {
+          const gpsLoc: SelectedLocation = {
+            latitude: Number(lat.toFixed(4)),
+            longitude: Number(lng.toFixed(4)),
+            formattedAddress: `Current GPS Location (${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E)`,
+            area: 'Current Area',
+          }
+          setCurrentLocation(gpsLoc)
+          setSearchQuery('')
+          setShowPresets(false)
+        } else {
+          // Evaluator running outside Coimbatore: fallback to Gandhipuram demo location
+          setCurrentLocation(PRESET_LOCATIONS[0])
+          setSearchQuery('')
+          setShowPresets(false)
+          setFallbackToast(true)
+          setTimeout(() => setFallbackToast(false), 4500)
         }
-        setCurrentLocation(gpsLoc)
-        setSearchQuery('')
-        setShowPresets(false)
       },
       (err) => {
         setIsLocating(false)
-        console.warn('Geolocation error:', err.message)
-        // Gracefully fallback to default preset
+        console.warn('Geolocation error or denied:', err.message)
+        // Gracefully fallback to default preset with non-intrusive toast
         setCurrentLocation(PRESET_LOCATIONS[0])
+        setFallbackToast(true)
+        setTimeout(() => setFallbackToast(false), 4500)
       },
       { timeout: 8000 }
     )
@@ -158,6 +177,14 @@ export function LocationPicker({
               : t('location.useCurrent', { defaultValue: 'Use My Current GPS Location' })}
           </span>
         </button>
+
+        {/* Coimbatore Fallback Toast */}
+        {fallbackToast && (
+          <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 text-foreground text-xs flex items-center gap-2 animate-in fade-in">
+            <MapPin className="w-4 h-4 text-primary shrink-0" />
+            <span>Using Coimbatore demo location (change in settings)</span>
+          </div>
+        )}
 
         {/* Search Results Dropdown */}
         {showPresets && filteredPresets.length > 0 && (
