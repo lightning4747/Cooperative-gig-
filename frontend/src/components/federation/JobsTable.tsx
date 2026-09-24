@@ -114,16 +114,16 @@ export function JobsTable({ jobs, onSelectJob }: JobsTableProps) {
         <div className="rounded-md border border-border bg-card overflow-hidden">
           <div className="overflow-x-auto max-h-[calc(100vh-280px)] overflow-y-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="sticky top-0 z-10 bg-muted/40 text-muted-foreground text-[11px] font-medium uppercase tracking-wider border-b border-border">
-                  <th className="px-4 py-2.5 min-w-[190px]">{t('federation.jobsTable.colService', { defaultValue: 'Service & Category' })}</th>
-                  <th className="px-4 py-2.5 min-w-[120px]">{t('federation.jobsTable.colType', { defaultValue: 'Booking Type' })}</th>
-                  <th className="px-4 py-2.5 min-w-[200px]">{t('federation.jobsTable.colCustomerLocation', { defaultValue: 'Customer & Location' })}</th>
-                  <th className="px-4 py-2.5 min-w-[180px]">{t('federation.jobsTable.colAssignedMember', { defaultValue: 'Assigned Member' })}</th>
-                  <th className="px-4 py-2.5 min-w-[120px]">{t('federation.jobsTable.colStatus', { defaultValue: 'Status' })}</th>
-                  <th className="px-4 py-2.5 font-mono text-right min-w-[110px]">{t('federation.jobsTable.colFloorWage', { defaultValue: 'Base Pay' })}</th>
-                  <th className="px-4 py-2.5 font-mono text-right min-w-[110px]">{t('federation.jobsTable.colCustomerPaid', { defaultValue: 'Customer Paid' })}</th>
-                  <th className="px-4 py-2.5 text-right min-w-[80px]">{t('federation.jobsTable.colAction', { defaultValue: 'Action' })}</th>
+              <thead className="sticky top-0 z-20 bg-muted border-b border-border shadow-xs">
+                <tr className="text-muted-foreground text-[11px] font-medium uppercase tracking-wider">
+                  <th className="px-4 py-2.5 min-w-[190px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colService', { defaultValue: 'Service & Category' })}</th>
+                  <th className="px-4 py-2.5 min-w-[120px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colType', { defaultValue: 'Booking Type' })}</th>
+                  <th className="px-4 py-2.5 min-w-[200px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colCustomerLocation', { defaultValue: 'Customer & Location' })}</th>
+                  <th className="px-4 py-2.5 min-w-[180px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colAssignedMember', { defaultValue: 'Assigned Member' })}</th>
+                  <th className="px-4 py-2.5 min-w-[120px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colStatus', { defaultValue: 'Status' })}</th>
+                  <th className="px-4 py-2.5 font-mono text-right min-w-[110px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colFloorWage', { defaultValue: 'Base Pay' })}</th>
+                  <th className="px-4 py-2.5 font-mono text-right min-w-[110px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colCustomerPaid', { defaultValue: 'Customer Paid' })}</th>
+                  <th className="px-4 py-2.5 text-right min-w-[80px] bg-muted whitespace-nowrap">{t('federation.jobsTable.colAction', { defaultValue: 'Action' })}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">

@@ -1,12 +1,10 @@
 /**
- * Structural Wage Floor and Surplus Calculation.
+ * Cooperative Payment Breakdown.
  *
- * Blueprint & Spec Formula:
- * Surplus = CustomerPrice - BasePrice
- * WelfareContribution = f(Surplus) = surplus * welfareRate (e.g. 50%)
- * WorkerTakeHome = BasePrice + (Surplus - WelfareContribution)
- *
- * Invariant: WorkerEarning >= BasePrice (always holds).
+ * Rules:
+ * 1. Customer pays: Base Pay + Welfare Contribution.
+ * 2. Worker receives: Base Pay (100% of Base Pay, zero deductions).
+ * 3. Welfare Pool receives: Welfare Contribution (mandatory fee paid by customer).
  */
 
 export interface PaymentBreakdown {
@@ -20,17 +18,26 @@ export interface PaymentBreakdown {
 export function calculatePayment(
   customerPrice: number,
   basePrice: number,
-  welfareRate: number = 0.5
+  welfareRate: number = 0.05
 ): PaymentBreakdown {
-  const safeCustomerPrice = Math.max(customerPrice, basePrice)
-  const surplus = Math.max(0, safeCustomerPrice - basePrice)
-  const welfareContribution = Math.round(surplus * welfareRate)
-  const workerEarning = basePrice + (surplus - welfareContribution)
+  const safeBasePrice = Math.max(0, basePrice)
+  const rate = welfareRate > 0.2 ? 0.05 : (welfareRate || 0.05)
+  const defaultWelfare = Math.max(25, Math.round(safeBasePrice * rate))
+
+  const welfareContribution = customerPrice > safeBasePrice
+    ? customerPrice - safeBasePrice
+    : defaultWelfare
+
+  const totalCustomerPrice = customerPrice > safeBasePrice
+    ? customerPrice
+    : safeBasePrice + welfareContribution
+
+  const workerEarning = safeBasePrice
 
   return {
-    customerPrice: safeCustomerPrice,
-    basePrice,
-    surplus,
+    customerPrice: totalCustomerPrice,
+    basePrice: safeBasePrice,
+    surplus: welfareContribution,
     welfareContribution,
     workerEarning,
   }

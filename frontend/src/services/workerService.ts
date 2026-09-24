@@ -8,6 +8,7 @@ import type {
 import { apiClient } from '@/lib/apiClient'
 import { useAuthStore } from '@/store/authStore'
 import { CATEGORY_MAP, isUuid } from '@/lib/serviceTranslation'
+import { saveLocalPendingWorker } from './federationService'
 
 export interface RegisterWorkerInput {
   name: string
@@ -189,7 +190,9 @@ export const workerService = {
   }): Promise<WorkerProfile> => {
     const res = await apiClient.post('/workers/me/onboarding', input)
     const currentUser = useAuthStore.getState().user
-    return mapBackendWorkerProfile(res.data, currentUser || undefined)
+    const mapped = mapBackendWorkerProfile(res.data, currentUser || undefined)
+    saveLocalPendingWorker(mapped)
+    return mapped
   },
 
   register: async (

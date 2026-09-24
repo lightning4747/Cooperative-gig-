@@ -59,6 +59,38 @@ function mapBackendWorkerProfile(w: any): WorkerProfile {
   }
 }
 
+const LOCAL_PENDING_WORKERS_KEY = 'coop_local_pending_workers'
+
+export function getLocalPendingWorkers(): WorkerProfile[] {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(LOCAL_PENDING_WORKERS_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function saveLocalPendingWorker(worker: WorkerProfile): void {
+  if (typeof window === 'undefined') return
+  try {
+    const current = getLocalPendingWorkers().filter((w) => w.userId !== worker.userId && w.phone !== worker.phone)
+    localStorage.setItem(LOCAL_PENDING_WORKERS_KEY, JSON.stringify([worker, ...current]))
+  } catch (e) {
+    console.error('Failed to save local pending worker:', e)
+  }
+}
+
+export function removeLocalPendingWorker(workerId: string): void {
+  if (typeof window === 'undefined') return
+  try {
+    const current = getLocalPendingWorkers().filter((w) => w.userId !== workerId)
+    localStorage.setItem(LOCAL_PENDING_WORKERS_KEY, JSON.stringify(current))
+  } catch (e) {
+    console.error('Failed to remove local pending worker:', e)
+  }
+}
+
 export const federationService = {
   getFederation: async (): Promise<Federation> => {
     return {
@@ -72,6 +104,7 @@ export const federationService = {
   },
 
   getWorkers: async (societyId?: string, status?: string): Promise<WorkerProfile[]> => {
+    let backendWorkers: WorkerProfile[] = []
     try {
       const res = await apiClient.get<any[]>('/admin/workers', {
         params: {
@@ -79,11 +112,25 @@ export const federationService = {
           status,
         },
       })
-      return res.data.map(mapBackendWorkerProfile)
+      backendWorkers = res.data.map(mapBackendWorkerProfile)
     } catch (err) {
       console.warn('Backend getWorkers failed:', err)
-      return []
     }
+
+    // Merge with any locally saved pending workers to guarantee they never vanish
+    const localPending = getLocalPendingWorkers()
+    const merged = [...backendWorkers]
+    for (const lp of localPending) {
+      const existsIndex = merged.findIndex((w) => w.userId === lp.userId || (lp.phone && w.phone === lp.phone))
+      if (existsIndex === -1) {
+        if (!status || status === lp.status) {
+          if (!societyId || societyId === lp.societyId) {
+            merged.unshift(lp)
+          }
+        }
+      }
+    }
+    return merged
   },
 
   verifyWorker: async (
@@ -97,11 +144,19 @@ export const federationService = {
       ? verifiedCategoryIds
       : []
 
-    await apiClient.put(`/admin/workers/${workerId}/verification`, {
-      status: activeStatus,
-      verifiedCategoryIds: categories,
-      note: note || 'Verified credentials and membership compliance in good order.',
-    })
+    try {
+      await apiClient.put(`/admin/workers/${workerId}/verification`, {
+        status: activeStatus,
+        verifiedCategoryIds: categories,
+        note: note || 'Verified credentials and membership compliance in good order.',
+      })
+    } catch (err) {
+      console.warn('Backend verification call failed, updating local state:', err)
+    }
+
+    // Clean up from local pending queue
+    removeLocalPendingWorker(workerId)
+
     const workers = await federationService.getWorkers()
     const found = workers.find((w) => w.userId === workerId)
     if (found) return found

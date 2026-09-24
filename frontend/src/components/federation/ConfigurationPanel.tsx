@@ -213,10 +213,10 @@ export function ConfigurationPanel() {
           <div className="space-y-0.5">
             <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <HeartHandshake className="w-4 h-4 text-muted-foreground" />
-              <span>{t('federation.configPanel.welfareTitle', { defaultValue: '2. Welfare Fund Contribution' })}</span>
+              <span>{t('federation.configPanel.welfareTitle', { defaultValue: '2. Welfare Contribution Rate' })}</span>
             </h3>
             <p className="text-xs text-muted-foreground">
-              {t('federation.configPanel.welfareDesc', { defaultValue: 'Set the percentage of extra customer payment contributed to the worker welfare fund.' })}
+              {t('federation.configPanel.welfareDesc', { defaultValue: 'Mandatory welfare fee paid by the customer for each booking in addition to Base Pay.' })}
             </p>
           </div>
 
@@ -227,34 +227,34 @@ export function ConfigurationPanel() {
             className="h-8 px-3 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 font-medium text-xs inline-flex items-center gap-1.5 transition-colors disabled:opacity-50 shrink-0"
           >
             {isSavingWelfare ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-            <span>{isSavingWelfare ? t('common.saving', { defaultValue: 'Saving...' }) : t('federation.configPanel.saveRule', { defaultValue: 'Save Rule' })}</span>
+            <span>{isSavingWelfare ? t('common.saving', { defaultValue: 'Saving...' }) : t('federation.configPanel.saveRule', { defaultValue: 'Save Rate' })}</span>
           </button>
         </div>
 
         {welfareSaved && (
           <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>{t('federation.configPanel.welfareSuccess', { percent: welfarePercent, remainder: 100 - welfarePercent, defaultValue: `Allocation rule saved: ${welfarePercent}% to welfare pool, ${100 - welfarePercent}% to worker.` })}</span>
+            <span>{t('federation.configPanel.welfareSuccess', { percent: welfarePercent, defaultValue: `Welfare contribution rate saved: ${welfarePercent}%.` })}</span>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-foreground block">
-              {t('federation.configPanel.surplusShareLabel', { defaultValue: 'Welfare Contribution Share (%)' })}
+              {t('federation.configPanel.surplusShareLabel', { defaultValue: 'Welfare Contribution Rate (%)' })}
             </label>
             <div className="flex items-center gap-2.5">
               <input
                 type="number"
                 value={welfarePercent}
                 onChange={(e) => setWelfarePercent(parseInt(e.target.value) || 0)}
-                min={10}
-                max={90}
-                step={5}
+                min={2}
+                max={25}
+                step={1}
                 className="h-8 w-24 px-2.5 rounded-md border border-border bg-background font-mono tabular-nums text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
               />
               <span className="text-xs text-muted-foreground">
-                {t('federation.configPanel.surplusShareSub', { defaultValue: '% allocated to collective welfare pool' })}
+                {t('federation.configPanel.surplusShareSub', { defaultValue: '% added to booking for collective welfare pool' })}
               </span>
             </div>
           </div>
@@ -262,16 +262,14 @@ export function ConfigurationPanel() {
           {/* Demonstration formula box */}
           <div className="p-3.5 rounded-md bg-muted/40 border border-border text-xs space-y-1">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
-              {t('federation.configPanel.simTitle', { defaultValue: 'Payment Breakdown Example' })}
+              {t('federation.configPanel.simTitle', { defaultValue: 'Payment Example' })}
             </span>
             <div className="font-mono tabular-nums text-foreground space-y-0.5 text-xs">
-              <div>Customer Paid: ₹700 (Base Rate: ₹500)</div>
-              <div className="text-muted-foreground">Extra Payment: ₹200</div>
-              <div className="text-foreground">
-                Welfare Pool ({welfarePercent}%): ₹{(200 * welfarePercent) / 100}
-              </div>
+              <div>Base Pay: ₹500</div>
+              <div className="text-muted-foreground">Welfare Contribution ({welfarePercent}%): +₹{(500 * welfarePercent) / 100}</div>
+              <div className="text-muted-foreground">Total: ₹{500 + (500 * welfarePercent) / 100}</div>
               <div className="font-semibold text-foreground pt-1 border-t border-border">
-                Total Worker Earning: ₹{500 + (200 * (100 - welfarePercent)) / 100}
+                Worker Receives: ₹500
               </div>
             </div>
           </div>

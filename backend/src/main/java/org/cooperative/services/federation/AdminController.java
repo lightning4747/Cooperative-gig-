@@ -70,7 +70,7 @@ public class AdminController {
           (SELECT count(*) FROM job j WHERE j.worker_id=w.user_id AND j.status='COMPLETED') AS total_jobs_completed,
           (SELECT COALESCE(sum(we.amount),0) FROM welfare_entry we WHERE we.worker_id=w.user_id) AS welfare_balance,
           (SELECT count(*) FROM welfare_entry we WHERE we.worker_id=w.user_id) AS welfare_entries_count,
-          (SELECT jsonb_agg(jsonb_build_object('categoryId',s.category_id,'verified',s.verified)) FROM worker_skill s WHERE s.worker_id=w.user_id) AS skills
+          (SELECT jsonb_agg(jsonb_build_object('categoryId',s.category_id,'name',c.name,'verified',s.verified)) FROM worker_skill s JOIN category c ON c.id=s.category_id WHERE s.worker_id=w.user_id) AS skills
         FROM worker w
         JOIN app_user u ON u.id=w.user_id
         LEFT JOIN society soc ON soc.id=w.society_id

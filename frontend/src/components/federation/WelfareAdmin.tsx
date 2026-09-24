@@ -16,6 +16,8 @@ export function WelfareAdmin() {
   const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedWorkerId, setSelectedWorkerId] = useState<string | null>(null)
+  const [workerPage, setWorkerPage] = useState(1)
+  const workerPageSize = 6
   const [ledgerPage, setLedgerPage] = useState(1)
   const ledgerPageSize = 5
   const [workers, setWorkers] = useState<WorkerProfile[]>([])
@@ -85,6 +87,12 @@ export function WelfareAdmin() {
       w.phone.includes(searchTerm)
   )
 
+  const totalWorkerPages = Math.max(1, Math.ceil(filteredWorkers.length / workerPageSize))
+  const paginatedWorkers = filteredWorkers.slice(
+    (workerPage - 1) * workerPageSize,
+    workerPage * workerPageSize
+  )
+
   const activeWorkerId = selectedWorkerId || filteredWorkers[0]?.workerId
   const selectedWorker = workerWelfareList.find((w) => w.workerId === activeWorkerId) || filteredWorkers[0]
 
@@ -92,37 +100,45 @@ export function WelfareAdmin() {
     .filter((e) => !activeWorkerId || String(e.workerId || e.worker_id) === String(activeWorkerId))
     .map((e, idx) => ({
       id: e.id || `live-${idx}`,
-      serviceName: e.serviceName || e.service_name || e.subserviceName || e.note || e.source || 'Surplus Allocation',
+      serviceName: e.serviceName || e.service_name || e.subserviceName || e.note || e.source || 'Service Booking',
       jobId: e.jobId || e.job_id || e.referenceId || `JOB-REF-00${idx + 101}`,
+      workerName: e.workerName || e.worker_name || selectedWorker?.workerName || 'Member',
       societyRef: e.societyName || selectedWorker?.societyName || 'Coimbatore City Labour Society',
       date: e.createdAt || e.created_at || new Date().toISOString(),
-      amount: Number(e.amount || 75),
+      basePay: Number(e.basePrice || e.base_price || 500),
+      amount: Number(e.amount || e.welfareContribution || 25),
     }))
 
   const fallbackEntries = [
     {
       id: 'fb-1',
-      serviceName: 'Emergency Electrical Service Surplus',
+      serviceName: 'Emergency Electrical Service',
       jobId: 'JOB-2024-8891',
+      workerName: selectedWorker?.workerName || 'Karthik Murugan',
       societyRef: selectedWorker?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society',
       date: '2026-09-20T10:30:00.000Z',
-      amount: 120,
+      basePay: 600,
+      amount: 30,
     },
     {
       id: 'fb-2',
-      serviceName: 'Standard Plumbing Maintenance Surplus',
+      serviceName: 'Standard Plumbing Maintenance',
       jobId: 'JOB-2024-8842',
+      workerName: selectedWorker?.workerName || 'Ramesh Kumar',
       societyRef: selectedWorker?.societyName || 'RS Puram Cooperative Workers Union',
       date: '2026-09-19T14:15:00.000Z',
-      amount: 85,
+      basePay: 450,
+      amount: 25,
     },
     {
       id: 'fb-3',
-      serviceName: 'Scheduled Deep Cleaning Contribution',
+      serviceName: 'Scheduled Deep Cleaning',
       jobId: 'JOB-2024-8710',
+      workerName: selectedWorker?.workerName || 'Murugan Pillai',
       societyRef: selectedWorker?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society',
       date: '2026-09-18T09:00:00.000Z',
-      amount: 95,
+      basePay: 550,
+      amount: 28,
     },
   ]
 
@@ -185,7 +201,7 @@ export function WelfareAdmin() {
             {workerWelfareList.reduce((acc, w) => acc + (w.entriesCount || 1), 0)}
           </span>
           <span className="text-xs text-muted-foreground block">
-            Recorded surplus entries
+            Recorded welfare contributions
           </span>
         </div>
       </div>
@@ -209,21 +225,25 @@ export function WelfareAdmin() {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setWorkerPage(1)
+              }}
               placeholder={t('federation.welfareAdmin.searchPlaceholder', { defaultValue: 'Search member, phone, society...' })}
               className="w-full h-8 pl-8 pr-2.5 rounded-md border border-border bg-background text-xs font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
             />
           </div>
 
           {/* Directory Rankings List */}
-          <div className="max-h-[600px] overflow-y-auto space-y-1.5 pr-0.5">
+          <div className="space-y-1.5 pr-0.5 min-h-[320px]">
             {filteredWorkers.length === 0 ? (
               <div className="p-4 text-center text-xs text-muted-foreground">
                 No worker welfare records match your search query.
               </div>
             ) : (
-              filteredWorkers.map((w, idx) => {
+              paginatedWorkers.map((w, idx) => {
                 const isSelected = w.workerId === activeWorkerId
+                const rankNumber = (workerPage - 1) * workerPageSize + idx + 1
                 return (
                   <div
                     key={w.workerId}
@@ -240,7 +260,7 @@ export function WelfareAdmin() {
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <span className="w-5 h-5 rounded bg-muted text-muted-foreground text-[10px] font-mono font-medium flex items-center justify-center shrink-0">
-                        {idx + 1}
+                        {rankNumber}
                       </span>
                       <div className="min-w-0 space-y-0.5">
                         <span className="font-medium text-xs text-foreground block truncate">
@@ -267,6 +287,36 @@ export function WelfareAdmin() {
               })
             )}
           </div>
+
+          {/* Directory Pagination Controls */}
+          {filteredWorkers.length > workerPageSize && (
+            <div className="flex items-center justify-between pt-2 border-t border-border text-xs text-muted-foreground">
+              <span className="tabular-nums text-[10px]">
+                Showing {(workerPage - 1) * workerPageSize + 1} to {Math.min(workerPage * workerPageSize, filteredWorkers.length)} of {filteredWorkers.length}
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setWorkerPage((p) => Math.max(1, p - 1))}
+                  disabled={workerPage === 1}
+                  className="h-6 px-2 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-[11px] font-medium transition-colors"
+                >
+                  Prev
+                </button>
+                <span className="text-[11px] font-mono px-1">
+                  {workerPage} / {totalWorkerPages}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setWorkerPage((p) => Math.min(totalWorkerPages, p + 1))}
+                  disabled={workerPage === totalWorkerPages}
+                  className="h-6 px-2 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-[11px] font-medium transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column: Auditable Welfare Transaction Ledger */}
@@ -316,7 +366,7 @@ export function WelfareAdmin() {
                   Transaction Ledger
                 </h3>
                 <p className="text-[11px] text-muted-foreground">
-                  Recent surplus contributions with society references
+                  Welfare contributions with member & society references
                 </p>
               </div>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-muted text-muted-foreground border border-border">
@@ -326,12 +376,13 @@ export function WelfareAdmin() {
 
             <div className="rounded-md border border-border overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="sticky top-0 z-10 bg-muted/40 text-muted-foreground text-[11px] font-medium uppercase tracking-wider border-b border-border">
-                    <th className="px-3 py-2">Transaction / Service</th>
-                    <th className="px-3 py-2">Society Reference</th>
-                    <th className="px-3 py-2">Timestamp</th>
-                    <th className="px-3 py-2 text-right">Contribution</th>
+                <thead className="sticky top-0 z-10 bg-muted border-b border-border shadow-xs">
+                  <tr className="text-muted-foreground text-[11px] font-medium uppercase tracking-wider">
+                    <th className="px-3 py-2.5 bg-muted whitespace-nowrap">Service / Booking</th>
+                    <th className="px-3 py-2.5 bg-muted whitespace-nowrap">Member</th>
+                    <th className="px-3 py-2.5 bg-muted text-right whitespace-nowrap">Base Pay</th>
+                    <th className="px-3 py-2.5 bg-muted text-right whitespace-nowrap">Welfare Contribution</th>
+                    <th className="px-3 py-2.5 bg-muted whitespace-nowrap">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -341,13 +392,28 @@ export function WelfareAdmin() {
                         <span className="font-medium text-foreground block">
                           {entry.serviceName}
                         </span>
+                        <span className="text-[10px] font-mono text-muted-foreground">
+                          {entry.jobId}
+                        </span>
                       </td>
 
                       <td className="px-3 py-2.5 text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                          <span className="truncate">{entry.societyRef}</span>
+                        <div className="space-y-0.5">
+                          <span className="font-medium text-foreground block">
+                            {getTranslatedPersonName(t, entry.workerName)}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground block truncate">
+                            {getTranslatedSocietyName(t, entry.societyRef)}
+                          </span>
                         </div>
+                      </td>
+
+                      <td className="px-3 py-2.5 text-right font-mono tabular-nums font-medium text-foreground text-xs">
+                        {formatCurrency(entry.basePay)}
+                      </td>
+
+                      <td className="px-3 py-2.5 text-right font-mono tabular-nums font-medium text-primary text-xs">
+                        +{formatCurrency(entry.amount)}
                       </td>
 
                       <td className="px-3 py-2.5 text-muted-foreground font-mono text-[11px]">
@@ -355,10 +421,6 @@ export function WelfareAdmin() {
                           <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                           <span>{formatDate(entry.date)}</span>
                         </div>
-                      </td>
-
-                      <td className="px-3 py-2.5 text-right font-mono tabular-nums font-medium text-foreground text-xs">
-                        +{formatCurrency(entry.amount)}
                       </td>
                     </tr>
                   ))}

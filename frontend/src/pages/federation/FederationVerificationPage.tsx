@@ -26,10 +26,12 @@ export function FederationVerificationPage() {
           ? t('federation.verificationPage.statusActive', { defaultValue: 'Worker member credentials approved and status set to ACTIVE.' })
           : t('federation.verificationPage.statusSuspended', { defaultValue: 'Worker application returned / suspended.' })
       )
-      refetch()
+      await refetch()
       setTimeout(() => setToast(null), 3500)
-    } catch {
-      // Fallback
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Could not update verification status.'
+      setToast(msg)
+      setTimeout(() => setToast(null), 4000)
     }
   }
 

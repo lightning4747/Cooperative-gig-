@@ -202,35 +202,25 @@ export function JobDetailFederation({
 
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-center text-muted-foreground">
-              <span>{t('federation.jobDetail.customerInvoiced', { defaultValue: 'Customer Invoiced' })}</span>
-              <span className="font-mono tabular-nums font-medium text-foreground">
-                {formatCurrency(payment.customerPrice)}
-              </span>
-            </div>
-            <div className="flex justify-between items-center text-muted-foreground">
-              <span>{t('federation.jobDetail.statutoryBaseFloor', { defaultValue: 'Base Pay (Zero Deductions)' })}</span>
+              <span>{t('payment.basePrice', { defaultValue: 'Base Pay' })}</span>
               <span className="font-mono tabular-nums font-medium text-foreground">
                 {formatCurrency(payment.basePrice)}
               </span>
             </div>
-            {payment.surplus > 0 && (
-              <>
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span>{t('federation.jobDetail.surplusBeyond', { defaultValue: 'Surplus Beyond Base' })}</span>
-                  <span className="font-mono tabular-nums text-foreground">
-                    +{formatCurrency(payment.surplus)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-muted-foreground">
-                  <span>{t('federation.jobDetail.welfarePoolShare', { defaultValue: 'Welfare Pool (50%)' })}</span>
-                  <span className="font-mono tabular-nums text-foreground">
-                    +{formatCurrency(payment.welfareContribution)}
-                  </span>
-                </div>
-              </>
-            )}
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span>{t('payment.welfareContribution', { defaultValue: 'Welfare Contribution' })}</span>
+              <span className="font-mono tabular-nums text-primary font-medium">
+                +{formatCurrency(payment.welfareContribution)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground pt-1 border-t border-border/60">
+              <span className="font-medium text-foreground">{t('payment.customerPrice', { defaultValue: 'Total' })}</span>
+              <span className="font-mono tabular-nums font-semibold text-foreground">
+                {formatCurrency(payment.customerPrice)}
+              </span>
+            </div>
             <div className="pt-2 border-t border-border flex justify-between items-center text-xs font-semibold">
-              <span className="text-foreground">{t('federation.jobDetail.totalDisbursed', { defaultValue: 'Worker Disbursed Pay' })}</span>
+              <span className="text-foreground">{t('payment.workerTakeHome', { defaultValue: 'Worker Receives' })}</span>
               <span className="font-mono tabular-nums text-foreground text-sm font-semibold">
                 {formatCurrency(payment.workerEarning)}
               </span>

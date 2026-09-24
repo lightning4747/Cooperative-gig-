@@ -34,7 +34,6 @@ export function InvoiceCard({
 
   const totalPaid = Number(invoice.servicePrice) || (basePrice + welfareAmount)
   const workerEarning = Math.max(basePrice, Number(invoice.workerEarning) || basePrice)
-  const urgencySurplus = Math.max(0, totalPaid - basePrice - welfareAmount)
 
   const handleDownloadPdf = async () => {
     if (!invoiceRef.current || isDownloading) return
@@ -119,47 +118,32 @@ export function InvoiceCard({
               <span className="font-mono tabular-nums">{formatCurrency(invoice.servicePrice)}</span>
             </div>
 
-            <div className="pt-2 border-t border-border/60 space-y-2 text-muted-foreground text-[11px]">
-              {/* Guaranteed Base Wage Floor */}
+            <div className="pt-2 border-t border-border/60 space-y-2 text-muted-foreground text-xs">
+              {/* Base Pay */}
               <div className="flex justify-between items-center">
                 <span className="flex items-center gap-1.5 font-medium text-foreground">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  {t('common.guaranteedWageFloor', { defaultValue: 'Guaranteed Base Wage Floor' })}
+                  {t('payment.basePrice', { defaultValue: 'Base Pay' })}
                 </span>
                 <span className="font-mono tabular-nums text-foreground font-semibold">
                   {formatCurrency(basePrice)}
                 </span>
               </div>
 
-              {/* Welfare Fund Contribution - ALWAYS present on every invoice in addition to wage floor */}
-              <div className="flex justify-between items-center bg-primary/5 dark:bg-primary/10 -mx-1.5 px-2.5 py-2 rounded-lg border border-primary/20">
-                <div className="space-y-0.5">
-                  <span className="flex items-center gap-1.5 text-primary font-bold text-xs">
-                    <HeartHandshake className="w-3.5 h-3.5 text-primary shrink-0" />
-                    {t('payment.welfareContribution', { defaultValue: 'Cooperative Welfare Fund Contribution' })}
-                  </span>
-                  <p className="text-[10px] text-muted-foreground pl-5">
-                    {t('payment.welfareDesc', { defaultValue: 'Statutory social security allocation for PMSBY, PMJJBY insurance & safety net' })}
-                  </p>
-                </div>
-                <span className="font-mono tabular-nums text-primary font-black text-xs shrink-0">
+              {/* Welfare Contribution */}
+              <div className="flex justify-between items-center">
+                <span className="flex items-center gap-1.5 text-primary font-medium">
+                  <HeartHandshake className="w-3.5 h-3.5 text-primary shrink-0" />
+                  {t('payment.welfareContribution', { defaultValue: 'Welfare Contribution' })}
+                </span>
+                <span className="font-mono tabular-nums text-primary font-bold text-xs">
                   +{formatCurrency(welfareAmount)}
                 </span>
               </div>
 
-              {/* Urgency Surplus if present */}
-              {urgencySurplus > 0 && (
-                <div className="flex justify-between items-center">
-                  <span>{t('payment.surplus', { defaultValue: 'Urgency & Dispatch Surplus' })}</span>
-                  <span className="font-mono tabular-nums text-foreground font-medium">
-                    +{formatCurrency(urgencySurplus)}
-                  </span>
-                </div>
-              )}
-
-              {/* Worker Take-Home Guarantee */}
+              {/* Worker Receives */}
               <div className="flex justify-between items-center font-bold text-xs text-foreground pt-1.5 border-t border-border/40">
-                <span>{t('payment.workerTakeHome', { defaultValue: 'Worker Guaranteed Take-Home' })}</span>
+                <span>{t('payment.workerTakeHome', { defaultValue: 'Worker Receives' })}</span>
                 <span className="font-mono tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
                   {formatCurrency(workerEarning)}
                 </span>
@@ -167,7 +151,7 @@ export function InvoiceCard({
             </div>
           </div>
           <div className="bg-secondary/40 px-4 py-3 border-t border-border flex justify-between items-center font-bold text-sm">
-            <span>{t('payment.totalPaid', { defaultValue: 'Total Paid by Customer' })}</span>
+            <span>{t('payment.totalPaid', { defaultValue: 'Total' })}</span>
             <span className="font-mono text-base text-foreground tabular-nums">{formatCurrency(totalPaid)}</span>
           </div>
         </div>

@@ -52,7 +52,6 @@ export function WorkerCompletePage() {
   const basePrice = job?.basePrice || 0
   const customerPrice = job?.paidAmount || job?.grossAmount || basePrice
   const breakdown = calculatePayment(customerPrice, basePrice, job?.welfareRate ?? 0.5)
-  const workerSurplusShare = breakdown.surplus - breakdown.welfareContribution
 
   return (
     <div className="space-y-6">
@@ -90,26 +89,17 @@ export function WorkerCompletePage() {
               </span>
             </div>
 
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t('worker.execution.surplusShare', 'Extra Customer Pay')}:
-              </span>
-              <span className="font-mono font-bold text-primary">
-                +₹{workerSurplusShare}.00
-              </span>
-            </div>
-
             <div className="flex justify-between text-muted-foreground">
               <span className="flex items-center gap-1">
-                <span>{t('worker.execution.welfareSurplus', 'Co-op Welfare Fee')}:</span>
+                <span>{t('worker.execution.welfareSurplus', 'Welfare Contribution')}:</span>
               </span>
-              <span className="font-mono font-bold">
+              <span className="font-mono font-bold text-primary">
                 +₹{breakdown.welfareContribution}.00
               </span>
             </div>
 
             <div className="flex justify-between border-t border-border pt-2 text-sm font-bold">
-              <span>{t('worker.execution.netWorkerCredit', 'Total You Receive')}:</span>
+              <span>{t('worker.execution.netWorkerCredit', 'Worker Receives')}:</span>
               <span className="font-mono text-primary text-base">
                 ₹{breakdown.workerEarning}.00
               </span>

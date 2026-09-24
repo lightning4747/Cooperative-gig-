@@ -141,7 +141,7 @@
     },
     "status": {
       "searching": "Finding Worker",
-      "offered": "Offered to Worker",
+      "offered": "Offered",
       "broadcast": "Emergency Broadcast",
       "accepted": "Accepted",
       "travelling": "Worker Travelling",
