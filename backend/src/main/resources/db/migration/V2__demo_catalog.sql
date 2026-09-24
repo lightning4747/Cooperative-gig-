@@ -1,7 +1,11 @@
 -- Demonstration reference catalog. Prices and registrations are not official.
-INSERT INTO federation VALUES ('00000000-0000-0000-0000-000000000001','Demonstration Federation','DEMO-FED-001','Tamil Nadu');
-INSERT INTO society VALUES ('00000000-0000-0000-0000-000000000011','00000000-0000-0000-0000-000000000001','Chennai Demonstration Society','DEMO-SOC-001','Chennai'),('00000000-0000-0000-0000-000000000012','00000000-0000-0000-0000-000000000001','Madurai Demonstration Society','DEMO-SOC-002','Madurai');
-INSERT INTO allocation_config VALUES (1,1,0.5,0.3,0.2,0.5,0,10000,5000,60);
+INSERT INTO federation VALUES ('00000000-0000-0000-0000-000000000001','Coimbatore District Labour & Services Cooperative Federation','TN-FED-2022-001','Tamil Nadu');
+INSERT INTO society VALUES
+('00000000-0000-0000-0000-000000000010','00000000-0000-0000-0000-000000000001','Coimbatore City Labour & Artisans Cooperative Society','TN-CBE-2023-011','Coimbatore'),
+('00000000-0000-0000-0000-000000000011','00000000-0000-0000-0000-000000000001','RS Puram Cooperative Workers Union','TN-CBE-2023-042','Coimbatore'),
+('00000000-0000-0000-0000-000000000012','00000000-0000-0000-0000-000000000001','Peelamedu Cooperative Services Guild','TN-CBE-2024-008','Coimbatore'),
+('00000000-0000-0000-0000-000000000013','00000000-0000-0000-0000-000000000001','Saibaba Colony Cooperative Labour Guild','TN-CBE-2024-025','Coimbatore');
+INSERT INTO allocation_config VALUES (1,1,0.5,0.3,0.2,0.5,0,15000,10000,60);
 INSERT INTO category VALUES ('4bbd5d1f-bd68-5ec0-bdda-add37ebc4ed7','plumbing','Plumbing');
 INSERT INTO subservice (id,category_id,code,name,description,base_price,duration_minutes,emergency_supported) VALUES ('a50889de-f3ad-5f9c-9924-67f0e5c84142','4bbd5d1f-bd68-5ec0-bdda-add37ebc4ed7','pipe_leakage','Pipe leakage','Pipe leakage by a verified cooperative worker; materials require separate agreement.',500,60,true);
 INSERT INTO subservice (id,category_id,code,name,description,base_price,duration_minutes,emergency_supported) VALUES ('1c39409f-a3ea-57cf-a65c-ae9fa6990284','4bbd5d1f-bd68-5ec0-bdda-add37ebc4ed7','tap_repair','Tap repair','Tap repair by a verified cooperative worker; materials require separate agreement.',500,60,true);

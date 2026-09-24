@@ -19,7 +19,7 @@ import { StatusBadge } from '@/components/shared/StatusBadge'
 import { JobProgressBar } from '@/components/shared/JobProgressBar'
 import { jobService } from '@/services/jobService'
 import { getTranslatedCategoryName, getTranslatedSubserviceName } from '@/lib/serviceTranslation'
-import { cn } from '@/lib/utils'
+import { cleanAddress, cn } from '@/lib/utils'
 import { JobOfferCard } from './JobOfferCard'
 import { MapView } from '@/components/shared/MapView'
 import { useAuthStore } from '@/store/authStore'
@@ -196,11 +196,11 @@ export function JobDetailWorker({ job, onStatusUpdated }: JobDetailWorkerProps) 
               <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
               <div className="min-w-0">
                 <span className="block font-semibold text-foreground">
-                  {job.location.area || job.location.formattedAddress || 'Customer Location'}
+                  {job.location.area || cleanAddress(job.location.formattedAddress) || 'Customer Location'}
                 </span>
-                <span className="block text-[11px]">
-                  {job.location.formattedAddress}
-                </span>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {cleanAddress(job.location.formattedAddress)}
+                </p>
               </div>
             </div>
 

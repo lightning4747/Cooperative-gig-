@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, CheckCircle2, HeartHandshake } from 'lucide-react'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 import { jobService } from '@/services/jobService'
 import { saveLocalCompletedSettlement } from '@/services/workerService'
 import { useJob } from '@/hooks/useJob'
@@ -68,7 +68,7 @@ export function WorkerCompletePage() {
             {t('worker.execution.completeWork', 'Finish Work & Get Paid')}
           </h1>
           <p className="text-xs text-muted-foreground">
-            Job #{targetId} · {job?.subserviceName || 'Pipe leakage repair'}
+            {job?.subserviceName || 'Pipe leakage repair'}
           </p>
         </div>
       </div>
@@ -101,10 +101,9 @@ export function WorkerCompletePage() {
 
             <div className="flex justify-between text-muted-foreground">
               <span className="flex items-center gap-1">
-                <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
-                <span>{t('worker.execution.welfareSurplus', 'Added to Welfare Fund')}:</span>
+                <span>{t('worker.execution.welfareSurplus', 'Co-op Welfare Fee')}:</span>
               </span>
-              <span className="font-mono font-bold text-emerald-600">
+              <span className="font-mono font-bold">
                 +₹{breakdown.welfareContribution}.00
               </span>
             </div>
@@ -116,17 +115,6 @@ export function WorkerCompletePage() {
               </span>
             </div>
           </div>
-        </div>
-
-        {/* 100% Floor Wage Guarantee Alert */}
-        <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-xs flex items-start gap-2.5 text-muted-foreground">
-          <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-          <span>
-            {t(
-              'worker.execution.instantSettlementNotice',
-              'Payment is instant. No commission is taken from your base pay.'
-            )}
-          </span>
         </div>
 
         {/* Action Button */}

@@ -94,14 +94,11 @@ const POPULAR_SERVICES: PopularService[] = [
 ]
 
 const DEFAULT_LOCATIONS = [
-  'Indiranagar, Bangalore',
-  'Koramangala, Bangalore',
-  'Bellandur, Bangalore',
   'Gandhipuram, Coimbatore',
   'RS Puram, Coimbatore',
   'Peelamedu, Coimbatore',
-  'Anna Nagar, Chennai',
-  'T. Nagar, Chennai',
+  'Saibaba Colony, Coimbatore',
+  'Ramanathapuram, Coimbatore',
 ]
 
 export function CustomerHome() {
@@ -117,7 +114,7 @@ export function CustomerHome() {
     return (
       localStorage.getItem('cooperative_selected_location') ||
       profile?.savedAddresses?.[0]?.formattedAddress ||
-      'Indiranagar, Bangalore'
+      'Gandhipuram, Coimbatore'
     )
   })
 
@@ -320,7 +317,6 @@ export function CustomerHome() {
 
           <div className="flex items-center justify-between pt-2 border-t border-border/50 text-[11px] text-muted-foreground">
             <span className="truncate">
-              #{currentActiveJob.id.slice(-6)} ·{' '}
               {currentActiveJob.isEmergency
                 ? t('customer.emergencyPriority', { defaultValue: 'Emergency Priority' })
                 : t('customer.standardDelivery', { defaultValue: 'Standard Delivery' })}

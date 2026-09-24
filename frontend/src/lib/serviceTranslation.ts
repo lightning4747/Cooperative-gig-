@@ -538,7 +538,7 @@ export function getCategorySubTasks(categoryIdOrCode?: string): string {
  */
 export function getTranslatedPersonName(t: TFunction, name?: string): string {
   if (!name) return 'Cooperative Member'
-  const cleanKey = name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')
+  const cleanKey = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '')
   const transKey = `entities.user.${cleanKey}`
   const translated = t(transKey)
   return translated !== transKey ? translated : name
@@ -549,7 +549,7 @@ export function getTranslatedPersonName(t: TFunction, name?: string): string {
  */
 export function getTranslatedSocietyName(t: TFunction, name?: string): string {
   if (!name) return 'Cooperative Society'
-  const cleanKey = name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')
+  const cleanKey = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '')
   const transKey = `entities.society.${cleanKey}`
   const translated = t(transKey)
   return translated !== transKey ? translated : name

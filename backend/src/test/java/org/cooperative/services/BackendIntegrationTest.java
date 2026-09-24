@@ -172,13 +172,13 @@ class BackendIntegrationTest {
             "quoteId",
             q.path("id").asText(),
             "latitude",
-            13.0827,
+            11.0183,
             "longitude",
-            80.2707,
+            76.9644,
             "formattedAddress",
-            "10 Example Street, Chennai",
+            "10 Cross Cut Road, Gandhipuram, Coimbatore",
             "area",
-            "Central Chennai",
+            "Gandhipuram, Coimbatore",
             "scheduledTime",
             type.equals("STANDARD") ? java.time.Instant.now().plusSeconds(3600).toString() : null),
         200,
@@ -365,13 +365,13 @@ class BackendIntegrationTest {
             "quoteId",
             q.path("id").asText(),
             "latitude",
-            13.0827,
+            11.0183,
             "longitude",
-            80.2707,
+            76.9644,
             "formattedAddress",
-            "Example address",
+            "10 Cross Cut Road, Gandhipuram, Coimbatore",
             "area",
-            "Chennai");
+            "Coimbatore");
     var first = call("POST", "/jobs", customer, body, 200, "replay-key");
     assertThat(call("POST", "/jobs", customer, body, 200, "replay-key").path("id"))
         .isEqualTo(first.path("id"));

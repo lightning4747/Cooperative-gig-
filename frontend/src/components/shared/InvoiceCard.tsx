@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Download, CheckCircle2, Loader2 } from 'lucide-react'
+import { Download, Loader2 } from 'lucide-react'
 import { formatCurrency, formatDate, cn } from '@/lib/utils'
 import { getTranslatedPersonName, getTranslatedSocietyName } from '@/lib/serviceTranslation'
 import { downloadElementAsPdf } from '@/lib/pdfUtils'
@@ -54,21 +54,27 @@ export function InvoiceCard({
             <h2 className="text-xl font-black tracking-tight text-foreground">{t('app.title')}</h2>
             <p className="text-xs text-muted-foreground mt-0.5">{t('app.subtitle')}</p>
           </div>
-          <div className="text-left sm:text-right">
-            <div className="font-mono text-xs font-bold text-foreground">{invoice.invoiceNumber}</div>
+          <div className="text-left sm:text-right mt-3 sm:mt-0 space-y-1">
             <div className="text-xs text-muted-foreground">{formatDate(invoice.issuedAt)}</div>
-            <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[11px] font-semibold">
-              <CheckCircle2 className="w-3 h-3 text-green-600" />
-              <span>{invoice.paymentStatus}</span>
+            <div>
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded border border-border text-foreground text-[10px] font-mono uppercase tracking-wider">
+                {invoice.paymentStatus}
+              </span>
+            </div>
+            <div className="text-[10px] text-muted-foreground font-mono">
+              Transaction ID: {invoice.id.replace(/\D/g, '').substring(0, 12).padEnd(12, '3')}
+            </div>
+            <div className="text-[10px] text-muted-foreground">
+              Paid via: UPI
             </div>
           </div>
         </div>
 
         {/* Parties */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div className="p-3.5 rounded-xl bg-secondary/50 border border-border/60 space-y-1">
+          <div className="p-3.5 rounded-xl border border-border/60 space-y-1">
             <span className="font-bold text-muted-foreground uppercase text-[10px] tracking-wider">
-              {t('payment.billedTo', { defaultValue: 'Billed To (Citizen Customer)' })}
+              {t('payment.billedTo', { defaultValue: 'Billed To Customer' })}
             </span>
             <div className="font-semibold text-sm text-foreground">
               {getTranslatedPersonName(t, invoice.customerName)}
@@ -76,7 +82,7 @@ export function InvoiceCard({
             <div className="text-muted-foreground">{t('payment.customerSub', { defaultValue: 'Household & Community Services' })}</div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-secondary/50 border border-border/60 space-y-1">
+          <div className="p-3.5 rounded-xl border border-border/60 space-y-1">
             <span className="font-bold text-muted-foreground uppercase text-[10px] tracking-wider">
               {t('payment.workerAndSociety', { defaultValue: 'Cooperative Worker & Society' })}
             </span>
@@ -86,14 +92,13 @@ export function InvoiceCard({
             <div className="text-muted-foreground">
               {getTranslatedSocietyName(t, invoice.societyName)}
             </div>
-            <div className="font-mono text-[11px] text-muted-foreground">Reg: {invoice.societyRegistrationNumber}</div>
             <div className="font-mono text-[11px] text-muted-foreground">e-Shram: {invoice.workerEShramRef}</div>
           </div>
         </div>
 
         {/* Itemized Service & Floor Breakdown */}
         <div className="border border-border rounded-xl overflow-hidden text-xs">
-          <div className="bg-secondary/70 px-4 py-2.5 font-semibold text-foreground flex justify-between">
+          <div className="border-b border-border px-4 py-2.5 font-semibold text-foreground flex justify-between">
             <span>{t('payment.serviceDescription', { defaultValue: 'Service Description' })}</span>
             <span>{t('payment.amount', { defaultValue: 'Amount' })}</span>
           </div>

@@ -154,7 +154,7 @@ export const catalogService = {
       federationId: soc.federationId,
       name: soc.name,
       registrationNumber: soc.registrationNo || 'DEMO-SOC',
-      district: soc.district || 'Chennai',
+      district: soc.district || 'Coimbatore',
       state: soc.state || 'Tamil Nadu',
       workerCount: soc.workerCount || 0,
     }))

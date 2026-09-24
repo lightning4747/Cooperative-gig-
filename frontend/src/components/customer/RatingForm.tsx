@@ -55,6 +55,7 @@ export function RatingForm({
         </h3>
         <p className="text-xs text-muted-foreground max-w-xs mx-auto">
           {t('rating.subtitle', {
+            workerName: workerName,
             defaultValue: `How was the service provided by ${workerName}?`,
           })}
         </p>

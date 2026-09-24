@@ -14,10 +14,10 @@ export function FederationSocietiesPage() {
   return (
     <div className="space-y-6">
       <FederationPageHeader
-        title={t('federation.societiesPage.title', { defaultValue: 'Affiliated Cooperative Societies' })}
-        description={t('federation.societiesPage.description', { defaultValue: 'Directory of primary labour and artisan cooperative societies constituted under the National Council for Cooperative Training.' })}
+        title={t('federation.societiesPage.title', { defaultValue: 'Member Cooperatives' })}
+        description={t('federation.societiesPage.description', { defaultValue: 'Directory of primary labour and artisan cooperative societies.' })}
         badgeIcon={Building2}
-        badgeText={t('federation.societiesPage.badge', { count: societies.length, defaultValue: `${societies.length} Primary Societies` })}
+        badgeText={t('federation.societiesPage.badge', { count: societies.length, defaultValue: `${societies.length} Member Societies` })}
       />
 
       <SocietyList societies={societies} />

@@ -39,15 +39,15 @@ export function FederationVerificationPage() {
   return (
     <div className="space-y-6">
       <FederationPageHeader
-        title={t('federation.verificationPage.title', { defaultValue: 'Worker Verification & Credentialing Queue' })}
-        description={t('federation.verificationPage.description', { defaultValue: 'Statutory apex verification of newly registered cooperative members, e-Shram UANs, and trade skill certifications.' })}
+        title={t('federation.verificationPage.title', { defaultValue: 'Worker Verification' })}
+        description={t('federation.verificationPage.description', { defaultValue: 'Review and verify newly registered cooperative workers and skill certifications.' })}
         badgeIcon={UserCheck}
-        badgeText={t('federation.verificationPage.badge', { count: pendingWorkers.length, defaultValue: `${pendingWorkers.length} Pending Actions` })}
+        badgeText={t('federation.verificationPage.badge', { count: pendingWorkers.length, defaultValue: `${pendingWorkers.length} Pending Approval` })}
       />
 
       {toast && (
-        <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" />
+        <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-medium text-xs flex items-center gap-2">
+          <CheckCircle2 className="w-3.5 h-3.5" />
           <span>{toast}</span>
         </div>
       )}

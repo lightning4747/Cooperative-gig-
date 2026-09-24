@@ -18,37 +18,37 @@ interface LocationPickerProps {
   className?: string
 }
 
-// Preset verified Bengaluru cooperative service hubs & mock customer locations
+// Preset verified Coimbatore cooperative service hubs & doorstep customer locations
 const PRESET_LOCATIONS: SelectedLocation[] = [
   {
-    latitude: 12.9279,
-    longitude: 77.6718,
-    formattedAddress: 'Flat 402, Green Glen Layout, Bellandur, Bengaluru 560103',
-    area: 'Bellandur',
+    latitude: 11.0183,
+    longitude: 76.9644,
+    formattedAddress: '7th Cross Road, Gandhipuram, Coimbatore 641012',
+    area: 'Gandhipuram',
   },
   {
-    latitude: 12.9258,
-    longitude: 77.6834,
-    formattedAddress: 'EcoSpace Business Park, Outer Ring Road, Bengaluru 560103',
-    area: 'Outer Ring Road',
+    latitude: 11.0088,
+    longitude: 76.9482,
+    formattedAddress: 'DB Road, RS Puram, Coimbatore 641002',
+    area: 'RS Puram',
   },
   {
-    latitude: 12.9719,
-    longitude: 77.6412,
-    formattedAddress: '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru 560038',
-    area: 'Indiranagar',
+    latitude: 11.0267,
+    longitude: 77.0055,
+    formattedAddress: 'Avinashi Road, Peelamedu, Coimbatore 641004',
+    area: 'Peelamedu',
   },
   {
-    latitude: 12.9352,
-    longitude: 77.6245,
-    formattedAddress: '80 Feet Road, 4th Block, Koramangala, Bengaluru 560034',
-    area: 'Koramangala',
+    latitude: 11.0298,
+    longitude: 76.9452,
+    formattedAddress: 'NSR Road, Saibaba Colony, Coimbatore 641011',
+    area: 'Saibaba Colony',
   },
   {
-    latitude: 12.9141,
-    longitude: 77.6109,
-    formattedAddress: '15th Cross, 3rd Phase, JP Nagar, Bengaluru 560078',
-    area: 'JP Nagar',
+    latitude: 10.9942,
+    longitude: 76.9856,
+    formattedAddress: 'Trichy Road, Ramanathapuram, Coimbatore 641045',
+    area: 'Ramanathapuram',
   },
 ]
 
@@ -108,12 +108,11 @@ export function LocationPicker({
   }
 
   const handleMapLocationChange = (lat: number, lng: number) => {
-    const formatted = `${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E`
     setCurrentLocation((prev) => ({
       ...prev,
       latitude: Number(lat.toFixed(4)),
       longitude: Number(lng.toFixed(4)),
-      formattedAddress: `Custom Pinned Location (${formatted})`,
+      formattedAddress: `Custom Pinned Location`,
       area: prev.area || 'Selected Doorstep',
     }))
   }

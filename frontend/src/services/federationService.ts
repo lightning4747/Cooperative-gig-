@@ -46,8 +46,8 @@ function mapBackendWorkerProfile(w: any): WorkerProfile {
     eShramUAN: w.uanLast4 ? `XXXXXXXX${w.uanLast4}` : (w.eShramUAN || '123456789012'),
     status,
     availability: isAvailable && status === 'ACTIVE' ? 'AVAILABLE' : 'OFFLINE',
-    latitude: Number(w.latitude || 13.0827),
-    longitude: Number(w.longitude || 80.2707),
+    latitude: Number(w.latitude || 11.0183),
+    longitude: Number(w.longitude || 76.9644),
     rating: Number(w.avgRating || w.avg_rating || 5.0),
     totalJobsCompleted: Number(w.totalJobsCompleted || w.total_jobs_completed || 0),
     welfareBalance: Number(w.welfareBalance || w.welfare_balance || 0),
@@ -62,12 +62,12 @@ function mapBackendWorkerProfile(w: any): WorkerProfile {
 export const federationService = {
   getFederation: async (): Promise<Federation> => {
     return {
-      id: 'fed-karnataka-apex',
-      name: 'Karnataka State Labour & Gig Workers Cooperative Federation',
-      registrationNumber: 'KSL-FED-2024-001',
-      createdAt: '2024-01-01T00:00:00Z',
+      id: '00000000-0000-0000-0000-000000000001',
+      name: 'Coimbatore District Labour & Services Cooperative Federation',
+      registrationNumber: 'TN-FED-2022-001',
+      createdAt: '2022-01-01T00:00:00Z',
       totalSocieties: 4,
-      totalWorkers: 156,
+      totalWorkers: 5,
     }
   },
 
@@ -109,14 +109,14 @@ export const federationService = {
       userId: workerId,
       name: 'Verified Cooperative Member',
       phone: '',
-      societyId: 'soc-1',
-      societyName: 'Primary Cooperative Society',
+      societyId: '00000000-0000-0000-0000-000000000010',
+      societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
       membershipId: 'MEM-UPDATED',
       eShramUAN: 'XXXXXXXX1234',
       status: activeStatus as WorkerStatus,
       availability: activeStatus === 'ACTIVE' ? 'AVAILABLE' : 'OFFLINE',
-      latitude: 12.9344,
-      longitude: 77.6101,
+      latitude: 11.0183,
+      longitude: 76.9644,
       rating: 5.0,
       totalJobsCompleted: 0,
       dailyJobCount: 0,
@@ -136,7 +136,7 @@ export const federationService = {
       await apiClient.put(`/admin/workers/${workerId}/insurance`, {
         pmsbyStatus,
         pmjjbyStatus,
-        evidenceReference: evidenceReference || 'Verified direct e-Shram statutory bank link',
+        evidenceReference: evidenceReference || 'Verified direct e-Shram bank link',
       })
     } catch (err) {
       console.warn('Backend updateInsurance failed:', err)
@@ -168,10 +168,10 @@ export const federationService = {
         status: 'EXPIRED' as JobStatus,
         isEmergency: true,
         location: {
-          latitude: 12.9344,
-          longitude: 77.6101,
-          formattedAddress: j.formattedAddress || j.formatted_address || 'Bengaluru Central',
-          area: j.area || 'Bengaluru',
+          latitude: 11.0183,
+          longitude: 76.9644,
+          formattedAddress: j.formattedAddress || j.formatted_address || 'Gandhipuram, Coimbatore',
+          area: j.area || 'Coimbatore',
         },
         createdAt: j.createdAt || j.created_at || new Date().toISOString(),
         updatedAt: new Date().toISOString(),

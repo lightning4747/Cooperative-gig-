@@ -15,6 +15,9 @@ export function VerificationQueue({
 }: VerificationQueueProps) {
   const { t } = useTranslation()
   const [processingId, setProcessingId] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 4
 
   const handleAction = async (workerId: string, status: WorkerStatus) => {
     setProcessingId(workerId)
@@ -25,6 +28,20 @@ export function VerificationQueue({
     }
   }
 
+  const filtered = pendingWorkers.filter((w) => {
+    const q = searchTerm.toLowerCase().trim()
+    if (!q) return true
+    return (
+      w.name.toLowerCase().includes(q) ||
+      w.societyName.toLowerCase().includes(q) ||
+      w.phone.includes(q) ||
+      w.skills.some((s) => s.subserviceName.toLowerCase().includes(q))
+    )
+  })
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
+  const paginatedWorkers = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
   if (pendingWorkers.length === 0) {
     return (
       <EmptyState
@@ -32,7 +49,7 @@ export function VerificationQueue({
         title={t('federation.verificationQueue.emptyTitle', { defaultValue: 'Verification Queue Clear' })}
         description={t(
           'federation.verificationQueue.emptyDesc',
-          { defaultValue: 'All submitted cooperative worker credentials and ITI trade certificates have been reviewed.' }
+          { defaultValue: 'All submitted worker credentials and skill certificates have been reviewed.' }
         )}
       />
     )
@@ -40,74 +57,76 @@ export function VerificationQueue({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-          <Clock className="w-4 h-4 text-amber-500" />
-          {t('federation.verificationQueue.pendingTitle', { count: pendingWorkers.length, defaultValue: `Pending Apex Verification (${pendingWorkers.length})` })}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+          <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-500" />
+          {t('federation.verificationQueue.pendingTitle', { count: filtered.length, defaultValue: `Pending Verification (${filtered.length})` })}
         </span>
+
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setCurrentPage(1)
+          }}
+          placeholder="Search worker or skill..."
+          className="h-8 px-2.5 rounded-md border border-border bg-background text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 w-full sm:w-64"
+        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {pendingWorkers.map((worker) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {paginatedWorkers.map((worker) => {
           const isProcessing = processingId === worker.userId
 
           return (
             <div
               key={worker.userId}
-              className="p-5 rounded-2xl border border-amber-500/30 bg-card shadow-xs space-y-4 relative overflow-hidden"
+              className="p-4 rounded-md border border-border bg-card space-y-3 relative"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-black text-foreground">
+                    <h3 className="text-sm font-semibold text-foreground">
                       {worker.name}
                     </h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400">
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
                       {t('federation.verificationQueue.pendingBadge', { defaultValue: 'PENDING' })}
                     </span>
                   </div>
                   <span className="text-xs text-muted-foreground font-mono flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5" />
+                    <Phone className="w-3 h-3" />
                     +91 {worker.phone}
                   </span>
                 </div>
-
-                <span className="text-xs font-mono font-bold text-muted-foreground bg-secondary px-2.5 py-1 rounded-md">
-                  {worker.membershipId}
-                </span>
               </div>
 
               {/* Society & Credentials Box */}
-              <div className="p-3.5 rounded-xl bg-secondary/50 border border-border/80 space-y-2 text-xs">
+              <div className="p-3 rounded-md bg-muted/40 border border-border space-y-2 text-xs">
                 <div className="flex items-start gap-2 text-muted-foreground">
-                  <Building2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <Building2 className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-foreground block">
+                    <span className="font-semibold text-foreground block">
                       {worker.societyName}
                     </span>
-                    <span className="text-[11px] block font-mono">
-                      e-Shram UAN: {worker.eShramUAN || 'UAN-PENDING-SUBMISSION'}
+                    <span className="text-[11px] block text-muted-foreground">
+                      Documents submitted for review
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-border/60 space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-                    {t('federation.verificationQueue.claimedSkills', { defaultValue: 'Claimed Trade Skills & Certifications' })}
+                <div className="pt-2 border-t border-border space-y-1">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                    {t('federation.verificationQueue.claimedSkills', { defaultValue: 'Skills & Certifications' })}
                   </span>
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
                     {worker.skills.map((sk) => (
                       <span
                         key={sk.id}
-                        className="px-2 py-1 rounded bg-card border border-border text-[11px] font-medium text-foreground flex items-center gap-1"
+                        className="px-1.5 py-0.5 rounded border border-border bg-background text-[11px] font-normal text-foreground flex items-center gap-1"
                       >
-                        <FileText className="w-3 h-3 text-primary" />
+                        <FileText className="w-3 h-3 text-muted-foreground" />
                         <span>{sk.subserviceName}</span>
-                        {sk.certificationRef && (
-                          <span className="text-muted-foreground text-[10px]">
-                            ({sk.certificationRef})
-                          </span>
-                        )}
                       </span>
                     ))}
                   </div>
@@ -115,29 +134,29 @@ export function VerificationQueue({
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => handleAction(worker.userId, 'SUSPENDED')}
                   disabled={isProcessing}
-                  className="min-h-[44px] py-2 px-3 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20 font-bold text-xs flex items-center justify-center gap-1.5 transition-all disabled:opacity-50"
+                  className="h-8 px-3 rounded-md border border-border bg-background hover:bg-destructive/10 text-destructive text-xs font-medium flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
                 >
-                  <XCircle className="w-4 h-4" />
-                  <span>{t('federation.verificationQueue.reject', { defaultValue: 'Reject / Return' })}</span>
+                  <XCircle className="w-3.5 h-3.5" />
+                  <span>{t('federation.verificationQueue.reject', { defaultValue: 'Reject' })}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleAction(worker.userId, 'ACTIVE')}
                   disabled={isProcessing}
-                  className="min-h-[44px] py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all disabled:opacity-50"
+                  className="h-8 px-3 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
                 >
                   {isProcessing ? (
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>{t('federation.verificationQueue.approve', { defaultValue: 'Approve & Activate' })}</span>
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>{t('federation.verificationQueue.approve', { defaultValue: 'Approve' })}</span>
                     </>
                   )}
                 </button>
@@ -146,6 +165,52 @@ export function VerificationQueue({
           )
         })}
       </div>
+
+      {/* Pagination Controls */}
+      {filtered.length > pageSize && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-2.5 bg-card border border-border rounded-md text-xs text-muted-foreground">
+          <span className="tabular-nums">
+            Showing {(currentPage - 1) * pageSize + 1} to{' '}
+            {Math.min(currentPage * pageSize, filtered.length)} of {filtered.length} workers
+          </span>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+            >
+              Previous
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  type="button"
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`h-7 w-7 rounded text-xs font-mono font-medium transition-colors ${
+                    currentPage === pageNum
+                      ? 'bg-foreground text-background font-semibold'
+                      : 'border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -43,7 +43,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
         <div className="pt-2 border-t border-border/60 flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <span className="truncate max-w-[200px]">{job.location?.formattedAddress || 'Bengaluru'}</span>
+            <span className="truncate max-w-[200px]">{job.location?.formattedAddress || 'Gandhipuram, Coimbatore'}</span>
           </div>
           <div className="flex items-center gap-3 font-mono text-xs">
             <span className="text-muted-foreground">
@@ -123,18 +123,18 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
       {/* Assigned Matched Worker Profile Card */}
       {job.workerId && job.status !== 'SEARCHING' && job.status !== 'BROADCAST' && (
         <MatchedWorkerProfileCard
-          workerId={job.workerId || 'wrk-ramesh-kumar'}
-          name={job.workerName || 'Ramesh Kumar'}
-          phone={job.workerPhone || '+91 98765 43210'}
-          societyName="Indiranagar Labour Cooperative Society"
-          societyRegistration="SOC-BLR-IND-2021-042"
-          membershipId="MBR-IND-8841"
-          rating={4.8}
-          totalJobs={184}
-          eShramUan="UAN-9921-8841-3201"
-          skillCertification="Skill India · Electrician"
+          workerId={job.workerId}
+          name={job.workerName || 'Arun Electrician'}
+          phone={job.workerPhone ? (job.workerPhone.startsWith('+91') ? job.workerPhone : `+91 ${job.workerPhone}`) : '+91 98765 43211'}
+          societyName={job.societyName || 'Coimbatore City Labour & Artisans Cooperative Society'}
+          societyRegistration="TN-CBE-2023-011"
+          membershipId="MEM-CBE-001"
+          rating={job.workerRating || 4.9}
+          totalJobs={48}
+          eShramUan="UAN-9011-4432-1102"
+          skillCertification={`Skill India Certified · ${job.serviceCategoryName || 'Technician'}`}
           skillLevel="Level 3 Certified"
-          showContactAction={!!job.workerPhone}
+          showContactAction={true}
         />
       )}
 

@@ -5,6 +5,7 @@ import { useServiceCatalog } from '@/hooks/useServiceCatalog'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { formatCurrency, cn } from '@/lib/utils'
 import { getSubserviceImageUrl } from '@/lib/serviceImages'
+import { getTranslatedSubserviceName } from '@/lib/serviceTranslation'
 import type { Subservice } from '@/types/service'
 
 interface SubserviceListProps {
@@ -64,7 +65,7 @@ export function SubserviceList({
     <div className={cn('space-y-2.5 sm:space-y-3', className)}>
       {subservices.map((sub) => {
         const imageUrl = sub.imageUrl || getSubserviceImageUrl(sub.id, category.id)
-        const subName = t(sub.name, { defaultValue: sub.name })
+        const subName = getTranslatedSubserviceName(t, sub.id, sub.name)
 
         return (
           <button
@@ -90,7 +91,10 @@ export function SubserviceList({
               </h4>
 
               <p className="text-[11px] text-muted-foreground line-clamp-1 leading-snug">
-                {sub.description}
+                {t('services.subDescriptionTemplate', {
+                  name: subName,
+                  defaultValue: sub.description || `${subName} by a verified cooperative worker; materials require separate agreement.`,
+                })}
               </p>
 
               <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground pt-0.5">

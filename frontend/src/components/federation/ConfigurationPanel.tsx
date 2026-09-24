@@ -113,26 +113,26 @@ export function ConfigurationPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Statutory Guidance Banner */}
-      <div className="p-4 rounded-2xl border border-blue-500/20 bg-blue-500/5 space-y-1">
-        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">
-          <CheckCircle2 className="w-4 h-4" />
-          <span>{t('federation.configPanel.statutoryBanner', { defaultValue: 'Statutory Cooperative Parameters (§19 Cooperative Governance)' })}</span>
+      {/* Fair Pricing Guidance Banner */}
+      <div className="p-3.5 rounded-md border border-border bg-muted/30 space-y-0.5">
+        <div className="flex items-center gap-1.5 text-foreground font-medium text-xs">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <span>{t('federation.configPanel.statutoryBanner', { defaultValue: 'Fair Pricing Policy' })}</span>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          {t('federation.configPanel.statutoryBannerDesc', { defaultValue: 'In strict compliance with cooperative principles, all market parameters are governed by statutory floors rather than speculative algorithms. Private-platform surge surcharges and proprietary matching weights (W1/W2/W3) are constitutionally excluded.' })}
+          {t('federation.configPanel.statutoryBannerDesc', { defaultValue: 'Base prices are set directly by member cooperatives. Workers receive full base earnings with zero commissions or platform deductions.' })}
         </p>
       </div>
 
       {/* Section 1: Service Pricing Configuration */}
-      <div className="p-6 rounded-2xl border border-border bg-card shadow-xs space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/80 pb-4">
-          <div className="space-y-1">
-            <h3 className="text-base font-black text-foreground">
-              {t('federation.configPanel.pricingTitle', { defaultValue: '1. Statutory Floor Wage Tariff' })}
+      <div className="p-5 rounded-md border border-border bg-card space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
+          <div className="space-y-0.5">
+            <h3 className="text-sm font-semibold text-foreground">
+              {t('federation.configPanel.pricingTitle', { defaultValue: '1. Base Service Rates' })}
             </h3>
             <p className="text-xs text-muted-foreground">
-              {t('federation.configPanel.pricingDesc', { defaultValue: 'Guaranteed base compensation per service. Members receive 100% of this floor without platform commissions.' })}
+              {t('federation.configPanel.pricingDesc', { defaultValue: 'Guaranteed base compensation per service. Workers receive 100% of this amount with no commissions.' })}
             </p>
           </div>
 
@@ -140,51 +140,51 @@ export function ConfigurationPanel() {
             type="button"
             onClick={handleSavePricing}
             disabled={isSavingPricing}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 disabled:opacity-50 min-h-[44px] transition-colors"
+            className="h-8 px-3 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 font-medium text-xs inline-flex items-center gap-1.5 transition-colors disabled:opacity-50 shrink-0"
           >
             {isSavingPricing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-            <span>{isSavingPricing ? t('common.saving', { defaultValue: 'Saving...' }) : t('federation.configPanel.saveTariff', { defaultValue: 'Save Tariff Updates' })}</span>
+            <span>{isSavingPricing ? t('common.saving', { defaultValue: 'Saving...' }) : t('federation.configPanel.saveTariff', { defaultValue: 'Save Rates' })}</span>
           </button>
         </div>
 
         {pricingSaved && (
-          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>{t('federation.configPanel.tariffSuccess', { defaultValue: 'Statutory price tariff successfully updated across federation dispatch engines.' })}</span>
+          <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>{t('federation.configPanel.tariffSuccess', { defaultValue: 'Base rates successfully updated.' })}</span>
           </div>
         )}
 
-        <div className="rounded-xl border border-border overflow-hidden">
+        <div className="rounded-md border border-border overflow-hidden">
           <div className="max-h-96 overflow-y-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="sticky top-0 bg-secondary text-muted-foreground font-bold uppercase tracking-wider text-[10px] z-10">
-                <tr className="border-b border-border">
-                  <th className="p-3">{t('federation.configPanel.colCategory', { defaultValue: 'Category' })}</th>
-                  <th className="p-3">{t('federation.configPanel.colSubservice', { defaultValue: 'Subservice Specification' })}</th>
-                  <th className="p-3">{t('federation.configPanel.colDuration', { defaultValue: 'Duration' })}</th>
-                  <th className="p-3 text-right">{t('federation.configPanel.colFloorPrice', { defaultValue: 'Statutory Base Floor (₹)' })}</th>
+              <thead className="sticky top-0 bg-muted/40 text-muted-foreground font-medium uppercase tracking-wider text-[11px] z-10 border-b border-border">
+                <tr>
+                  <th className="px-3 py-2">{t('federation.configPanel.colCategory', { defaultValue: 'Category' })}</th>
+                  <th className="px-3 py-2">{t('federation.configPanel.colSubservice', { defaultValue: 'Subservice Specification' })}</th>
+                  <th className="px-3 py-2">{t('federation.configPanel.colDuration', { defaultValue: 'Duration' })}</th>
+                  <th className="px-3 py-2 text-right">{t('federation.configPanel.colFloorPrice', { defaultValue: 'Base Rate (₹)' })}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/60">
+              <tbody className="divide-y divide-border">
                 {subservices.slice(0, 15).map((sub) => (
-                  <tr key={sub.id} className="hover:bg-muted/40">
-                    <td className="p-3 font-semibold text-muted-foreground uppercase text-[10px]">
-                      {sub.categoryName?.replace('services.category.', '') || 'Trade'}
+                  <tr key={sub.id} className="hover:bg-muted/30">
+                    <td className="px-3 py-2 font-mono text-muted-foreground uppercase text-[10px]">
+                      {sub.categoryName?.replace('services.category.', '') || 'Skill'}
                     </td>
-                    <td className="p-3">
-                      <span className="font-bold text-foreground block">
+                    <td className="px-3 py-2">
+                      <span className="font-medium text-foreground block">
                         {sub.name.replace('services.sub.', '').replace('_', ' ')}
                       </span>
                       <span className="text-[10px] text-muted-foreground">
                         {sub.description}
                       </span>
                     </td>
-                    <td className="p-3 text-muted-foreground font-mono">
+                    <td className="px-3 py-2 text-muted-foreground font-mono tabular-nums text-[11px]">
                       {sub.estimatedDurationMinutes} mins
                     </td>
-                    <td className="p-3 text-right font-mono">
-                      <div className="inline-flex items-center justify-end gap-1.5">
-                        <span className="text-muted-foreground font-bold">₹</span>
+                    <td className="px-3 py-2 text-right font-mono">
+                      <div className="inline-flex items-center justify-end gap-1">
+                        <span className="text-muted-foreground text-xs">₹</span>
                         <input
                           type="number"
                           value={sub.basePrice}
@@ -193,7 +193,7 @@ export function ConfigurationPanel() {
                           }
                           min={100}
                           step={50}
-                          className="w-24 px-2 py-1 rounded-lg border border-input bg-background font-mono font-bold text-foreground text-right text-xs focus:ring-2 focus:ring-primary/20"
+                          className="h-7 w-20 px-2 rounded border border-border bg-background font-mono tabular-nums text-foreground text-right text-xs focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
                         />
                       </div>
                     </td>
@@ -206,15 +206,15 @@ export function ConfigurationPanel() {
       </div>
 
       {/* Section 2: Welfare Contribution Rule */}
-      <div className="p-6 rounded-2xl border border-border bg-card shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/80 pb-4">
-          <div className="space-y-1">
-            <h3 className="text-base font-black text-foreground flex items-center gap-2">
-              <HeartHandshake className="w-5 h-5 text-primary" />
-              <span>{t('federation.configPanel.welfareTitle', { defaultValue: '2. Surplus Welfare Allocation Rule' })}</span>
+      <div className="p-5 rounded-md border border-border bg-card space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
+          <div className="space-y-0.5">
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+              <HeartHandshake className="w-4 h-4 text-muted-foreground" />
+              <span>{t('federation.configPanel.welfareTitle', { defaultValue: '2. Welfare Fund Contribution' })}</span>
             </h3>
             <p className="text-xs text-muted-foreground">
-              {t('federation.configPanel.welfareDesc', { defaultValue: 'Define the percentage of discretionary customer surplus transferred into the collective member welfare fund.' })}
+              {t('federation.configPanel.welfareDesc', { defaultValue: 'Set the percentage of extra customer payment contributed to the worker welfare fund.' })}
             </p>
           </div>
 
@@ -222,7 +222,7 @@ export function ConfigurationPanel() {
             type="button"
             onClick={handleSaveWelfare}
             disabled={isSavingWelfare}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xs hover:bg-primary/90 disabled:opacity-50 min-h-[44px] transition-colors"
+            className="h-8 px-3 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 font-medium text-xs inline-flex items-center gap-1.5 transition-colors disabled:opacity-50 shrink-0"
           >
             {isSavingWelfare ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
             <span>{isSavingWelfare ? t('common.saving', { defaultValue: 'Saving...' }) : t('federation.configPanel.saveRule', { defaultValue: 'Save Rule' })}</span>
@@ -230,18 +230,18 @@ export function ConfigurationPanel() {
         </div>
 
         {welfareSaved && (
-          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>{t('federation.configPanel.welfareSuccess', { percent: welfarePercent, remainder: 100 - welfarePercent, defaultValue: `Surplus allocation formula saved: ${welfarePercent}% to welfare pool, ${100 - welfarePercent}% to member.` })}</span>
+          <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>{t('federation.configPanel.welfareSuccess', { percent: welfarePercent, remainder: 100 - welfarePercent, defaultValue: `Allocation rule saved: ${welfarePercent}% to welfare pool, ${100 - welfarePercent}% to worker.` })}</span>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-              {t('federation.configPanel.surplusShareLabel', { defaultValue: 'Surplus Contribution Share (%)' })}
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground block">
+              {t('federation.configPanel.surplusShareLabel', { defaultValue: 'Welfare Contribution Share (%)' })}
             </label>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <input
                 type="number"
                 value={welfarePercent}
@@ -249,27 +249,27 @@ export function ConfigurationPanel() {
                 min={10}
                 max={90}
                 step={5}
-                className="w-32 p-2.5 rounded-xl border border-input bg-background font-mono font-bold text-lg text-foreground min-h-[44px] focus:ring-2 focus:ring-primary/20"
+                className="h-8 w-24 px-2.5 rounded-md border border-border bg-background font-mono tabular-nums text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
               />
               <span className="text-xs text-muted-foreground">
-                {t('federation.configPanel.surplusShareSub', { defaultValue: '% of surplus allocated to the collective pool' })}
+                {t('federation.configPanel.surplusShareSub', { defaultValue: '% allocated to collective welfare pool' })}
               </span>
             </div>
           </div>
 
           {/* Demonstration formula box */}
-          <div className="p-4 rounded-xl bg-secondary/50 border border-border/80 text-xs space-y-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-              {t('federation.configPanel.simTitle', { defaultValue: 'Cooperative Distribution Simulation' })}
+          <div className="p-3.5 rounded-md bg-muted/40 border border-border text-xs space-y-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+              {t('federation.configPanel.simTitle', { defaultValue: 'Payment Breakdown Example' })}
             </span>
-            <div className="font-mono text-foreground space-y-0.5">
-              <div>Example Customer Paid: ₹700 (Base Floor: ₹500)</div>
-              <div className="text-blue-600 font-bold">Surplus: ₹200</div>
-              <div className="text-emerald-600 font-bold">
+            <div className="font-mono tabular-nums text-foreground space-y-0.5 text-xs">
+              <div>Customer Paid: ₹700 (Base Rate: ₹500)</div>
+              <div className="text-muted-foreground">Extra Payment: ₹200</div>
+              <div className="text-foreground">
                 Welfare Pool ({welfarePercent}%): ₹{(200 * welfarePercent) / 100}
               </div>
-              <div className="font-black text-foreground">
-                Total Member Earning: ₹{500 + (200 * (100 - welfarePercent)) / 100}
+              <div className="font-semibold text-foreground pt-1 border-t border-border">
+                Total Worker Earning: ₹{500 + (200 * (100 - welfarePercent)) / 100}
               </div>
             </div>
           </div>

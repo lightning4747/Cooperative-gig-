@@ -126,7 +126,7 @@ export function BookingConfirmation({
               <span>{t('booking.locationLabel', { defaultValue: 'Service Location' })}</span>
             </dt>
             <dd className="font-medium text-foreground text-right pl-4 max-w-[220px] break-words">
-              Ravi kumar 44/1 Bharat Apartment, 4C5th Main, Jayanagar Bengaluru
+              {booking.location?.formattedAddress || '12 Cross Cut Road, Gandhipuram, Coimbatore 641012'}
             </dd>
           </div>
 

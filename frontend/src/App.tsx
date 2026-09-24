@@ -39,7 +39,9 @@ import { WorkerJobDetailPage } from '@/pages/worker/WorkerJobDetailPage'
 import { WorkerTravellingPage } from '@/pages/worker/WorkerTravellingPage'
 import { WorkerArrivalPage } from '@/pages/worker/WorkerArrivalPage'
 import { WorkerCompletePage } from '@/pages/worker/WorkerCompletePage'
+
 import { WorkerPassbookPage } from '@/pages/worker/WorkerPassbookPage'
+import { WorkerInvoicePage } from '@/pages/worker/WorkerInvoicePage'
 import { WorkerProfilePage } from '@/pages/worker/WorkerProfilePage'
 
 // Federation Pages
@@ -142,6 +144,7 @@ export default function App() {
               element={<WorkerCompletePage />}
             />
             <Route path="/worker/passbook" element={<WorkerPassbookPage />} />
+            <Route path="/worker/jobs/:jobId/invoice" element={<WorkerInvoicePage />} />
             <Route path="/worker/earnings" element={<Navigate to="/worker/passbook" replace />} />
             <Route path="/worker/welfare" element={<Navigate to="/worker/passbook?tab=welfare" replace />} />
             <Route path="/worker/profile" element={<WorkerProfilePage />} />

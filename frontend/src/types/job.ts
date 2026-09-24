@@ -35,6 +35,8 @@ export interface Job {
   workerId?: string
   workerName?: string
   workerPhone?: string
+  societyName?: string
+  workerRating?: number
   serviceCategoryId: string
   serviceCategoryName: string
   subserviceId: string

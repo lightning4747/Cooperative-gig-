@@ -60,7 +60,7 @@ export function RatingPage() {
       ) : (
         <RatingForm
           jobId={targetId}
-          workerName={getTranslatedPersonName(t, job?.workerName || 'Ramesh Kumar')}
+          workerName={getTranslatedPersonName(t, job?.workerName || 'Arun Electrician')}
           onSubmit={handleSubmit}
           onSkip={handleSkip}
         />

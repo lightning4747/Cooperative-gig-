@@ -58,39 +58,36 @@ export function AllocationInspector({
 
   return (
     <div className="space-y-6">
-      {/* Header Info Banner: Crisp institutional card */}
-
-
       {/* Side-by-Side Algorithmic Inspection Console */}
-      <div className="grid grid-cols-1 lg:grid-cols-[35%_65%] gap-6 items-start">
-        {/* Left Panel (35% width): Allocated Gig Selector List */}
-        <div className="p-5 rounded-2xl border border-border bg-card shadow-xs space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[32%_68%] gap-5 items-start">
+        {/* Left Panel: Allocated Gig Selector List */}
+        <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-foreground">
-              {t('federation.allocationInspector.selectJob', { defaultValue: 'Dispatched Gig Selector' })}
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              {t('federation.allocationInspector.selectJob', { defaultValue: 'SELECT JOB FOR REVIEW' })}
             </h3>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-secondary text-secondary-foreground border border-border">
-              {filteredJobs.length} Gigs
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200">
+              {filteredJobs.length}
             </span>
           </div>
 
-          {/* Search input with institutional focus ring */}
+          {/* Search input */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search gig ID, worker, trade..."
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              placeholder="Search worker, service, area..."
+              className="w-full h-8 pl-8 pr-2.5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white text-xs font-normal text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all"
             />
           </div>
 
           {/* Scrollable Gig List */}
-          <div className="max-h-[640px] overflow-y-auto space-y-2 pr-1">
+          <div className="max-h-[600px] overflow-y-auto space-y-2 pr-0.5">
             {filteredJobs.length === 0 ? (
-              <div className="p-6 text-center text-xs text-muted-foreground">
-                No matching gigs found.
+              <div className="p-4 text-center text-xs text-slate-400">
+                No matching tasks found.
               </div>
             ) : (
               filteredJobs.map((j) => {
@@ -101,26 +98,23 @@ export function AllocationInspector({
                     type="button"
                     onClick={() => setSelectedJobId(j.id)}
                     className={cn(
-                      'w-full p-3.5 rounded-xl border text-left transition-all min-h-[52px] block space-y-1',
+                      'w-full p-3 rounded-lg border text-left transition-all block space-y-1.5 cursor-pointer',
                       isSelected
-                        ? 'border-l-4 border-l-blue-600 bg-blue-50/50 dark:bg-blue-950/20 border-border shadow-xs'
-                        : 'border-border bg-background hover:bg-muted/40'
+                        ? 'border-blue-500 bg-blue-50/60 shadow-xs ring-1 ring-blue-500/20'
+                        : 'border-slate-200/90 bg-white hover:bg-slate-50/80 hover:border-slate-300'
                     )}
                   >
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="font-mono font-bold text-xs text-foreground">
-                        {j.id}
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className="font-semibold text-xs text-slate-900 truncate">
+                        {j.subserviceName}
                       </span>
-                      <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-secondary text-secondary-foreground border border-border/80">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/80 shrink-0">
                         {j.bookingType}
                       </span>
                     </div>
-                    <div className="font-bold text-foreground text-xs truncate">
-                      {j.subserviceName}
-                    </div>
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="truncate">Worker: {j.workerName}</span>
-                      <span className="font-mono text-[10px] shrink-0">{j.location.area}</span>
+                    <div className="flex items-center justify-between text-[11px] text-slate-500">
+                      <span className="font-medium text-slate-700 truncate">{j.workerName}</span>
+                      <span className="font-mono text-[10px] text-slate-400 shrink-0">{j.location.area}</span>
                     </div>
                   </button>
                 )
@@ -129,131 +123,175 @@ export function AllocationInspector({
           </div>
         </div>
 
-        {/* Right Panel (65% width): Detailed Deterministic Scoring Breakdown */}
-        <div className="p-6 rounded-2xl border border-border bg-card shadow-xs space-y-6">
+        {/* Right Panel: Detailed Deterministic Scoring Breakdown */}
+        <div className="p-6 rounded-xl border border-slate-200 bg-white shadow-xs space-y-6">
           {/* Selected Gig Top Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
             <div className="space-y-1 min-w-0">
-              <h2 className="text-xl font-black text-foreground flex items-center gap-2 truncate">
-                <span>Worker: {selectedJob.workerName}</span>
-                <span className="text-xs font-normal text-muted-foreground font-mono">
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 truncate">
+                <span>{selectedJob.workerName}</span>
+                <span className="text-xs font-normal text-slate-400 font-mono">
                   (+91 {selectedJob.workerPhone || '9876543210'})
                 </span>
               </h2>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span className="truncate">{selectedJob.location.formattedAddress || selectedJob.location.area}</span>
               </div>
             </div>
-
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 shrink-0">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Matched Allocation</span>
+            </div>
           </div>
 
-          {/* Core Scoring Breakdown Matrix - Side by Side High Density */}
+          {/* Core Scoring Breakdown Matrix */}
           <div className="space-y-3">
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* 1. Proximity Score */}
-              <div className="p-4 rounded-xl border border-border/80 bg-secondary/30 space-y-2">
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase">
-                    Proximity Score
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Proximity
                   </span>
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200/50 flex items-center justify-center">
-                    <MapPin className="w-3.5 h-3.5" />
-                  </div>
+                  <MapPin className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="text-base font-black text-foreground block">
+                  <span className="text-sm font-bold text-slate-900 block">
                     1.2 km Distance
                   </span>
-                  <span className="text-[11px] text-muted-foreground">
-                    Nearest eligible member; zero deadhead surcharge
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5">
+                    Nearest eligible member; zero transit delay
                   </span>
                 </div>
-                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-muted-foreground">Weight: 40%</span>
-                  <span className="font-bold text-blue-600 dark:text-blue-400">Score: 94 / 100</span>
+                <div className="space-y-1.5 pt-2 border-t border-slate-200/70">
+                  <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-blue-600 rounded-full w-[94%]" />
+                  </div>
+                  <div className="flex items-center justify-between text-xs font-mono tabular-nums">
+                    <span className="text-slate-400 text-[11px]">Weight: 40%</span>
+                    <span className="font-bold text-slate-900">94 / 100</span>
+                  </div>
                 </div>
               </div>
 
-              {/* 2. Trade Qualification */}
-              <div className="p-4 rounded-xl border border-border/80 bg-secondary/30 space-y-2">
+              {/* 2. Skill Qualification */}
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase">
-                    Trade Skill Vetting
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Skill Qualification
                   </span>
-                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50 flex items-center justify-center">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                  </div>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
-                  <span className="text-base font-black text-foreground block">
-                    Verified Trade Skill
+                  <span className="text-sm font-bold text-slate-900 block">
+                    Verified Skill
                   </span>
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5 truncate">
                     {selectedJob.subserviceName} certificate verified
                   </span>
                 </div>
-                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-muted-foreground">Weight: 35%</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400">Score: 100 / 100</span>
+                <div className="space-y-1.5 pt-2 border-t border-slate-200/70">
+                  <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-600 rounded-full w-[100%]" />
+                  </div>
+                  <div className="flex items-center justify-between text-xs font-mono tabular-nums">
+                    <span className="text-slate-400 text-[11px]">Weight: 35%</span>
+                    <span className="font-bold text-slate-900">100 / 100</span>
+                  </div>
                 </div>
               </div>
 
-              {/* 3. Load Leveling Index */}
-              <div className="p-4 rounded-xl border border-border/80 bg-secondary/30 space-y-2">
+              {/* 3. Workload Balance */}
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase">
-                    Load Leveling Index
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Workload Balance
                   </span>
-                  <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50 flex items-center justify-center">
-                    <Scale className="w-3.5 h-3.5" />
-                  </div>
+                  <Scale className="w-4 h-4 text-indigo-600" />
                 </div>
                 <div>
-                  <span className="text-base font-black text-foreground block">
+                  <span className="text-sm font-bold text-slate-900 block">
                     1 Task Completed
                   </span>
-                  <span className="text-[11px] text-muted-foreground">
-                    Well below daily fatigue threshold of 4 tasks
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5">
+                    Well below daily threshold of 4 tasks
                   </span>
                 </div>
-                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-muted-foreground">Weight: 25%</span>
-                  <span className="font-bold text-amber-700 dark:text-amber-400">Score: 90 / 100</span>
+                <div className="space-y-1.5 pt-2 border-t border-slate-200/70">
+                  <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-indigo-600 rounded-full w-[90%]" />
+                  </div>
+                  <div className="flex items-center justify-between text-xs font-mono tabular-nums">
+                    <span className="text-slate-400 text-[11px]">Weight: 25%</span>
+                    <span className="font-bold text-slate-900">90 / 100</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Secondary Compliance Attributes Displayed Side by Side */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-              <div className="p-3 rounded-xl bg-secondary/40 border border-border/70 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Customer Rating
+                  </span>
+                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-bold text-foreground block">Customer Rating</span>
-                  <span className="text-[11px] text-muted-foreground">4.8 / 5.0 (Consistently Verified)</span>
+                <div>
+                  <span className="text-sm font-bold text-slate-900 block font-mono">
+                    4.8 / 5.0
+                  </span>
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5">
+                    Verified customer feedback & quality record
+                  </span>
+                </div>
+                <div className="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Rating Tier</span>
+                  <span className="font-semibold text-emerald-600">Top Rated</span>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-secondary/40 border border-border/70 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-4 h-4" />
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Duty Status
+                  </span>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-bold text-foreground block">Duty Status</span>
-                  <span className="text-[11px] text-muted-foreground">Active & Available On-Grid</span>
+                <div>
+                  <span className="text-sm font-bold text-slate-900 block">
+                    Active & Available
+                  </span>
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5">
+                    Ready for immediate on-demand assignment
+                  </span>
+                </div>
+                <div className="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Response SLA</span>
+                  <span className="font-semibold text-slate-800 font-mono">&lt; 2 mins</span>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-secondary/40 border border-border/70 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-4 h-4" />
+              <div className="p-4 rounded-xl border border-slate-200/90 bg-slate-50/50 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Base Wage
+                  </span>
+                  <CheckCircle2 className="w-4 h-4 text-blue-600" />
                 </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-bold text-foreground block">Statutory Floor</span>
-                  <span className="text-[11px] text-muted-foreground">100% Floor Wage Guaranteed</span>
+                <div>
+                  <span className="text-sm font-bold text-slate-900 block">
+                    100% Guaranteed
+                  </span>
+                  <span className="text-xs text-slate-500 leading-tight block mt-0.5">
+                    Protected base rate backed by cooperative
+                  </span>
+                </div>
+                <div className="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Floor Status</span>
+                  <span className="font-semibold text-blue-600">Protected</span>
                 </div>
               </div>
             </div>

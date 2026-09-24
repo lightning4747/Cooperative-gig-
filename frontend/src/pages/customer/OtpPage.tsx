@@ -26,7 +26,7 @@ export function OtpPage() {
             {t('job.doorstepOtp', { defaultValue: 'Doorstep Verification OTP' })}
           </h1>
           <p className="text-xs text-muted-foreground">
-            Job #{targetId} · Share only when the cooperative worker is present
+            Share only when the cooperative worker is present
           </p>
         </div>
       </div>

@@ -12,7 +12,13 @@ export interface NavItemConfig {
   badge?: number | string
 }
 
-export function DesktopNavLinks({ items }: { items: NavItemConfig[] }) {
+export interface DesktopNavLinksProps {
+  items: NavItemConfig[]
+  variant?: 'default' | 'blue'
+  onItemClick?: () => void
+}
+
+export function DesktopNavLinks({ items, variant = 'default', onItemClick }: DesktopNavLinksProps) {
   const { t } = useTranslation()
 
   return (
@@ -24,11 +30,14 @@ export function DesktopNavLinks({ items }: { items: NavItemConfig[] }) {
             key={item.to}
             to={item.to}
             end={item.exact}
+            onClick={onItemClick}
             className={({ isActive }) =>
               cn(
                 'flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[42px]',
                 isActive
-                  ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
+                  ? variant === 'blue'
+                    ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                    : 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white'
               )
             }
@@ -40,7 +49,9 @@ export function DesktopNavLinks({ items }: { items: NavItemConfig[] }) {
                     className={cn(
                       'w-4 h-4 shrink-0',
                       isActive
-                        ? 'text-amber-400 dark:text-amber-600'
+                        ? variant === 'blue'
+                          ? 'text-white'
+                          : 'text-amber-400 dark:text-amber-600'
                         : 'text-slate-400 group-hover:text-slate-600'
                     )}
                   />
@@ -50,7 +61,7 @@ export function DesktopNavLinks({ items }: { items: NavItemConfig[] }) {
                       className={cn(
                         'ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold shrink-0',
                         isActive
-                          ? 'bg-white/20 text-white dark:bg-slate-900/20 dark:text-slate-900'
+                          ? 'bg-white/20 text-white'
                           : 'bg-slate-200 text-slate-800'
                       )}
                     >
@@ -62,7 +73,7 @@ export function DesktopNavLinks({ items }: { items: NavItemConfig[] }) {
                   className={cn(
                     'w-3.5 h-3.5 shrink-0 transition-transform',
                     isActive
-                      ? 'text-white/70 dark:text-slate-900/70 translate-x-0.5'
+                      ? 'text-white/80 translate-x-0.5'
                       : 'text-slate-400'
                   )}
                 />

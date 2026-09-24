@@ -68,7 +68,6 @@ export function InvoicePage() {
       <PageHeader
         backTo="/customer"
         title={t('payment.invoiceTitle', { defaultValue: 'Official Digital Invoice' })}
-        subtitle={`Receipt #${invoice.invoiceNumber}`}
         action={
           <>
             <button

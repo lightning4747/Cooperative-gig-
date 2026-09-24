@@ -90,8 +90,6 @@ export function CustomerInvoicesPage() {
           {completedBookings.map((b) => {
             const subName = getTranslatedSubserviceName(t, b.subserviceId, b.subserviceName)
             const catName = getTranslatedCategoryName(t, b.serviceCategoryId, b.serviceCategoryName)
-            const invoiceNum = `INV-${b.id.slice(-6).toUpperCase()}`
-
             return (
               <div
                 key={b.id}
@@ -99,9 +97,6 @@ export function CustomerInvoicesPage() {
               >
                 <div className="flex items-start justify-between gap-2 border-b border-border/60 pb-3">
                   <div className="space-y-0.5 min-w-0">
-                    <span className="font-mono text-xs font-bold text-primary block">
-                      {invoiceNum}
-                    </span>
                     <h3 className="font-bold text-sm text-foreground truncate">{subName}</h3>
                     <span className="text-[11px] text-muted-foreground">{catName}</span>
                   </div>

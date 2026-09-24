@@ -43,8 +43,8 @@ export function JobTrackingPage() {
 
   const mapMarkers = useMemo(() => {
     if (!polledJob) return []
-    const lat = polledJob.location?.latitude || 12.934
-    const lng = polledJob.location?.longitude || 77.621
+    const lat = polledJob.location?.latitude || 11.0183
+    const lng = polledJob.location?.longitude || 76.9644
 
     if (polledJob.status === 'TRAVELLING' || polledJob.status === 'ARRIVED') {
       const offset = polledJob.status === 'ARRIVED' ? 0.0002 : 0.003
@@ -137,7 +137,7 @@ export function JobTrackingPage() {
                       </span>
                     </div>
                     <p className="text-muted-foreground text-[11px] truncate">
-                      {job.location?.formattedAddress || 'Bengaluru'} ·{' '}
+                      {job.location?.formattedAddress || 'Gandhipuram, Coimbatore'} ·{' '}
                       {new Date(job.createdAt).toLocaleDateString([], {
                         month: 'short',
                         day: 'numeric',
@@ -271,15 +271,15 @@ export function JobTrackingPage() {
               ? '~5-8 mins away'
               : polledJob.status === 'ARRIVED'
               ? 'At location'
-              : polledJob.location?.formattedAddress || 'Bengaluru'}
+              : polledJob.location?.formattedAddress || 'Gandhipuram, Coimbatore'}
           </span>
         </div>
 
         <div className="h-64 sm:h-80 rounded-xl overflow-hidden border border-border">
           <MapView
-            latitude={polledJob.location?.latitude || 12.934}
-            longitude={polledJob.location?.longitude || 77.621}
-            label={polledJob.location?.formattedAddress || 'Your Doorstep'}
+            latitude={polledJob.location?.latitude || 11.0183}
+            longitude={polledJob.location?.longitude || 76.9644}
+            label={polledJob.location?.formattedAddress || 'Gandhipuram, Coimbatore'}
             className="h-full"
             markers={mapMarkers}
           />

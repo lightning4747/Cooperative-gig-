@@ -59,7 +59,13 @@ public class AuthController {
       var existingUser =
           db.optional("SELECT id, phone, role FROM app_user WHERE phone=:phone", p("phone", body.phone()));
       if (existingUser.isEmpty()) {
-        throw new ApiException(404, "USER_NOT_FOUND", "User not found");
+        if (dev) {
+          db.update(
+              "INSERT INTO app_user(id,phone,role,name) VALUES (:id,:phone,'CUSTOMER','Demo User') ON CONFLICT(phone) DO NOTHING",
+              p("id", UUID.randomUUID(), "phone", body.phone()));
+        } else {
+          throw new ApiException(404, "USER_NOT_FOUND", "User not found");
+        }
       }
     }
 
@@ -128,11 +134,23 @@ public class AuthController {
 
     if (!Boolean.TRUE.equals(body.signup())) {
       if (existingUser.isEmpty()) {
-        throw new ApiException(404, "USER_NOT_FOUND", "User not found");
+        if (dev) {
+          String fallbackName = body.name() != null && !body.name().isBlank() ? body.name() : "Demo User";
+          db.update(
+              "INSERT INTO app_user(id,phone,role,name) VALUES (:id,:phone,:role,:name) ON CONFLICT(phone) DO UPDATE SET role=:role",
+              p("id", UUID.randomUUID(), "phone", phone, "role", body.role(), "name", fallbackName));
+          existingUser = db.optional("SELECT id,phone,role,name,preferred_lang FROM app_user WHERE phone=:phone", p("phone", phone));
+        } else {
+          throw new ApiException(404, "USER_NOT_FOUND", "User not found");
+        }
       }
       var user = existingUser.get();
       if (!body.role().equals(user.get("role"))) {
-        throw new ApiException(403, "ROLE_MISMATCH", "User registered under a different role");
+        if (dev) {
+          db.update("UPDATE app_user SET role=:role WHERE phone=:phone", p("phone", phone, "role", body.role()));
+        } else {
+          throw new ApiException(403, "ROLE_MISMATCH", "User registered under a different role");
+        }
       }
     } else {
       // Worker Sign Up (creates or updates the user)
@@ -151,7 +169,7 @@ public class AuthController {
         db.update(
             """
             INSERT INTO worker(user_id,society_id,membership_id,uan_encrypted,uan_fingerprint,uan_last4,certifications,verification_status,is_available,current_location,location_updated_at)
-            VALUES (:uid,:soc,'MEM-DEV-'||right(:phone,4),'enc',md5(:phone),right(:phone,4),'["Cooperative Certified"]'::jsonb,'ACTIVE',true,ST_SetSRID(ST_MakePoint(77.621,12.934),4326)::geography,now())
+            VALUES (:uid,:soc,'MEM-DEV-'||right(:phone,4),'enc',md5(:phone),right(:phone,4),'["Cooperative Certified"]'::jsonb,'ACTIVE',true,ST_SetSRID(ST_MakePoint(76.9644,11.0183),4326)::geography,now())
             ON CONFLICT (user_id) DO UPDATE SET is_available=true, verification_status='ACTIVE', location_updated_at=now()
             """,
             p("uid", userRow.get("id"), "soc", soc.get().get("id"), "phone", phone));

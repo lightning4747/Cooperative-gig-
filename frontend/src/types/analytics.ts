@@ -41,3 +41,59 @@ export interface HistoricalAnalyticsResponse {
   dailyTrends: DailyTrend[]
   categories: CategoryMetric[]
 }
+
+// Global Horizon Types
+export type ForecastHorizon = '1W' | '2W' | '1M' | '3M' | '6M' | '1Y'
+
+export interface ForecastTimeSeriesPoint {
+  label: string
+  date: string
+  isHistorical: boolean
+  historicalCompleted?: number
+  predictedDemand: number
+  upperCI: number // 95% Upper Bound
+  lowerCI: number // 95% Lower Bound
+  baselineCapacity: number
+}
+
+export interface SeasonalityRuleInfo {
+  season: 'MONSOON' | 'FESTIVE' | 'STANDARD'
+  title: string
+  description: string
+  impactNote: string
+  activeMonths: number[]
+  adjustedTrades: Array<{ trade: string; factor: number; note: string }>
+}
+
+export type CapacityGapAssessmentStatus = 'CRITICAL_SHORTAGE' | 'OPTIMAL_BALANCE' | 'SURPLUS_CAPACITY'
+
+export interface TradeCapacityAssessment {
+  categoryId: string
+  categoryName: string
+  activeVerifiedWorkers: number
+  onlineAvailableWorkers: number
+  projectedDemandVolume: number
+  coverageRatio: number // Capacity / Demand
+  gapStatus: CapacityGapAssessmentStatus
+  mobilizationRecommendation: string
+  targetSociety: string
+  actionCount?: number
+}
+
+export interface WelfareMetrics {
+  cumulativeHealthClaims: number
+  accidentAidDisbursed: number
+  pmsbyEnrolled: number
+  pmjjbyEnrolled: number
+  statutoryWageCompliancePercent: number
+  stateMinWageFloorPerJob: number
+  actualAvgPayoutPerJob: number
+  welfareReserveBalance: number
+}
+
+export interface DispatchVelocityZone {
+  zone: string
+  meanTimeToDispatchMinutes: number
+  fulfillmentRatePercent: number
+  activeJobs: number
+}

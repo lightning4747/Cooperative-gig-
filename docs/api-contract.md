@@ -94,7 +94,7 @@ QUOTE=$(curl --fail-with-body -sS "$API/quotes" -H "Authorization: Bearer $TOKEN
   -H 'Content-Type: application/json' \
   -d "$(jq -n --arg id "$SERVICE" '{subserviceId:$id,bookingType:"ON_DEMAND"}')")
 BODY=$(jq -n --arg id "$(printf '%s' "$QUOTE" | jq -r .id)" \
-  '{quoteId:$id,latitude:13.0827,longitude:80.2707,formattedAddress:"Demo address, Chennai",area:"Chennai"}')
+  '{quoteId:$id,latitude:11.0183,longitude:76.9644,formattedAddress:"10 Cross Cut Road, Gandhipuram, Coimbatore",area:"Coimbatore"}')
 KEY=$(uuidgen)
 curl --fail-with-body -sS "$API/jobs" -H "Authorization: Bearer $TOKEN" \
   -H "Idempotency-Key: $KEY" -H 'Content-Type: application/json' -d "$BODY"
@@ -132,8 +132,8 @@ Representative shape below uses placeholder IDs and illustrative timestamps. Una
   "id":"<job UUID>", "customerId":"<customer UUID>", "workerId":null,
   "subserviceId":"<service UUID>", "serviceName":"Pipe burst",
   "bookingType":"EMERGENCY", "status":"BROADCAST",
-  "area":"Chennai", "formattedAddress":"Customer-selected address",
-  "latitude":13.0827, "longitude":80.2707, "scheduledTime":null,
+  "area":"Coimbatore", "formattedAddress":"Customer-selected address",
+  "latitude":11.0183, "longitude":76.9644, "scheduledTime":null,
   "createdAt":"2026-09-19T09:00:00Z", "updatedAt":"2026-09-19T09:00:00Z",
   "completedAt":null, "offerDeadline":"2026-09-19T09:01:00Z",
   "dispatchRadiusM":5000, "basePrice":500.00, "grossAmount":500.00,

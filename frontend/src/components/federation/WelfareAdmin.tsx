@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  HeartHandshake,
   Search,
   CheckCircle2,
   Building2,
-  Receipt,
   Phone,
   Clock,
 } from 'lucide-react'
@@ -19,6 +17,8 @@ export function WelfareAdmin() {
   const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedWorkerId, setSelectedWorkerId] = useState<string | null>(null)
+  const [ledgerPage, setLedgerPage] = useState(1)
+  const ledgerPageSize = 5
   const [workers, setWorkers] = useState<WorkerProfile[]>([])
   const [welfareBalance, setWelfareBalance] = useState<number>(0)
   const [liveEntries, setLiveEntries] = useState<any[]>([])
@@ -95,7 +95,7 @@ export function WelfareAdmin() {
       id: e.id || `live-${idx}`,
       serviceName: e.serviceName || e.service_name || e.subserviceName || e.note || e.source || 'Surplus Allocation',
       jobId: e.jobId || e.job_id || e.referenceId || `JOB-REF-00${idx + 101}`,
-      societyRef: e.societyName || selectedWorker?.societyName || 'Bengaluru South Cooperative',
+      societyRef: e.societyName || selectedWorker?.societyName || 'Coimbatore City Labour Society',
       date: e.createdAt || e.created_at || new Date().toISOString(),
       amount: Number(e.amount || 75),
     }))
@@ -105,7 +105,7 @@ export function WelfareAdmin() {
       id: 'fb-1',
       serviceName: 'Emergency Electrical Service Surplus',
       jobId: 'JOB-2024-8891',
-      societyRef: selectedWorker?.societyName || 'Bengaluru South Cooperative Society',
+      societyRef: selectedWorker?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society',
       date: '2026-09-20T10:30:00.000Z',
       amount: 120,
     },
@@ -113,7 +113,7 @@ export function WelfareAdmin() {
       id: 'fb-2',
       serviceName: 'Standard Plumbing Maintenance Surplus',
       jobId: 'JOB-2024-8842',
-      societyRef: selectedWorker?.societyName || 'Bengaluru South Cooperative Society',
+      societyRef: selectedWorker?.societyName || 'RS Puram Cooperative Workers Union',
       date: '2026-09-19T14:15:00.000Z',
       amount: 85,
     },
@@ -121,144 +121,129 @@ export function WelfareAdmin() {
       id: 'fb-3',
       serviceName: 'Scheduled Deep Cleaning Contribution',
       jobId: 'JOB-2024-8710',
-      societyRef: selectedWorker?.societyName || 'Bengaluru South Cooperative Society',
+      societyRef: selectedWorker?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society',
       date: '2026-09-18T09:00:00.000Z',
       amount: 95,
     },
   ]
 
   const entriesToRender = displayEntries.length > 0 ? displayEntries : fallbackEntries
+  const totalLedgerPages = Math.max(1, Math.ceil(entriesToRender.length / ledgerPageSize))
+  const paginatedLedgerEntries = entriesToRender.slice(
+    (ledgerPage - 1) * ledgerPageSize,
+    ledgerPage * ledgerPageSize
+  )
 
   return (
     <div className="space-y-6">
       {/* Crisp Institutional Stat Panel */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Total Welfare Pool */}
-        <div className="p-5 rounded-2xl border-l-4 border-emerald-600 bg-card border border-border shadow-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              Collective Welfare Pool
-            </span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50 flex items-center justify-center">
-              <HeartHandshake className="w-4 h-4" />
-            </div>
-          </div>
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
+            Collective Welfare Pool
+          </span>
           <div className="space-y-0.5">
-            <span className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-foreground block">
+            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
               {formatCurrency(totalPool)}
             </span>
-            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3" />
               100% Floor Guaranteed
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground pt-1 border-t border-border/60">
-            Surplus funded only · Zero wage deduction
+          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
+            Surplus funded · Zero wage deduction
           </p>
         </div>
 
         {/* PMSBY Coverage */}
-        <div className="p-5 rounded-2xl border-l-4 border-blue-600 bg-card border border-border shadow-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              PMSBY Coverage
-            </span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200/50 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
+            PMSBY Coverage
+          </span>
           <div className="space-y-0.5">
-            <span className="text-2xl font-black font-mono tracking-tight text-foreground block">
+            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
               100% Subsidised
             </span>
-            <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
               Universal Accidental Cover
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground pt-1 border-t border-border/60">
-            ₹2,00,000 disability & accidental cover
+          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
+            ₹2,00,000 disability & accident cover
           </p>
         </div>
 
         {/* PMJJBY Life Insurance */}
-        <div className="p-5 rounded-2xl border-l-4 border-blue-600 bg-card border border-border shadow-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              PMJJBY Life Cover
-            </span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200/50 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
+            PMJJBY Life Cover
+          </span>
           <div className="space-y-0.5">
-            <span className="text-2xl font-black font-mono tracking-tight text-foreground block">
+            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
               Active Reserve
             </span>
-            <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
               Federation Retained
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground pt-1 border-t border-border/60">
-            Automatic annual statutory subvention
+          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
+            Automatic annual welfare fund reserve
           </p>
         </div>
 
         {/* Total Ledger Entries */}
-        <div className="p-5 rounded-2xl border-l-4 border-amber-500 bg-card border border-border shadow-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              Surplus Audits
-            </span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50 flex items-center justify-center">
-              <Receipt className="w-4 h-4" />
-            </div>
-          </div>
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground block">
+            Surplus Audits
+          </span>
           <div className="space-y-0.5">
-            <span className="text-2xl font-black font-mono tracking-tight text-foreground block">
+            <span className="text-2xl font-semibold font-mono tabular-nums tracking-tight text-foreground block">
               {workerWelfareList.reduce((acc, w) => acc + (w.entriesCount || 1), 0)} Logged
             </span>
-            <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
               Auditable Ledger
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground pt-1 border-t border-border/60">
-            Cryptographically signed transaction trail
+          <p className="text-[10px] text-muted-foreground pt-1.5 border-t border-border">
+            Cryptographically signed audit trail
           </p>
         </div>
       </div>
 
-      {/* Full-Width Desktop Split View: Left 40% Directory, Right 60% Auditable Ledger */}
-      <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-6 items-start">
-        {/* Left Column (40% width): Worker Welfare Directory */}
-        <div className="p-5 rounded-2xl border border-border bg-card shadow-xs space-y-4">
-          <div>
-            <h3 className="text-sm font-bold text-foreground">
+      {/* Full-Width Desktop Split View */}
+      <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] gap-4 items-start">
+        {/* Left Column: Worker Welfare Directory */}
+        <div className="p-4 rounded-md border border-border bg-card space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {t('federation.welfareAdmin.directoryTitle', { defaultValue: 'Worker Welfare Directory' })}
             </h3>
-            <p className="text-xs text-muted-foreground">
-              Ranked by accumulated cooperative welfare balance
-            </p>
+            <span className="text-[10px] text-muted-foreground font-mono">
+              {filteredWorkers.length} Members
+            </span>
           </div>
 
           {/* Instant Search Bar */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={t('federation.welfareAdmin.searchPlaceholder', { defaultValue: 'Search member, phone, society...' })}
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full h-8 pl-8 pr-2.5 rounded-md border border-border bg-background text-xs font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
             />
           </div>
 
           {/* Directory Rankings List */}
-          <div className="max-h-[640px] overflow-y-auto space-y-2 pr-1 divide-y divide-border/50">
+          <div className="max-h-[600px] overflow-y-auto space-y-1.5 pr-0.5">
             {filteredWorkers.length === 0 ? (
-              <div className="p-6 text-center text-xs text-muted-foreground">
+              <div className="p-4 text-center text-xs text-muted-foreground">
                 No worker welfare records match your search query.
               </div>
             ) : (
@@ -267,23 +252,26 @@ export function WelfareAdmin() {
                 return (
                   <div
                     key={w.workerId}
-                    onClick={() => setSelectedWorkerId(w.workerId)}
+                    onClick={() => {
+                      setSelectedWorkerId(w.workerId)
+                      setLedgerPage(1)
+                    }}
                     className={cn(
-                      'pt-2 first:pt-0 p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3',
+                      'p-2.5 rounded-md border transition-colors cursor-pointer flex items-center justify-between gap-2.5',
                       isSelected
-                        ? 'border-l-4 border-l-blue-600 border-border bg-blue-50/50 dark:bg-blue-950/20 shadow-xs'
+                        ? 'border-zinc-900 dark:border-zinc-100 bg-muted/80'
                         : 'border-border bg-background hover:bg-muted/40'
                     )}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="w-6 h-6 rounded-full bg-secondary text-secondary-foreground text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
-                        #{idx + 1}
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className="w-5 h-5 rounded bg-muted text-muted-foreground text-[10px] font-mono font-medium flex items-center justify-center shrink-0">
+                        {idx + 1}
                       </span>
                       <div className="min-w-0 space-y-0.5">
-                        <span className="font-bold text-xs text-foreground block truncate">
+                        <span className="font-medium text-xs text-foreground block truncate">
                           {getTranslatedPersonName(t, w.workerName)}
                         </span>
-                        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                           <span className="truncate">{getTranslatedSocietyName(t, w.societyName)}</span>
                           <span>·</span>
                           <span className="font-mono text-[10px] shrink-0">+91 {w.phone}</span>
@@ -292,10 +280,10 @@ export function WelfareAdmin() {
                     </div>
 
                     <div className="text-right shrink-0">
-                      <span className="font-mono font-bold text-emerald-700 dark:text-emerald-400 text-xs block">
+                      <span className="font-mono tabular-nums font-semibold text-foreground text-xs block">
                         {formatCurrency(w.balance)}
                       </span>
-                      <span className="text-[10px] font-semibold text-muted-foreground font-mono">
+                      <span className="text-[10px] text-muted-foreground font-mono">
                         {w.entriesCount || 1} logs
                       </span>
                     </div>
@@ -306,40 +294,40 @@ export function WelfareAdmin() {
           </div>
         </div>
 
-        {/* Right Column (60% width): Auditable Welfare Transaction Ledger */}
-        <div className="p-6 rounded-2xl border border-border bg-card shadow-xs space-y-5">
+        {/* Right Column: Auditable Welfare Transaction Ledger */}
+        <div className="p-5 rounded-md border border-border bg-card space-y-4">
           {/* Active Worker Header Card */}
           {selectedWorker ? (
-            <div className="p-4 rounded-xl bg-secondary/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
+            <div className="p-3.5 rounded-md bg-muted/40 border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-base font-black text-foreground">
+                  <h4 className="text-sm font-semibold text-foreground">
                     {getTranslatedPersonName(t, selectedWorker.workerName)}
                   </h4>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-secondary text-foreground border border-border">
-                    {selectedWorker.membershipId || 'SOC-MEM'}
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-medium bg-muted text-muted-foreground border border-border">
+                    Active Member
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                  <Building2 className="w-3 h-3 text-muted-foreground" />
                   <span>{getTranslatedSocietyName(t, selectedWorker.societyName)}</span>
                   <span>·</span>
-                  <Phone className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span className="font-mono">+91 {selectedWorker.phone}</span>
+                  <Phone className="w-3 h-3 text-muted-foreground" />
+                  <span className="font-mono text-[11px]">+91 {selectedWorker.phone}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground block">
+                  <span className="text-[10px] uppercase font-medium text-muted-foreground block">
                     Available Balance
                   </span>
-                  <span className="text-lg font-black font-mono text-emerald-700 dark:text-emerald-400">
+                  <span className="text-base font-semibold font-mono tabular-nums text-foreground">
                     {formatCurrency(selectedWorker.balance)}
                   </span>
                 </div>
-                <div className="px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4" />
+                <div className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[11px] font-medium flex items-center gap-1 shrink-0">
+                  <CheckCircle2 className="w-3 h-3" />
                   <span>PMSBY Enrolled</span>
                 </div>
               </div>
@@ -347,69 +335,110 @@ export function WelfareAdmin() {
           ) : null}
 
           {/* Ledger Table Section */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-foreground">
-                  Auditable Welfare Transaction Ledger
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Transaction Ledger
                 </h3>
-                <p className="text-xs text-muted-foreground">
-                  Live auditable contribution logs from customer surplus with society references
+                <p className="text-[11px] text-muted-foreground">
+                  Contribution logs from customer surplus with society references
                 </p>
               </div>
-              <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-secondary text-secondary-foreground border border-border">
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-muted text-muted-foreground border border-border">
                 {entriesToRender.length} Audited Entries
               </span>
             </div>
 
-            <div className="rounded-xl border border-border/70 overflow-hidden">
+            <div className="rounded-md border border-border overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="sticky top-0 z-10 bg-secondary text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-border/80">
-                    <th className="p-3.5 min-w-[160px]">Transaction / Service</th>
-                    <th className="p-3.5 min-w-[130px]">Job Reference</th>
-                    <th className="p-3.5 min-w-[170px]">Society Reference</th>
-                    <th className="p-3.5 min-w-[120px]">Timestamp</th>
-                    <th className="p-3.5 min-w-[110px] text-right">Contribution</th>
+                  <tr className="sticky top-0 z-10 bg-muted/40 text-muted-foreground text-[11px] font-medium uppercase tracking-wider border-b border-border">
+                    <th className="px-3 py-2">Transaction / Service</th>
+                    <th className="px-3 py-2">Society Reference</th>
+                    <th className="px-3 py-2">Timestamp</th>
+                    <th className="px-3 py-2 text-right">Contribution</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/60">
-                  {entriesToRender.map((entry) => (
+                <tbody className="divide-y divide-border">
+                  {paginatedLedgerEntries.map((entry) => (
                     <tr key={entry.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="p-3.5">
-                        <span className="font-bold text-foreground block">
+                      <td className="px-3 py-2.5">
+                        <span className="font-medium text-foreground block">
                           {entry.serviceName}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-semibold">
+                        <span className="text-[10px] text-muted-foreground">
                           Customer Surplus Allocation
                         </span>
                       </td>
 
-                      <td className="p-3.5 font-mono text-muted-foreground font-semibold">
-                        {entry.jobId}
-                      </td>
-
-                      <td className="p-3.5 text-muted-foreground">
+                      <td className="px-3 py-2.5 text-muted-foreground">
                         <div className="flex items-center gap-1.5">
-                          <Building2 className="w-3 h-3 text-blue-600 shrink-0" />
+                          <Building2 className="w-3 h-3 text-muted-foreground shrink-0" />
                           <span className="truncate">{entry.societyRef}</span>
                         </div>
                       </td>
 
-                      <td className="p-3.5 text-muted-foreground font-mono text-[11px]">
+                      <td className="px-3 py-2.5 text-muted-foreground font-mono text-[11px]">
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3 text-muted-foreground shrink-0" />
                           <span>{formatDate(entry.date)}</span>
                         </div>
                       </td>
 
-                      <td className="p-3.5 text-right font-mono font-bold text-emerald-700 dark:text-emerald-400 text-sm">
+                      <td className="px-3 py-2.5 text-right font-mono tabular-nums font-medium text-foreground text-xs">
                         +{formatCurrency(entry.amount)}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
+              {/* Pagination Controls */}
+              {entriesToRender.length > ledgerPageSize && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-3 py-2 bg-card border-t border-border text-xs text-muted-foreground">
+                  <span className="tabular-nums text-[11px]">
+                    Showing {(ledgerPage - 1) * ledgerPageSize + 1} to{' '}
+                    {Math.min(ledgerPage * ledgerPageSize, entriesToRender.length)} of {entriesToRender.length} entries
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setLedgerPage((p) => Math.max(1, p - 1))}
+                      disabled={ledgerPage === 1}
+                      className="h-7 px-2 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+                    >
+                      Previous
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalLedgerPages }, (_, i) => i + 1).map((pageNum) => (
+                        <button
+                          key={pageNum}
+                          type="button"
+                          onClick={() => setLedgerPage(pageNum)}
+                          className={`h-7 w-7 rounded text-xs font-mono font-medium transition-colors ${
+                            ledgerPage === pageNum
+                              ? 'bg-foreground text-background font-semibold'
+                              : 'border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setLedgerPage((p) => Math.min(totalLedgerPages, p + 1))}
+                      disabled={ledgerPage === totalLedgerPages}
+                      className="h-7 px-2 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

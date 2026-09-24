@@ -10,7 +10,7 @@ import {
   Navigation,
 } from 'lucide-react'
 import type { Job } from '@/types/job'
-import { cn } from '@/lib/utils'
+import { cn, cleanAddress } from '@/lib/utils'
 import { getTranslatedCategoryName, getTranslatedSubserviceName } from '@/lib/serviceTranslation'
 import { MapView, generateTransitRoute } from '@/components/shared/MapView'
 
@@ -93,11 +93,7 @@ export function JobOfferCard({
           <span className="font-mono bg-destructive/15 text-destructive px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wider border border-destructive/30">
             {t('worker.offer.expiresIn', 'Lock in')}: {timeLeft}s
           </span>
-        ) : (
-          <span className="font-mono text-[11px] text-muted-foreground font-semibold">
-            #{job.id}
-          </span>
-        )}
+        ) : null}
       </div>
 
       {/* Main Content */}
@@ -142,11 +138,11 @@ export function JobOfferCard({
             <div className="flex items-start gap-2">
               <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
               <div className="min-w-0">
-                <span className="font-bold text-foreground block truncate">
-                  {job.location.area || job.location.formattedAddress}
+                <span className="font-semibold text-foreground truncate block">
+                  {job.location.area || cleanAddress(job.location.formattedAddress)}
                 </span>
-                <span className="text-[11px] text-muted-foreground block truncate">
-                  {job.location.formattedAddress}
+                <span className="block text-[11px] truncate">
+                  {cleanAddress(job.location.formattedAddress)}
                 </span>
               </div>
             </div>

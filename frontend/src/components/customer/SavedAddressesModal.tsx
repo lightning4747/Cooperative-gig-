@@ -17,12 +17,12 @@ const DEFAULT_ADDRESSES: SavedAddressItem[] = [
   {
     id: 'addr-1',
     label: 'Home Doorstep',
-    formattedAddress: 'Flat 402, Green Glen Layout, Bellandur, Bengaluru - 560103',
+    formattedAddress: '7th Cross Road, Gandhipuram, Coimbatore - 641012',
   },
   {
     id: 'addr-2',
     label: 'Workspace / Studio',
-    formattedAddress: '24th Main Road, Sector 2, HSR Layout, Bengaluru - 560102',
+    formattedAddress: 'DB Road, RS Puram, Coimbatore - 641002',
   },
 ]
 

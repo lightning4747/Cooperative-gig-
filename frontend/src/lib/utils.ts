@@ -28,3 +28,9 @@ export function formatDate(isoString: string): string {
     return isoString
   }
 }
+
+export function cleanAddress(address?: string): string {
+  if (!address) return ''
+  // Remove coordinates like "(12.9236° N, 77.6754° E)" from the address
+  return address.replace(/\s*\(\d+\.\d+°\s*[NS],\s*\d+\.\d+°\s*[EW]\)/gi, '').trim()
+}

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 export interface PaymentSettlementItem {
   id: string
@@ -239,9 +240,10 @@ export function EarningsSummary({
               : ''
 
             return (
-              <div
+              <Link
+                to={`/worker/jobs/${p.jobId || p.id}/invoice`}
                 key={p.id}
-                className="py-2.5 flex items-center justify-between gap-3 text-xs"
+                className="py-2.5 flex items-center justify-between gap-3 text-xs hover:bg-muted/50 rounded-lg px-2 -mx-2 transition-colors group cursor-pointer block"
               >
                 <div className="space-y-0.5 min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -268,7 +270,7 @@ export function EarningsSummary({
                     {t('worker.earnings.paid', 'Paid')}
                   </span>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>

@@ -9,10 +9,10 @@ export function FederationWelfarePage() {
   return (
     <div className="space-y-6">
       <FederationPageHeader
-        title={t('federation.welfarePage.title', { defaultValue: 'Cooperative Welfare & Social Security Pool' })}
-        description={t('federation.welfarePage.description', { defaultValue: 'Aggregated collective protection fund accumulated entirely from customer surplus shares without touching statutory base wage floors.' })}
+        title={t('federation.welfarePage.title', { defaultValue: 'Worker Welfare Fund' })}
+        description={t('federation.welfarePage.description', { defaultValue: 'Collective protection fund supported by extra customer payments while keeping base worker wages 100% protected.' })}
         badgeIcon={HeartHandshake}
-        badgeText={t('federation.welfarePage.badge', { defaultValue: '100% Floor Compliant' })}
+        badgeText={t('federation.welfarePage.badge', { defaultValue: 'Protected Wage Guarantee' })}
       />
 
       <WelfareAdmin />

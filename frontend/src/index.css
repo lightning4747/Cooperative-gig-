@@ -27,7 +27,7 @@
     --border: 214 32% 91%; /* Hairline Slate 200 #E2E8F0 */
     --input: 214 32% 91%;
     --ring: 45 93% 49%;
-    --radius: 0.625rem; /* 10px */
+    --radius: 0.375rem; /* 6px Linear/Stripe radius */
 
     /* Federation Admin Primary Overrides */
     --federation-primary: 221 83% 53%; /* #1D4ED8 */

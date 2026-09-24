@@ -34,15 +34,15 @@ export function FederationWorkersPage() {
   return (
     <div className="space-y-6">
       <FederationPageHeader
-        title={t('federation.workersPage.title', { defaultValue: 'Federation Worker Directory' })}
-        description={t('federation.workersPage.description', { defaultValue: 'Comprehensive member register across affiliated primary cooperative societies with verified skills and statutory credentials.' })}
+        title={t('federation.workersPage.title', { defaultValue: 'Worker Directory' })}
+        description={t('federation.workersPage.description', { defaultValue: 'Member directory across affiliated cooperative societies with verified skills.' })}
         badgeIcon={Users}
-        badgeText={t('federation.workersPage.badge', { count: workers.length, defaultValue: `${workers.length} Registered Members` })}
+        badgeText={t('federation.workersPage.badge', { count: workers.length, defaultValue: `${workers.length} Registered Workers` })}
       />
 
       {successToast && (
-        <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" />
+        <div className="p-2.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-medium text-xs flex items-center gap-2">
+          <CheckCircle2 className="w-3.5 h-3.5" />
           <span>{successToast}</span>
         </div>
       )}

@@ -36,19 +36,19 @@ export function WorkerVerificationPage() {
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t('worker.verification.workerName', 'Worker Name')}:</span>
             <span className="font-bold text-foreground">
-              {getTranslatedPersonName(t, user?.name || 'Ramesh Kumar')}
+              {getTranslatedPersonName(t, user?.name || 'Arun Electrician')}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t('worker.verification.society', 'Society')}:</span>
             <span className="font-medium text-foreground">
-              {getTranslatedSocietyName(t, profile?.societyName || 'Bengaluru South Cooperative Society')}
+              {getTranslatedSocietyName(t, profile?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society')}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t('worker.verification.membershipRef', 'Member ID')}:</span>
             <span className="font-mono font-bold text-foreground">
-              {profile?.membershipId || 'SOC-BLR-0042'}
+              {profile?.membershipId || 'MEM-CBE-001'}
             </span>
           </div>
           <div className="flex justify-between border-t border-border/60 pt-2">

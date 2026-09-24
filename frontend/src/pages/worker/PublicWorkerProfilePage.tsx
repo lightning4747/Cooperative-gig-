@@ -19,7 +19,7 @@ const VERIFIED_SKILLS: VerifiedSkill[] = [
     id: 'skill-1',
     category: 'ELECTRICAL SKILLS',
     title: 'Conduit Wiring & Mains Distribution',
-    issuer: 'Indiranagar Labour Cooperative',
+    issuer: 'Coimbatore City Labour & Artisans Cooperative Society',
     date: 'Certified: Sep 14, 2026',
     description: 'Residential wiring, mains distribution boards, and safety circuits.',
   },
@@ -27,7 +27,7 @@ const VERIFIED_SKILLS: VerifiedSkill[] = [
     id: 'skill-2',
     category: 'ELECTRICAL SKILLS',
     title: 'Domestic Switchgear & Protection',
-    issuer: 'Indiranagar Labour Cooperative',
+    issuer: 'Coimbatore City Labour & Artisans Cooperative Society',
     date: 'Certified: Sep 18, 2026',
     description: 'MCB/RCCB installation, surge protection, and safety testing.',
   },
@@ -35,7 +35,7 @@ const VERIFIED_SKILLS: VerifiedSkill[] = [
     id: 'skill-3',
     category: 'ELECTRICAL SKILLS',
     title: 'Inverter & Solar Backup Wiring',
-    issuer: 'Indiranagar Labour Cooperative',
+    issuer: 'Coimbatore City Labour & Artisans Cooperative Society',
     date: 'Certified: Sep 22, 2026',
     description: 'Inverter installation, battery connection, and backup wiring.',
   },
@@ -45,21 +45,21 @@ const RECENT_SERVICE_RECORDS = [
   {
     id: 'rec-1',
     task: 'Main Breaker Trip Diagnostics & Replacement',
-    locality: 'Indiranagar 12th Main',
+    locality: 'Gandhipuram Cross Cut Road',
     date: 'Sep 21, 2026',
     rating: 5.0,
   },
   {
     id: 'rec-2',
     task: '3-Phase Motor Starter Rewiring',
-    locality: 'Defence Colony',
+    locality: 'RS Puram West',
     date: 'Sep 19, 2026',
     rating: 4.8,
   },
   {
     id: 'rec-3',
     task: 'Kitchen Appliance Circuit Installation',
-    locality: 'HAL 2nd Stage',
+    locality: 'Peelamedu Main',
     date: 'Sep 16, 2026',
     rating: 4.9,
   },
@@ -74,8 +74,8 @@ export function PublicWorkerProfilePage() {
   const [copied, setCopied] = useState(false)
 
   const workerName = 'Arun Electrician'
-  const phone = '+91 98765 43210'
-  const societyName = 'Indiranagar Labour Cooperative Society'
+  const phone = '+91 98765 43211'
+  const societyName = 'Coimbatore City Labour & Artisans Cooperative Society'
 
   const handleShare = async () => {
     if (navigator.clipboard) {
@@ -244,7 +244,7 @@ export function PublicWorkerProfilePage() {
                 Verified Skills &amp; Certifications
               </h2>
               <p className="text-xs text-muted-foreground">
-                Certified by Indiranagar Labour Cooperative Society
+                Certified by {getTranslatedSocietyName(t, societyName)}
               </p>
             </div>
             <span className="text-xs font-semibold text-muted-foreground bg-secondary px-2.5 py-1 rounded-lg border border-border">
@@ -352,7 +352,7 @@ export function PublicWorkerProfilePage() {
                 Skill Certificate
               </h3>
               <p className="text-xs text-muted-foreground">
-                Indiranagar Labour Cooperative Society
+                {getTranslatedSocietyName(t, societyName)}
               </p>
             </div>
 

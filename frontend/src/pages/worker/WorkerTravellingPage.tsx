@@ -135,7 +135,7 @@ export function WorkerTravellingPage() {
                 {destinationArea}
               </h3>
               <p className="text-xs text-slate-600 line-clamp-2">
-                {job?.location.formattedAddress || 'Bengaluru'}
+                {job?.location.formattedAddress || 'Gandhipuram, Coimbatore'}
               </p>
             </div>
           </div>

@@ -29,16 +29,16 @@ export function ConfirmationPage() {
     basePrice: booking.basePrice || 500,
     scheduledAt: booking.scheduledAt,
     location: booking.location || {
-      latitude: 12.9279,
-      longitude: 77.6718,
-      formattedAddress: 'Flat 402, Green Glen Layout, Bellandur, Bengaluru 560103',
-      area: 'Bellandur',
+      latitude: 11.0183,
+      longitude: 76.9644,
+      formattedAddress: '7th Cross Road, Gandhipuram, Coimbatore 641012',
+      area: 'Gandhipuram',
     },
   }
 
   const handleFinalConfirm = async () => {
     try {
-      const customerId = user?.id || 'cust-priya-sharma'
+      const customerId = user?.id || '83cf9fc2-33be-4b62-82c6-73396ab41283'
       await confirmBooking(customerId)
     } catch (err) {
       console.error('Failed to create job:', err)

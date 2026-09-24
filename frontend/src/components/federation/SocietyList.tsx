@@ -16,19 +16,23 @@ export function SocietyList({ societies, onSelectSociety }: SocietyListProps) {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDistrict, setSelectedDistrict] = useState<string>('ALL')
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 6
 
   const districts = Array.from(new Set(societies.map((s) => s.district))).filter(Boolean)
 
   const filtered = societies.filter((s) => {
     const matchesSearch =
       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.registrationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.district.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesDistrict = selectedDistrict === 'ALL' || s.district === selectedDistrict
 
     return matchesSearch && matchesDistrict
   })
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
+  const paginatedSocieties = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   const handleViewWorkers = (soc: Society) => {
     if (onSelectSociety) {
@@ -41,23 +45,29 @@ export function SocietyList({ societies, onSelectSociety }: SocietyListProps) {
   return (
     <div className="space-y-4">
       {/* Search & District Filter */}
-      <div className="p-4 rounded-2xl border border-border bg-card shadow-xs grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="relative flex-1 w-full">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={t('federation.societiesPage.searchPlaceholder', { defaultValue: 'Search cooperative societies or registration number...' })}
-            className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+              setCurrentPage(1)
+            }}
+            placeholder={t('federation.societiesPage.searchPlaceholder', { defaultValue: 'Search cooperative societies...' })}
+            className="w-full h-8 pl-9 pr-3 rounded-md border border-border bg-background text-xs font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
           />
         </div>
 
-        <div>
+        <div className="w-full sm:w-56 shrink-0">
           <select
             value={selectedDistrict}
-            onChange={(e) => setSelectedDistrict(e.target.value)}
-            className="w-full p-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => {
+              setSelectedDistrict(e.target.value)
+              setCurrentPage(1)
+            }}
+            className="w-full h-8 px-2.5 rounded-md border border-border bg-background text-xs font-normal text-foreground focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
           >
             <option value="ALL">{t('federation.societiesPage.allDistricts', { defaultValue: 'All Districts' })}</option>
             {districts.map((d) => (
@@ -77,62 +87,103 @@ export function SocietyList({ societies, onSelectSociety }: SocietyListProps) {
           description={t('federation.societiesPage.emptyDesc', { defaultValue: 'No primary cooperative societies match your current filter criteria.' })}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((soc) => (
-            <div
-              key={soc.id}
-              className="p-5 rounded-2xl border border-border bg-card shadow-xs flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors"
-            >
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Building2 className="w-5 h-5" />
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {paginatedSocieties.map((soc) => (
+              <div
+                key={soc.id}
+                className="p-4 rounded-md border border-border bg-card flex flex-col justify-between space-y-3 hover:border-zinc-400 dark:hover:border-zinc-700 transition-colors"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="space-y-0.5 min-w-0">
+                      <h3 className="text-sm font-semibold text-foreground leading-snug truncate">
+                        {getTranslatedSocietyName(t, soc.name)}
+                      </h3>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <MapPin className="w-3 h-3 text-muted-foreground shrink-0" />
+                        <span className="truncate">
+                          {soc.district}, {soc.state}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-mono text-[11px] font-bold text-muted-foreground bg-secondary px-2 py-0.5 rounded border border-border/60">
-                    {soc.registrationNumber}
-                  </span>
+
+                  <div className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>{t('federation.societiesPage.registeredBadge', { defaultValue: 'Registered Member' })}</span>
+                  </div>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-sm font-bold text-foreground leading-snug">
-                    {getTranslatedSocietyName(t, soc.name)}
-                  </h3>
+                <div className="pt-3 border-t border-border flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <MapPin className="w-3.5 h-3.5 text-primary/70 shrink-0" />
+                    <Users className="w-3.5 h-3.5 text-muted-foreground" />
                     <span>
-                      {soc.district}, {soc.state}
+                      <strong className="font-mono tabular-nums text-foreground font-semibold text-xs">
+                        {soc.workerCount}
+                      </strong>{' '}
+                      {t('federation.societiesPage.activeWorkers', { defaultValue: 'Members' })}
                     </span>
                   </div>
-                </div>
 
-                <div className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <CheckCircle2 className="w-3 h-3" />
-                  <span>{t('federation.societiesPage.registeredBadge', { defaultValue: 'NCCT Registered Primary Cooperative' })}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleViewWorkers(soc)}
+                    className="h-8 px-2.5 rounded-md border border-border bg-background hover:bg-muted text-foreground text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <span>{t('federation.societiesPage.viewWorkers', { defaultValue: 'View Workers' })}</span>
+                    <ArrowRight className="w-3 h-3 text-muted-foreground" />
+                  </button>
                 </div>
               </div>
+            ))}
+          </div>
 
-              <div className="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <Users className="w-4 h-4 text-primary" />
-                  <span>
-                    <strong className="font-mono text-foreground font-bold text-sm">
-                      {soc.workerCount}
-                    </strong>{' '}
-                    {t('federation.societiesPage.activeWorkers', { defaultValue: 'Members' })}
-                  </span>
+          {/* Pagination Controls */}
+          {filtered.length > pageSize && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-2.5 bg-card border border-border rounded-md text-xs text-muted-foreground">
+              <span className="tabular-nums">
+                Showing {(currentPage - 1) * pageSize + 1} to{' '}
+                {Math.min(currentPage * pageSize, filtered.length)} of {filtered.length} societies
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+                >
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`h-7 w-7 rounded text-xs font-mono font-medium transition-colors ${
+                        currentPage === pageNum
+                          ? 'bg-foreground text-background font-semibold'
+                          : 'border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => handleViewWorkers(soc)}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-secondary/80 hover:bg-secondary text-foreground text-xs font-bold border border-border min-h-[44px] transition-colors"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
                 >
-                  <span>{t('federation.societiesPage.viewWorkers', { defaultValue: 'View Workers' })}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  Next
                 </button>
               </div>
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>

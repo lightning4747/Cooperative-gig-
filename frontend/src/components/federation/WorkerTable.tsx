@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Search, CheckCircle2, Phone, Star, User } from 'lucide-react'
+import { Search, User } from 'lucide-react'
 import type { WorkerProfile, WorkerStatus } from '@/types/worker'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { cn } from '@/lib/utils'
+
 
 interface WorkerTableProps {
   workers: WorkerProfile[]
@@ -25,6 +25,9 @@ export function WorkerTable({
   // Extract unique societies
   const societies = Array.from(new Set(workers.map((w) => w.societyName))).filter(Boolean)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 8
+
   const filtered = workers.filter((w) => {
     const matchesSearch =
       w.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -38,41 +41,51 @@ export function WorkerTable({
     return matchesSearch && matchesStatus && matchesSociety
   })
 
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1
+  const paginatedWorkers = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
   return (
-    <div className="space-y-4">
-      {/* Search and Filters Bar with Institutional Focus Rings */}
-      <div className="p-4 rounded-2xl border border-border bg-card shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="relative sm:col-span-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+    <div className="space-y-3">
+      {/* Search and Filters Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+        <div className="relative flex-1">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={t('federation.workerTable.searchPlaceholder', { defaultValue: 'Search worker name, skill, UAN, ID...' })}
-            className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+              setCurrentPage(1)
+            }}
+            placeholder={t('federation.workerTable.searchPlaceholder', { defaultValue: 'Search worker name, skill, society...' })}
+            className="w-full pl-9 pr-3 py-1.5 rounded-md border border-border text-xs bg-background h-8 focus:outline-none focus:ring-1 focus:ring-foreground"
           />
         </div>
 
-        <div>
+        <div className="flex items-center gap-2">
           <select
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="w-full p-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            onChange={(e) => {
+              setSelectedStatus(e.target.value)
+              setCurrentPage(1)
+            }}
+            className="px-2.5 py-1.5 rounded-md border border-border text-xs bg-background h-8 focus:outline-none focus:ring-1 focus:ring-foreground text-foreground"
           >
-            <option value="ALL">{t('federation.workerTable.filterAllStatus', { defaultValue: 'All Verification Statuses' })}</option>
-            <option value="ACTIVE">ACTIVE / VERIFIED</option>
-            <option value="PENDING_VERIFICATION">PENDING VERIFICATION</option>
-            <option value="SUSPENDED">SUSPENDED</option>
+            <option value="ALL">{t('federation.workerTable.filterAllStatus', { defaultValue: 'All Statuses' })}</option>
+            <option value="ACTIVE">Active / Verified</option>
+            <option value="PENDING_VERIFICATION">Pending</option>
+            <option value="SUSPENDED">Suspended</option>
           </select>
-        </div>
 
-        <div>
           <select
             value={selectedSociety}
-            onChange={(e) => setSelectedSociety(e.target.value)}
-            className="w-full p-2.5 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            onChange={(e) => {
+              setSelectedSociety(e.target.value)
+              setCurrentPage(1)
+            }}
+            className="px-2.5 py-1.5 rounded-md border border-border text-xs bg-background h-8 focus:outline-none focus:ring-1 focus:ring-foreground text-foreground max-w-xs truncate"
           >
-            <option value="ALL">{t('federation.workerTable.filterAllSocieties', { defaultValue: 'All Cooperative Societies' })}</option>
+            <option value="ALL">{t('federation.workerTable.filterAllSocieties', { defaultValue: 'All Cooperatives' })}</option>
             {societies.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -82,7 +95,7 @@ export function WorkerTable({
         </div>
       </div>
 
-      {/* Workers Table - Full-Width High Density Desktop Table */}
+      {/* Workers Table */}
       {filtered.length === 0 ? (
         <EmptyState
           icon={User}
@@ -90,111 +103,98 @@ export function WorkerTable({
           description={t('federation.workerTable.noWorkersDesc', { defaultValue: 'Try altering your search filters or clear society selection.' })}
         />
       ) : (
-        <div className="rounded-2xl border border-border bg-card shadow-xs overflow-hidden">
+        <div className="rounded-md border border-border bg-card overflow-hidden">
           <div className="overflow-x-auto max-h-[calc(100vh-280px)] overflow-y-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="sticky top-0 z-10 bg-secondary text-muted-foreground text-xs font-bold uppercase tracking-wider border-b border-border/80 shadow-2xs">
-                  <th className="p-4 min-w-[200px]">{t('federation.workerTable.colMember', { defaultValue: 'Worker Member' })}</th>
-                  <th className="p-4 min-w-[190px]">{t('federation.workerTable.colSociety', { defaultValue: 'Cooperative Society' })}</th>
-                  <th className="p-4 min-w-[220px]">{t('federation.workerTable.colSkills', { defaultValue: 'Verified Skills' })}</th>
-                  <th className="p-4 min-w-[130px]">{t('federation.workerTable.colAvailability', { defaultValue: 'Availability' })}</th>
-                  <th className="p-4 min-w-[100px]">{t('federation.workerTable.colRating', { defaultValue: 'Rating' })}</th>
-                  <th className="p-4 min-w-[140px]">{t('federation.workerTable.colStatus', { defaultValue: 'Status' })}</th>
-                  <th className="p-4 text-right min-w-[140px]">{t('federation.workerTable.colActions', { defaultValue: 'Actions' })}</th>
+                <tr className="sticky top-0 z-10 bg-muted/40 text-muted-foreground text-[11px] font-medium uppercase tracking-wider border-b border-border">
+                  <th className="px-4 py-2.5 min-w-[200px]">{t('federation.workerTable.colMember', { defaultValue: 'Worker Member' })}</th>
+                  <th className="px-4 py-2.5 min-w-[190px]">{t('federation.workerTable.colSociety', { defaultValue: 'Cooperative' })}</th>
+                  <th className="px-4 py-2.5 min-w-[220px]">{t('federation.workerTable.colSkills', { defaultValue: 'Verified Skills' })}</th>
+                  <th className="px-4 py-2.5 min-w-[130px]">{t('federation.workerTable.colAvailability', { defaultValue: 'Availability' })}</th>
+                  <th className="px-4 py-2.5 min-w-[90px] text-center">{t('federation.workerTable.colRating', { defaultValue: 'Rating' })}</th>
+                  <th className="px-4 py-2.5 min-w-[140px]">{t('federation.workerTable.colStatus', { defaultValue: 'Status' })}</th>
+                  <th className="px-4 py-2.5 text-right min-w-[130px]">{t('federation.workerTable.colActions', { defaultValue: 'Actions' })}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                {filtered.map((worker) => (
+                {paginatedWorkers.map((worker) => (
                   <tr
                     key={worker.userId}
-                    className="hover:bg-muted/40 transition-colors cursor-pointer"
+                    className="hover:bg-muted/30 transition-colors cursor-pointer"
                     onClick={() => onSelectWorker?.(worker)}
                   >
                     {/* Worker Info */}
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400 border border-blue-200/60 flex items-center justify-center font-black text-xs shadow-2xs shrink-0">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-md bg-muted text-foreground border border-border flex items-center justify-center font-medium text-xs shrink-0">
                           {worker.name[0]}
                         </div>
                         <div className="min-w-0">
-                          <span className="font-bold text-foreground block">
+                          <span className="font-medium text-foreground block truncate">
                             {worker.name}
                           </span>
-                          <span className="text-[11px] text-muted-foreground font-mono flex items-center gap-1">
-                            <Phone className="w-3 h-3 text-muted-foreground" />
+                          <span className="text-[11px] text-muted-foreground font-mono tabular-nums">
                             +91 {worker.phone}
                           </span>
                         </div>
                       </div>
                     </td>
 
-                    {/* Society & Membership */}
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <span className="font-medium text-foreground block">
-                          {worker.societyName}
-                        </span>
-                        <span className="text-[10px] font-mono font-semibold text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border/60 inline-block">
-                          {worker.membershipId}
-                        </span>
-                      </div>
+                    {/* Society */}
+                    <td className="px-4 py-3">
+                      <span className="text-foreground block truncate">
+                        {worker.societyName}
+                      </span>
                     </td>
 
                     {/* Skills */}
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-1.5">
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-1">
                         {worker.skills.map((sk) => (
                           <span
                             key={sk.id}
-                            className={cn(
-                              'px-2.5 py-0.5 rounded-md text-[10px] font-medium border flex items-center gap-1 shadow-2xs',
-                              sk.isVerified
-                                ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20'
-                                : 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20'
-                            )}
+                            className="px-1.5 py-0.5 rounded text-[11px] font-medium border border-border bg-muted/40 text-foreground"
                           >
-                            {sk.isVerified && <CheckCircle2 className="w-3 h-3 shrink-0" />}
-                            <span>{sk.subserviceName}</span>
+                            {sk.subserviceName}
                           </span>
                         ))}
                       </div>
                     </td>
 
                     {/* Availability */}
-                    <td className="p-4">
+                    <td className="px-4 py-3">
                       <StatusBadge status={worker.availability} />
                     </td>
 
                     {/* Rating */}
-                    <td className="p-4">
-                      <div className="flex items-center gap-1 font-mono font-bold text-foreground">
-                        <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                        <span>{worker.rating > 0 ? worker.rating.toFixed(1) : '-'}</span>
-                      </div>
+                    <td className="px-4 py-3 text-center">
+                      <span className="font-mono text-foreground text-xs tabular-nums font-medium">
+                        {worker.rating > 0 ? worker.rating.toFixed(1) : '-'}
+                      </span>
                     </td>
 
                     {/* Verification Status */}
-                    <td className="p-4">
+                    <td className="px-4 py-3">
                       <StatusBadge status={worker.status} />
                     </td>
 
                     {/* Actions */}
-                    <td className="p-4 text-right" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-end gap-1.5">
                         {worker.status === 'PENDING_VERIFICATION' && onStatusChange && (
                           <button
                             type="button"
                             onClick={() => onStatusChange(worker.userId, 'ACTIVE')}
-                            className="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-xs hover:bg-blue-700 min-h-[36px] transition-colors"
+                            className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted text-foreground text-xs font-medium transition-colors"
                           >
-                            {t('federation.workerTable.verifyAndActivate', { defaultValue: 'Verify & Activate' })}
+                            {t('federation.workerTable.verifyAndActivate', { defaultValue: 'Verify' })}
                           </button>
                         )}
                         <button
                           type="button"
                           onClick={() => onSelectWorker?.(worker)}
-                          className="px-3 py-1.5 rounded-xl border border-border bg-secondary/80 hover:bg-secondary text-foreground text-xs font-semibold min-h-[36px] transition-colors shadow-2xs"
+                          className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted text-foreground text-xs font-medium transition-colors"
                         >
                           {t('federation.workerTable.details', { defaultValue: 'Details' })}
                         </button>
@@ -204,6 +204,51 @@ export function WorkerTable({
                 ))}
               </tbody>
             </table>
+
+            {/* Pagination Controls */}
+            {filtered.length > pageSize && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-2.5 bg-card border-t border-border text-xs text-muted-foreground">
+                <span className="tabular-nums">
+                  Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, filtered.length)} of {filtered.length} members
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+                  >
+                    Previous
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        type="button"
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`h-7 w-7 rounded text-xs font-mono font-medium transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-foreground text-background font-semibold'
+                            : 'border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted disabled:opacity-40 text-xs font-medium transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

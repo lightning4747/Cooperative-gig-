@@ -15,7 +15,7 @@ export function LocationPage() {
         latitude: loc.latitude,
         longitude: loc.longitude,
         formattedAddress: loc.formattedAddress,
-        area: loc.area || 'Bengaluru',
+        area: loc.area || 'Coimbatore',
       },
     })
     navigate('/customer/booking/confirmation')

@@ -53,7 +53,7 @@ export function WorkerSignUpPage() {
   const [experienceYears, setExperienceYears] = useState('4')
   const [attachedFileName, setAttachedFileName] = useState<string | null>(null)
 
-  // Skill Certificate states (Verification URL / Code + Document)
+  // Skill Certificate states (Skill India / NCVT Certificate Code + Document)
   const [certVerificationUrl, setCertVerificationUrl] = useState('')
   const [certFileName, setCertFileName] = useState<string | null>(null)
 
@@ -292,7 +292,7 @@ export function WorkerSignUpPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t('workerSignUp.namePlaceholder', {
-                  defaultValue: 'e.g. Ramesh Kumar / Pooja Sharma',
+                  defaultValue: 'e.g. Arun Electrician / Kavitha',
                 })}
                 required
                 className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-muted-foreground"
@@ -513,12 +513,12 @@ export function WorkerSignUpPage() {
               )}
             </div>
 
-            {/* Skill Certificate & Verification URL (Matching user reference) */}
+            {/* Skill Certificate Code & Document */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-              {/* Verification URL / Code */}
+              {/* Skill India / NCVT Certificate Code */}
               <div className="space-y-1.5">
                 <label htmlFor="certVerificationUrl" className="text-xs font-semibold text-foreground">
-                  {t('workerSignUp.certUrlLabel', { defaultValue: 'Verification url' })}
+                  {t('workerSignUp.certUrlLabel', { defaultValue: 'Skill India / NCVT Certificate Code' })}
                 </label>
                 <input
                   id="certVerificationUrl"
@@ -526,13 +526,13 @@ export function WorkerSignUpPage() {
                   value={certVerificationUrl}
                   onChange={(e) => setCertVerificationUrl(e.target.value)}
                   placeholder={t('workerSignUp.certUrlPlaceholder', {
-                    defaultValue: 'e.g. https://skillindia.gov.in/verify/... or NCVT-10492',
+                    defaultValue: 'e.g. NCVT-10492 or SC-2024-8891',
                   })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-muted-foreground"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-muted-foreground"
                 />
                 <p className="text-[11px] text-muted-foreground">
                   {t('workerSignUp.certUrlHint', {
-                    defaultValue: 'Certificate Verification URL or Code (if available)',
+                    defaultValue: 'Skill India Digital (SID) or NCVT certificate registration number (if available)',
                   })}
                 </p>
               </div>
@@ -843,7 +843,7 @@ export function WorkerSignUpPage() {
                   <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-foreground">
                     {certVerificationUrl && (
                       <span className="px-2 py-0.5 rounded bg-background border border-border font-semibold truncate max-w-xs">
-                        🔗 {certVerificationUrl}
+                        🏷️ Code: {certVerificationUrl}
                       </span>
                     )}
                     {certFileName && (

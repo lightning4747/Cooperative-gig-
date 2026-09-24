@@ -13,22 +13,38 @@ interface FederationPageHeaderProps {
 
 export function FederationPageHeader({
   title,
+  description,
+  badgeIcon: BadgeIcon,
+  badgeText,
   actions,
   className,
 }: FederationPageHeaderProps) {
   return (
     <div
       className={cn(
-        'p-6 rounded-2xl bg-card border border-border shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4',
+        'pb-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4',
         className
       )}
     >
-      <div className="space-y-1.5 min-w-0">
-        <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight">
-          {title}
-        </h1>
+      <div className="space-y-1 min-w-0">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            {title}
+          </h1>
+          {badgeText && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/80">
+              {BadgeIcon && <BadgeIcon className="w-3.5 h-3.5 text-blue-600 shrink-0" />}
+              <span>{badgeText}</span>
+            </span>
+          )}
+        </div>
+        {description && (
+          <p className="text-xs text-slate-500 max-w-3xl leading-relaxed">
+            {description}
+          </p>
+        )}
       </div>
-      {actions && <div className="flex items-center gap-3 shrink-0">{actions}</div>}
+      {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
     </div>
   )
 }

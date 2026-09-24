@@ -18,10 +18,10 @@ export function FederationJobsPage() {
   return (
     <div className="space-y-6">
       <FederationPageHeader
-        title={t('federation.jobsPage.title', { defaultValue: 'Job Operations Ledger' })}
-        description={t('federation.jobsPage.description', { defaultValue: 'All member tasks across standard scheduled, on-demand, and emergency priority channels with statutory pricing audits.' })}
+        title={t('federation.jobsPage.title', { defaultValue: 'Job Operations' })}
+        description={t('federation.jobsPage.description', { defaultValue: 'All service bookings across scheduled, on-demand, and emergency channels.' })}
         badgeIcon={ClipboardList}
-        badgeText={t('federation.jobsPage.badge', { count: jobs.length, defaultValue: `${jobs.length} Operations Logged` })}
+        badgeText={t('federation.jobsPage.badge', { count: jobs.length, defaultValue: `${jobs.length} Jobs Logged` })}
       />
 
       <JobsTable

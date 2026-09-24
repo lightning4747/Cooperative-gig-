@@ -37,7 +37,7 @@ const FALLBACK_BOOKINGS: Job[] = [
     createdAt: '2026-03-20T10:00:00.000Z',
     basePrice: 450,
     grossAmount: 450,
-    location: { area: 'Indiranagar' },
+    location: { area: 'Gandhipuram, Coimbatore' },
   } as Job,
   {
     id: 'job-demo-02',
@@ -49,7 +49,7 @@ const FALLBACK_BOOKINGS: Job[] = [
     createdAt: '2026-03-19T10:00:00.000Z',
     basePrice: 450,
     grossAmount: 450,
-    location: { area: 'Koramangala' },
+    location: { area: 'RS Puram, Coimbatore' },
   } as Job,
 ]
 

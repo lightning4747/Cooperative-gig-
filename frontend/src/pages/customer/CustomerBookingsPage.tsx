@@ -235,10 +235,6 @@ function BookingCard({ booking }: { booking: Job }) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground font-mono">
-              #{booking.id.slice(-6)}
-            </span>
-            <span className="text-[10px] text-muted-foreground font-semibold">·</span>
             <span className="text-[10px] text-muted-foreground font-semibold uppercase">
               {categoryTitle}
             </span>
@@ -275,9 +271,7 @@ function BookingCard({ booking }: { booking: Job }) {
           <span className="font-mono font-black text-sm text-foreground">
             {formatCurrency(booking.grossAmount || booking.basePrice || 450)}
           </span>
-          <span className="block text-[10px] text-muted-foreground">
-            {t('customer.includesWelfare', { defaultValue: 'Includes Welfare Cess' })}
-          </span>
+
         </div>
       </div>
 

@@ -24,11 +24,11 @@ const sampleInvoice = {
   paymentId: 'sample-pay-1',
   serviceCategory: 'Plumbing',
   subservice: 'Tap & Valve Repair',
-  customerName: 'Citizen Member',
-  workerName: 'Ramesh Kumar',
-  societyName: 'Bengaluru South Labour Cooperative Society',
-  societyRegistrationNumber: 'SOC-BLR-2024-001',
-  workerEShramRef: 'XXXXXXXX1234',
+  customerName: 'Ravi Kumar',
+  workerName: 'Arun Electrician',
+  societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
+  societyRegistrationNumber: 'TN-CBE-2023-011',
+  workerEShramRef: 'XXXXXXXX9011',
   servicePrice: 500,
   basePrice: 500,
   surplus: 0,
@@ -166,12 +166,12 @@ export function ShowcasePage() {
               {t('gis.title', { defaultValue: 'Cooperative Geo-Location Service (GIS)' })}
             </h3>
             <MapView
-              latitude={12.9352}
-              longitude={77.6245}
-              label="Koramangala 4th Block, Bengaluru"
+              latitude={11.0183}
+              longitude={76.9644}
+              label="Gandhipuram, Coimbatore"
               markers={[
-                { id: '1', latitude: 12.9380, longitude: 77.6240, title: 'Ramesh (1.2 km)', isWorker: true },
-                { id: '2', latitude: 12.9320, longitude: 77.6310, title: 'Suresh (2.1 km)', isWorker: true },
+                { id: '1', latitude: 11.0195, longitude: 76.9655, title: 'Arun Electrician (0.4 km)', isWorker: true },
+                { id: '2', latitude: 11.0160, longitude: 76.9620, title: 'Karthik Plumber (0.7 km)', isWorker: true },
               ]}
             />
           </div>

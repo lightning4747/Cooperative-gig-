@@ -22,14 +22,17 @@ export function PaymentPage() {
     }
   }
 
+  const rawId = job?.id || targetId || ''
+  const formattedJobId = rawId.replace(/^job-/, '').slice(0, 8).toUpperCase()
+
   return (
     <div className="space-y-6">
       <PageHeader
         backTo={`/customer/jobs/${targetId}/tracking`}
         title={t('payment.settlementTitle', { defaultValue: 'Service Settlement' })}
         subtitle={t('payment.settlementSubtitle', {
-          id: targetId,
-          defaultValue: `Job #${targetId} · Ethical wage floor with surplus cooperative protection`,
+          id: formattedJobId,
+          defaultValue: `Job #${formattedJobId} · Ethical wage floor with cooperative protection`,
         })}
       />
 

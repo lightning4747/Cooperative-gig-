@@ -28,57 +28,57 @@ export function GapCapacityMatrix({ capacity, categories }: GapCapacityMatrixPro
         </h2>
         <p className="text-xs text-muted-foreground">
           {t('federation.capacity.matrixSubtitle', {
-            defaultValue: 'Comparing real verified cooperative worker availability against trade category demand.',
+            defaultValue: 'Comparing real verified cooperative worker availability against skill demand.',
           })}
         </p>
       </div>
 
       {/* Capacity Overview Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl border border-border bg-card shadow-xs">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <Users className="w-4 h-4" />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Users className="w-3.5 h-3.5" />
             <span className="text-[11px] font-medium uppercase tracking-wider">
               {t('federation.capacity.totalWorkers', { defaultValue: 'Registered' })}
             </span>
           </div>
-          <div className="text-2xl font-black text-foreground font-mono">
+          <div className="text-2xl font-semibold text-foreground font-mono tabular-nums">
             {capacity.totalRegisteredWorkers}
           </div>
         </div>
 
-        <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 shadow-xs">
-          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-1">
-            <CheckCircle2 className="w-4 h-4" />
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             <span className="text-[11px] font-medium uppercase tracking-wider">
               {t('federation.capacity.verifiedWorkers', { defaultValue: 'Active & Verified' })}
             </span>
           </div>
-          <div className="text-2xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
+          <div className="text-2xl font-semibold text-foreground font-mono tabular-nums">
             {capacity.verifiedWorkers}
           </div>
         </div>
 
-        <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 shadow-xs">
-          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
-            <Clock className="w-4 h-4" />
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-500" />
             <span className="text-[11px] font-medium uppercase tracking-wider">
               {t('federation.capacity.pendingWorkers', { defaultValue: 'Pending Verification' })}
             </span>
           </div>
-          <div className="text-2xl font-black text-amber-700 dark:text-amber-300 font-mono">
+          <div className="text-2xl font-semibold text-foreground font-mono tabular-nums">
             {capacity.pendingWorkers}
           </div>
         </div>
 
-        <div className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/5 shadow-xs">
-          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
-            <Users className="w-4 h-4" />
+        <div className="p-4 rounded-md border border-border bg-card space-y-1">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Users className="w-3.5 h-3.5" />
             <span className="text-[11px] font-medium uppercase tracking-wider">
-              {t('federation.capacity.onlineWorkers', { defaultValue: 'Online / Available' })}
+              {t('federation.capacity.onlineWorkers', { defaultValue: 'Online Available' })}
             </span>
           </div>
-          <div className="text-2xl font-black text-blue-700 dark:text-blue-300 font-mono">
+          <div className="text-2xl font-semibold text-foreground font-mono tabular-nums">
             {capacity.activeOnlineWorkers}
           </div>
         </div>
@@ -86,35 +86,34 @@ export function GapCapacityMatrix({ capacity, categories }: GapCapacityMatrixPro
 
       {/* Critical Gaps Warning Banner if Any */}
       {deficientCategories.length > 0 && (
-        <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/10 flex items-start gap-3">
-          <ShieldAlert className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <h4 className="text-sm font-bold text-destructive">
+        <div className="p-3.5 rounded-md border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 flex items-start gap-3">
+          <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+          <div className="space-y-0.5">
+            <h4 className="text-xs font-semibold text-rose-700 dark:text-rose-300">
               {t('federation.capacity.zeroWorkerAlert', {
                 count: deficientCategories.length,
                 defaultValue: `Deficit Alert: ${deficientCategories.length} Categories have 0 Active Workers`,
               })}
             </h4>
-            <p className="text-xs text-destructive/90">
-              The following trades have no verified workers and cannot fulfill dispatch requests:{' '}
-              <span className="font-bold">
+            <p className="text-xs text-rose-600 dark:text-rose-400/90 leading-relaxed">
+              The following skills have no verified workers and cannot fulfill dispatch requests:{' '}
+              <span className="font-semibold">
                 {deficientCategories.map((c) => c.categoryName).join(', ')}
               </span>
-              . Recruitment and onboarding verification should be prioritized immediately.
+              . Prioritize recruitment and onboarding verification.
             </p>
           </div>
         </div>
       )}
 
       {/* Category Gap Breakdown Grid */}
-      <div className="p-5 rounded-2xl border border-border bg-card shadow-xs space-y-4">
-        <h3 className="text-sm font-bold text-foreground">
-          {t('federation.capacity.tradeDistribution', { defaultValue: 'Trade Capacity Distribution Matrix' })}
+      <div className="p-4 rounded-md border border-border bg-card space-y-3">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          {t('federation.capacity.tradeDistribution', { defaultValue: 'Skill Availability Matrix' })}
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {categories.map((cat) => {
-            const hasWorkers = cat.verifiedWorkers > 0
             const isDeficit = cat.verifiedWorkers === 0
             const isHighDemand = cat.totalJobs > 5
 
@@ -122,40 +121,38 @@ export function GapCapacityMatrix({ capacity, categories }: GapCapacityMatrixPro
               <div
                 key={cat.categoryId}
                 className={cn(
-                  'p-4 rounded-xl border transition-all space-y-3',
+                  'p-3.5 rounded-md border transition-colors space-y-2.5',
                   isDeficit
-                    ? 'border-destructive/30 bg-destructive/5'
-                    : hasWorkers
-                    ? 'border-border bg-muted/10'
-                    : 'border-border bg-card'
+                    ? 'border-rose-200 dark:border-rose-900 bg-rose-50/40 dark:bg-rose-950/20'
+                    : 'border-border bg-background'
                 )}
               >
                 <div className="flex items-center justify-between">
-                  <div className="font-bold text-sm text-foreground">{cat.categoryName}</div>
+                  <div className="font-semibold text-xs text-foreground">{cat.categoryName}</div>
                   {isDeficit ? (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-destructive text-destructive-foreground">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                       <AlertTriangle className="w-3 h-3" />
                       {t('federation.capacity.deficitBadge', { defaultValue: 'CRITICAL SHORTAGE' })}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                       <CheckCircle2 className="w-3 h-3" />
-                      {t('federation.capacity.coveredBadge', { defaultValue: 'ACTIVE COVERAGE' })}
+                      {t('federation.capacity.coveredBadge', { defaultValue: 'ACTIVE' })}
                     </span>
                   )}
                 </div>
 
                 {/* Progress ratio of jobs to workers */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs font-mono text-muted-foreground">
+                  <div className="flex justify-between text-xs font-mono tabular-nums text-muted-foreground text-[11px]">
                     <span>{t('federation.capacity.verifiedCapacity', { defaultValue: 'Verified Workforce' })}</span>
-                    <span className="font-bold text-foreground">{cat.verifiedWorkers} workers</span>
+                    <span className="font-medium text-foreground">{cat.verifiedWorkers} members</span>
                   </div>
-                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-muted rounded overflow-hidden">
                     <div
                       className={cn(
-                        'h-full rounded-full transition-all',
-                        isDeficit ? 'bg-destructive' : 'bg-primary'
+                        'h-full rounded transition-all',
+                        isDeficit ? 'bg-rose-600' : 'bg-foreground'
                       )}
                       style={{
                         width: `${Math.min(100, (cat.verifiedWorkers / Math.max(1, capacity.verifiedWorkers)) * 100)}%`,
@@ -164,22 +161,22 @@ export function GapCapacityMatrix({ capacity, categories }: GapCapacityMatrixPro
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border/60 text-xs">
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border text-xs">
                   <div>
-                    <span className="text-muted-foreground block text-[11px]">
+                    <span className="text-muted-foreground block text-[10px] uppercase font-medium">
                       {t('federation.capacity.historicalJobs', { defaultValue: 'Historical Jobs' })}
                     </span>
-                    <span className="font-bold font-mono text-foreground">{cat.totalJobs}</span>
+                    <span className="font-mono tabular-nums font-semibold text-foreground text-xs">{cat.totalJobs}</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground block text-[11px]">
-                      {t('federation.capacity.statusAssessment', { defaultValue: 'Status Assessment' })}
+                    <span className="text-muted-foreground block text-[10px] uppercase font-medium">
+                      {t('federation.capacity.statusAssessment', { defaultValue: 'Status' })}
                     </span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-medium text-foreground text-xs">
                       {isDeficit
                         ? 'Recruitment Needed'
                         : isHighDemand
-                        ? 'High Demand Trade'
+                        ? 'High Demand'
                         : 'Adequate'}
                     </span>
                   </div>

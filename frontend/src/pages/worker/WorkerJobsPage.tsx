@@ -78,17 +78,17 @@ export function WorkerJobsPage() {
 
   const jobMarkers = displayedJobs.map((j, idx) => ({
     id: j.id,
-    latitude: j.location?.latitude || 12.9344 + idx * 0.012,
-    longitude: j.location?.longitude || 77.6101 + (idx % 2 === 0 ? 0.008 : -0.008),
+    latitude: j.location?.latitude || 11.0183 + idx * 0.012,
+    longitude: j.location?.longitude || 76.9644 + (idx % 2 === 0 ? 0.008 : -0.008),
     stopNumber: idx + 1,
     title: getTranslatedSubserviceName(t, j.subserviceId, j.subserviceName),
-    subtitle: `${j.location?.area || j.location?.formattedAddress || 'Bengaluru'} · ₹${j.basePrice}`,
+    subtitle: `${j.location?.area || j.location?.formattedAddress || 'Coimbatore'} · ₹${j.basePrice}`,
     actionUrl: `/worker/jobs/${j.id}`,
     actionLabel: j.status === 'COMPLETED' ? 'View Details →' : 'Open Job →',
   }))
 
-  const mapCenterLat = jobMarkers[0]?.latitude || 12.9344
-  const mapCenterLng = jobMarkers[0]?.longitude || 77.6101
+  const mapCenterLat = jobMarkers[0]?.latitude || 11.0183
+  const mapCenterLng = jobMarkers[0]?.longitude || 76.9644
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -274,7 +274,7 @@ export function WorkerJobsPage() {
                     />
                     <div className="absolute top-3 left-3 z-[1000] flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/95 border border-slate-200 shadow-sm text-xs font-bold text-slate-900 pointer-events-none">
                       <MapPin className="w-3.5 h-3.5 text-amber-600" />
-                      <span>{jobMarkers.length} Scheduled Jobs in Bengaluru</span>
+                      <span>{jobMarkers.length} Scheduled Jobs in Coimbatore</span>
                     </div>
                   </div>
 
@@ -297,7 +297,7 @@ export function WorkerJobsPage() {
                             {getTranslatedSubserviceName(t, j.subserviceId, j.subserviceName)}
                           </h4>
                           <p className="text-[11px] text-slate-500 truncate">
-                            {j.location?.formattedAddress || 'Bengaluru'}
+                            {j.location?.formattedAddress || 'Coimbatore'}
                           </p>
                         </div>
                         <div className="flex items-center justify-between text-xs pt-1.5 border-t border-slate-100">

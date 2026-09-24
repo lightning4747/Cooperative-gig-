@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   CreditCard,
-  Lock,
   Loader2,
   Wallet,
   Smartphone,
@@ -116,16 +115,6 @@ export function PaymentScreen({
             </span>
           </button>
         </div>
-      </div>
-
-      {/* Security Note */}
-      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-        <Lock className="w-3.5 h-3.5 text-emerald-600" />
-        <span>
-          {t('payment.escrowProtected', {
-            defaultValue: '100% Secure & encrypted payment.',
-          })}
-        </span>
       </div>
 
       {error && (

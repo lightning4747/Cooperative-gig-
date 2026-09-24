@@ -21,13 +21,13 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide',
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium border border-border/50',
         config.bgClass,
         config.textClass,
         className
       )}
     >
-      <span className={cn('h-1.5 w-1.5 rounded-full', config.dotClass)} />
+      <span className={cn('h-1.5 w-1.5 rounded-full shrink-0', config.dotClass)} />
       {label}
     </span>
   )

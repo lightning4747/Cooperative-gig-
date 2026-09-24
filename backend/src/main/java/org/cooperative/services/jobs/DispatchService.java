@@ -34,11 +34,11 @@ public class DispatchService {
                   LEAST(24,COALESCE(EXTRACT(epoch FROM now()-(SELECT max(k.completed_at) FROM job k WHERE k.worker_id=w.user_id))/3600,24)) AS idle_hours
                 FROM worker w JOIN worker_skill ws ON ws.worker_id=w.user_id JOIN subservice s ON s.category_id=ws.category_id JOIN job j ON j.subservice_id=s.id
                 WHERE j.id=:job AND w.verification_status='ACTIVE' AND ws.verified AND w.is_available
-                  AND w.location_updated_at>now()-interval '15 minutes'
+                  AND (w.location_updated_at IS NULL OR w.location_updated_at>now()-interval '24 hours')
                   AND ST_DWithin(w.current_location,j.service_location,j.dispatch_radius_m)
                   AND NOT EXISTS(SELECT 1 FROM job busy WHERE busy.worker_id=w.user_id AND busy.status IN ('ACCEPTED','TRAVELLING','ARRIVED','IN_PROGRESS'))
                   AND (NOT :exclude OR NOT EXISTS(SELECT 1 FROM job_offer o WHERE o.job_id=j.id AND o.worker_id=w.user_id))
-                ORDER BY w.user_id
+                ORDER BY distance_m ASC, w.user_id
                 """,
             p("job", job.get("id"), "exclude", excludeAttempted));
     if (!strictList.isEmpty()) {
@@ -52,7 +52,7 @@ public class DispatchService {
                 FROM worker w JOIN worker_skill ws ON ws.worker_id=w.user_id JOIN subservice s ON s.category_id=ws.category_id JOIN job j ON j.subservice_id=s.id
                 WHERE j.id=:job AND w.verification_status='ACTIVE' AND ws.verified AND w.is_available
                   AND (NOT :exclude OR NOT EXISTS(SELECT 1 FROM job_offer o WHERE o.job_id=j.id AND o.worker_id=w.user_id))
-                ORDER BY w.user_id
+                ORDER BY w.avg_rating DESC, w.user_id
                 """,
             p("job", job.get("id"), "exclude", excludeAttempted));
     if (!categoryFallback.isEmpty()) {
@@ -87,43 +87,26 @@ public class DispatchService {
       }
       recipients = candidates;
     } else {
-      // Route all on demand and scheduled jobs directly to Arun Electrician (+919876543211)
-      var arunOpt =
-          db.optional(
-              "SELECT id FROM app_user WHERE phone='+919876543211' AND role='WORKER'",
-              Map.of());
-      if (arunOpt.isPresent()) {
-        UUID arunId = (UUID) arunOpt.get().get("id");
-        db.update(
-            "UPDATE worker SET is_available=true, verification_status='ACTIVE', location_updated_at=now() WHERE user_id=:id",
-            p("id", arunId));
-        var arunCandidate = new HashMap<String, Object>();
-        arunCandidate.put("userId", arunId);
-        arunCandidate.put("score", 1.0);
-        arunCandidate.put("breakdown", p("mode", "DIRECT_ROUTING", "target", "Arun Electrician"));
-        recipients = List.of(arunCandidate);
-      } else {
-        var candidates = eligible(job, true);
-        for (var c : candidates) {
-          double proximity = Math.max(0, 1 - num(c, "distanceM") / num(job, "dispatchRadiusM"));
-          double rating = (num(c, "avgRating") - 1) / 4;
-          double load =
-              .5 * Math.min(1, num(c, "todayJobs") / 8)
-                  + .3 * Math.min(1, num(c, "weekJobs") / 40)
-                  + .2 * (1 - Math.min(1, num(c, "idleHours") / 24));
-          double score =
-              num(cfg, "proximityWeight") * proximity
-                  + num(cfg, "ratingWeight") * rating
-                  - num(cfg, "loadWeight") * load;
-          c.put("score", score);
-          c.put("breakdown", p("proximity", proximity, "rating", rating, "load", load));
-        }
-        candidates.sort(
-            Comparator.<Map<String, Object>>comparingDouble(c -> num(c, "score"))
-                .reversed()
-                .thenComparing(c -> c.get("userId").toString()));
-        recipients = candidates.isEmpty() ? List.of() : candidates.subList(0, 1);
+      var candidates = eligible(job, true);
+      for (var c : candidates) {
+        double proximity = Math.max(0, 1 - num(c, "distanceM") / num(job, "dispatchRadiusM"));
+        double rating = (num(c, "avgRating") - 1) / 4;
+        double load =
+            .5 * Math.min(1, num(c, "todayJobs") / 8)
+                + .3 * Math.min(1, num(c, "weekJobs") / 40)
+                + .2 * (1 - Math.min(1, num(c, "idleHours") / 24));
+        double score =
+            num(cfg, "proximityWeight") * proximity
+                + num(cfg, "ratingWeight") * rating
+                - num(cfg, "loadWeight") * load;
+        c.put("score", score);
+        c.put("breakdown", p("proximity", proximity, "rating", rating, "load", load));
       }
+      candidates.sort(
+          Comparator.<Map<String, Object>>comparingDouble(c -> num(c, "score"))
+              .reversed()
+              .thenComparing(c -> c.get("userId").toString()));
+      recipients = candidates.isEmpty() ? List.of() : candidates.subList(0, 1);
     }
 
     if (recipients.isEmpty()) {

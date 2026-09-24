@@ -97,10 +97,10 @@ export function WorkerDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
             <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-              {getTranslatedPersonName(t, user?.name || 'Ramesh Kumar')}
+              {getTranslatedPersonName(t, user?.name || 'Arun Electrician')}
             </h1>
             <p className="text-xs text-muted-foreground">
-              {getTranslatedSocietyName(t, profile?.societyName || 'Bengaluru South Cooperative Society')}
+              {getTranslatedSocietyName(t, profile?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society')}
             </p>
           </div>
 

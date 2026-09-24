@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Edit3,
   Bell,
-  Building2,
   LogOut,
   Sparkles,
   Receipt,
@@ -45,7 +44,7 @@ export function CustomerProfilePage() {
   const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showAddressModal, setShowAddressModal] = useState(false)
-  const [userName, setUserName] = useState(user?.name || 'Priya Sharma')
+  const [userName, setUserName] = useState(user?.name || 'Ravi Kumar')
   const [userPhone, setUserPhone] = useState(user?.phone || '9876543210')
 
   const handleLogout = async () => {
@@ -122,16 +121,7 @@ export function CustomerProfilePage() {
         )
       },
     },
-    {
-      id: 'governance',
-      title: t('customer.profile.menu.governance', { defaultValue: 'Cooperative Federation Governance' }),
-      subtitle: t('customer.profile.menu.governanceSub', { defaultValue: 'NCCT charter and ethical standards' }),
-      icon: Building2,
-      badge: t('customer.profile.menu.bylaw', { defaultValue: 'Bylaw 2026' }),
-      action: () => {
-        window.open('https://cooperation.gov.in', '_blank')
-      },
-    },
+
     {
       id: 'logout',
       title: t('customer.profile.menu.logout', { defaultValue: 'Logout' }),

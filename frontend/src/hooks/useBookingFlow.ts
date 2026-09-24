@@ -104,7 +104,7 @@ export function useBookingFlow() {
           latitude: booking.location!.latitude,
           longitude: booking.location!.longitude,
           formattedAddress: booking.location!.formattedAddress,
-          area: booking.location!.area || 'Chennai Central',
+          area: booking.location!.area || 'Gandhipuram',
         },
         scheduledAt: booking.scheduledAt,
       })
