@@ -8,7 +8,6 @@ import { WorkerLayout } from '@/layouts/WorkerLayout'
 import { FederationLayout } from '@/layouts/FederationLayout'
 
 // Auth Pages
-import { LanguageSelectPage } from '@/pages/auth/LanguageSelectPage'
 import { LoginPage } from '@/pages/auth/LoginPage'
 import { WorkerSignUpPage } from '@/pages/auth/WorkerSignUpPage'
 import { ShowcasePage } from '@/pages/ShowcasePage'
@@ -62,7 +61,7 @@ export default function App() {
       <Routes>
         {/* Public Authentication Flow */}
         <Route element={<AuthLayout />}>
-          <Route path="/language" element={<LanguageSelectPage />} />
+          <Route path="/language" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register/worker" element={<WorkerSignUpPage />} />
         </Route>
@@ -74,7 +73,7 @@ export default function App() {
         <Route path="/workers/:workerId" element={<PublicWorkerProfilePage />} />
 
         {/* Root Redirect */}
-        <Route path="/" element={<Navigate to="/language" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Protected Customer Routes */}
         <Route element={<ProtectedRoute role="CUSTOMER" />}>

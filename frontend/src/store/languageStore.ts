@@ -20,9 +20,9 @@ interface LanguageState {
 }
 
 export const useLanguageStore = create<LanguageState>((set) => ({
-  language: (localStorage.getItem('coop_language') as LanguageCode) || 'en',
-  setLanguage: (lang) => {
-    localStorage.setItem('coop_language', lang)
-    set({ language: lang })
+  language: 'en',
+  setLanguage: (_lang) => {
+    localStorage.setItem('coop_language', 'en')
+    set({ language: 'en' })
   },
 }))

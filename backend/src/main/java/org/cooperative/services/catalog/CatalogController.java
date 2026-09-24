@@ -27,6 +27,15 @@ public class CatalogController {
 
   @GetMapping("/societies")
   public List<Map<String, Object>> societies() {
-    return db.list("SELECT * FROM society ORDER BY name", Map.of());
+    return db.list(
+        """
+        SELECT s.*,
+               COALESCE(f.state, 'Tamil Nadu') AS state,
+               COALESCE((SELECT COUNT(*) FROM worker w WHERE w.society_id = s.id), 0) AS worker_count
+        FROM society s
+        LEFT JOIN federation f ON s.federation_id = f.id
+        ORDER BY s.name
+        """,
+        Map.of());
   }
 }

@@ -59,6 +59,10 @@ export function WorkerSignUpPage() {
   const [categorySearchQuery, setCategorySearchQuery] = useState('')
   const categoryDropdownRef = useRef<HTMLDivElement>(null)
 
+  const [isSkillDropdownOpen, setIsSkillDropdownOpen] = useState(false)
+  const [skillSearchQuery, setSkillSearchQuery] = useState('')
+  const skillDropdownRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -72,6 +76,12 @@ export function WorkerSignUpPage() {
         !categoryDropdownRef.current.contains(event.target as Node)
       ) {
         setIsCategoryDropdownOpen(false)
+      }
+      if (
+        skillDropdownRef.current &&
+        !skillDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsSkillDropdownOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -139,9 +149,7 @@ export function WorkerSignUpPage() {
   // Toggle subservice skill selection
   const handleToggleSkill = (skillId: string) => {
     setSelectedSubserviceIds((prev) =>
-      prev.includes(skillId)
-        ? (prev.length > 1 ? prev.filter((id) => id !== skillId) : prev)
-        : [...prev, skillId]
+      prev.includes(skillId) ? prev.filter((id) => id !== skillId) : [...prev, skillId]
     )
   }
 
@@ -332,6 +340,20 @@ export function WorkerSignUpPage() {
     return (
       c.name.toLowerCase().includes(q) ||
       (c.description || '').toLowerCase().includes(q)
+    )
+  })
+
+  const availableSkills = categories
+    .filter((c) => selectedCategoryIds.includes(c.id))
+    .flatMap((c) => (c.subservices || []).map((sub) => ({ ...sub, categoryName: c.name })))
+
+  const filteredSkills = availableSkills.filter((s) => {
+    const q = skillSearchQuery.toLowerCase().trim()
+    if (!q) return true
+    return (
+      s.name.toLowerCase().includes(q) ||
+      (s.categoryName || '').toLowerCase().includes(q) ||
+      (s.description || '').toLowerCase().includes(q)
     )
   })
 
@@ -527,6 +549,7 @@ export function WorkerSignUpPage() {
                 onClick={() => {
                   setIsSocietyDropdownOpen(!isSocietyDropdownOpen)
                   setIsCategoryDropdownOpen(false)
+                  setIsSkillDropdownOpen(false)
                 }}
                 className={cn(
                   'w-full min-h-[50px] p-3 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer bg-background',
@@ -649,6 +672,7 @@ export function WorkerSignUpPage() {
                 onClick={() => {
                   setIsCategoryDropdownOpen(!isCategoryDropdownOpen)
                   setIsSocietyDropdownOpen(false)
+                  setIsSkillDropdownOpen(false)
                 }}
                 className={cn(
                   'w-full min-h-[50px] p-2.5 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer bg-background',
@@ -799,41 +823,196 @@ export function WorkerSignUpPage() {
             </div>
           </div>
 
-          {/* 3. Skills Multi-Select Chips */}
-          {selectedCategoryIds.length > 0 && (
-            <div className="space-y-1.5 pt-1">
+          {/* 3. Selected Skills & Specializations Searchable Dropdown */}
+          <div className="space-y-1.5" ref={skillDropdownRef}>
+            <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-foreground block">
                 Selected Skills & Specializations *
               </label>
-              <p className="text-[11px] text-muted-foreground">
-                Select specific services you are certified to deliver:
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1 max-h-48 overflow-y-auto p-1">
-                {categories
-                  .filter((c) => selectedCategoryIds.includes(c.id))
-                  .flatMap((c) => c.subservices || [])
-                  .map((sub) => {
-                    const isSelected = selectedSubserviceIds.includes(sub.id)
-                    return (
-                      <button
-                        key={sub.id}
-                        type="button"
-                        onClick={() => handleToggleSkill(sub.id)}
-                        className={cn(
-                          'px-3 py-1.5 rounded-lg border text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer',
-                          isSelected
-                            ? 'border-primary bg-primary text-primary-foreground font-bold shadow-xs'
-                            : 'border-border bg-card text-muted-foreground hover:text-foreground'
-                        )}
-                      >
-                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
-                        <span>{sub.name}</span>
-                      </button>
-                    )
-                  })}
-              </div>
+              <span className="text-[11px] text-muted-foreground font-medium">
+                {selectedSubserviceIds.length} Selected
+              </span>
             </div>
-          )}
+
+            <div className="relative">
+              <button
+                type="button"
+                disabled={selectedCategoryIds.length === 0}
+                onClick={() => {
+                  if (selectedCategoryIds.length === 0) return
+                  setIsSkillDropdownOpen(!isSkillDropdownOpen)
+                  setIsSocietyDropdownOpen(false)
+                  setIsCategoryDropdownOpen(false)
+                }}
+                className={cn(
+                  'w-full min-h-[50px] p-2.5 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer bg-background',
+                  selectedCategoryIds.length === 0 && 'opacity-60 cursor-not-allowed bg-muted/30',
+                  isSkillDropdownOpen
+                    ? 'border-primary ring-2 ring-primary/20 shadow-xs'
+                    : 'border-input hover:border-primary/50'
+                )}
+              >
+                {selectedCategoryIds.length === 0 ? (
+                  <span className="text-xs text-muted-foreground px-1">
+                    Select service trade categories first...
+                  </span>
+                ) : selectedSubserviceIds.length === 0 ? (
+                  <span className="text-xs text-muted-foreground px-1">
+                    Select specific skills & specializations...
+                  </span>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5 flex-1 min-w-0 pr-2">
+                    {availableSkills
+                      .filter((s) => selectedSubserviceIds.includes(s.id))
+                      .slice(0, 3)
+                      .map((skill) => (
+                        <span
+                          key={skill.id}
+                          className="px-2 py-0.5 rounded-md bg-secondary border border-border text-foreground text-[11px] font-semibold flex items-center gap-1 shrink-0"
+                        >
+                          <span className="truncate max-w-[120px]">{skill.name}</span>
+                          <span
+                            role="button"
+                            tabIndex={0}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleToggleSkill(skill.id)
+                            }}
+                            className="hover:text-destructive cursor-pointer"
+                          >
+                            <X className="w-3 h-3" />
+                          </span>
+                        </span>
+                      ))}
+                    {selectedSubserviceIds.length > 3 && (
+                      <span className="px-1.5 py-0.5 rounded-md bg-muted text-muted-foreground text-[10px] font-bold self-center">
+                        +{selectedSubserviceIds.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                )}
+                <ChevronDown
+                  className={cn(
+                    'w-4 h-4 text-muted-foreground transition-transform duration-200 shrink-0 ml-2',
+                    isSkillDropdownOpen && 'rotate-180 text-primary'
+                  )}
+                />
+              </button>
+
+              {/* Dropdown Menu with Search */}
+              {isSkillDropdownOpen && selectedCategoryIds.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1.5 z-40 rounded-xl border border-border bg-card shadow-lg overflow-hidden animate-in fade-in-50 zoom-in-95 duration-100">
+                  {/* Search Bar */}
+                  <div className="p-2 border-b border-border bg-muted/20">
+                    <div className="relative flex items-center">
+                      <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 shrink-0" />
+                      <input
+                        type="text"
+                        autoFocus
+                        value={skillSearchQuery}
+                        onChange={(e) => setSkillSearchQuery(e.target.value)}
+                        placeholder="Search skill, specialization..."
+                        className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                      {skillSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setSkillSearchQuery('')}
+                          className="absolute right-2 text-muted-foreground hover:text-foreground p-0.5 cursor-pointer"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Filter / Actions Bar */}
+                  <div className="px-3 py-1.5 bg-muted/40 border-b border-border flex items-center justify-between text-[11px] text-muted-foreground">
+                    <span>
+                      {filteredSkills.length} available skill{filteredSkills.length === 1 ? '' : 's'}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      {filteredSkills.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const idsToAdd = filteredSkills.map((s) => s.id)
+                            setSelectedSubserviceIds((prev) => Array.from(new Set([...prev, ...idsToAdd])))
+                          }}
+                          className="text-primary hover:underline cursor-pointer font-medium"
+                        >
+                          Select all
+                        </button>
+                      )}
+                      {selectedSubserviceIds.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedSubserviceIds([])
+                          }}
+                          className="text-muted-foreground hover:text-destructive cursor-pointer"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Limited Height Scrollable List */}
+                  <div className="max-h-52 overflow-y-auto divide-y divide-border/40">
+                    {filteredSkills.length === 0 ? (
+                      <div className="p-4 text-center text-xs text-muted-foreground">
+                        No skills match &ldquo;{skillSearchQuery}&rdquo;
+                      </div>
+                    ) : (
+                      filteredSkills.map((skill) => {
+                        const isSelected = selectedSubserviceIds.includes(skill.id)
+                        return (
+                          <button
+                            key={skill.id}
+                            type="button"
+                            onClick={() => handleToggleSkill(skill.id)}
+                            className={cn(
+                              'w-full p-2.5 text-left transition-colors flex items-center justify-between text-xs cursor-pointer',
+                              isSelected
+                                ? 'bg-primary/5 text-foreground'
+                                : 'hover:bg-muted/40 text-foreground'
+                            )}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+                              <div
+                                className={cn(
+                                  'w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors',
+                                  isSelected
+                                    ? 'bg-primary border-primary text-primary-foreground'
+                                    : 'border-muted-foreground/40 bg-background'
+                                )}
+                              >
+                                {isSelected && <Check className="w-3 h-3 stroke-[2.5]" />}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className={cn('text-xs block truncate', isSelected ? 'font-bold text-primary' : 'font-semibold text-foreground')}>
+                                  {skill.name}
+                                </span>
+                                {skill.description && (
+                                  <span className="text-[10px] text-muted-foreground block truncate">
+                                    {skill.description}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground font-medium shrink-0">
+                              {skill.categoryName}
+                            </span>
+                          </button>
+                        )
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Navigation Buttons */}
           <div className="space-y-2 pt-2">
@@ -985,9 +1164,6 @@ export function WorkerSignUpPage() {
       <div className="pt-2 border-t border-border flex items-center justify-between text-xs">
         <Link to="/login" className="text-muted-foreground hover:text-foreground font-medium">
           Already registered? Sign In
-        </Link>
-        <Link to="/language" className="text-muted-foreground hover:text-foreground font-medium">
-          Change Language
         </Link>
       </div>
     </div>

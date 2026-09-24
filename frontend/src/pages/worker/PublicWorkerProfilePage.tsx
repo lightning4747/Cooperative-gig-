@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Phone, Calendar, Share2, Check, X } from 'lucide-react'
-import { LanguageSelector } from '@/components/shared'
 import { getTranslatedPersonName, getTranslatedSocietyName } from '@/lib/serviceTranslation'
 
 interface VerifiedSkill {
@@ -113,10 +112,6 @@ export function PublicWorkerProfilePage() {
               Official Cooperative Worker Digital Credential
             </span>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <LanguageSelector />
         </div>
       </header>
 

@@ -201,7 +201,22 @@ export const federationService = {
   getSocieties: async (): Promise<Society[]> => {
     try {
       const societies = await catalogService.getSocieties()
-      return societies || []
+      let workers: WorkerProfile[] = []
+      try {
+        workers = await federationService.getWorkers()
+      } catch {
+        // fallback if workers fetch fails
+      }
+      const workerCountsBySociety: Record<string, number> = {}
+      for (const w of workers) {
+        if (w.societyId) {
+          workerCountsBySociety[w.societyId] = (workerCountsBySociety[w.societyId] || 0) + 1
+        }
+      }
+      return (societies || []).map((soc) => ({
+        ...soc,
+        workerCount: Math.max(soc.workerCount || 0, workerCountsBySociety[soc.id] || 0),
+      }))
     } catch {
       return []
     }

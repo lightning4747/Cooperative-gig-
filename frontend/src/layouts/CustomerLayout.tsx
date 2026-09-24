@@ -8,7 +8,6 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useJobs } from '@/hooks/useJob'
-import { LanguageSelector } from '@/components/shared'
 import { NavBrandHeader } from './components/NavBrandHeader'
 import { DesktopNavLinks, type NavItemConfig } from './components/DesktopNavLinks'
 import { MobileBottomNav } from './components/MobileBottomNav'
@@ -134,7 +133,6 @@ export function CustomerLayout() {
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            <LanguageSelector />
             <button
               type="button"
               onClick={handleLogout}

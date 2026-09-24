@@ -113,7 +113,7 @@ apiClient.interceptors.response.use(
         sessionStorage.removeItem('refresh_token')
         sessionStorage.removeItem('coop_auth_user')
         delete apiClient.defaults.headers.common.Authorization
-        if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/language')) {
+        if (!window.location.pathname.startsWith('/login')) {
           window.location.href = '/login'
         }
         return Promise.reject(refreshError)

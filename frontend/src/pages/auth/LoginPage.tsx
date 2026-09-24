@@ -247,12 +247,6 @@ export function LoginPage() {
             </Link>
           )}
         </div>
-        <Link
-          to="/language"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 font-medium transition-colors ml-auto"
-        >
-          <span>Change language</span>
-        </Link>
       </div>
     </div>
   )

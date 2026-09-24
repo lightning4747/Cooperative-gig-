@@ -8,7 +8,6 @@ import {
   JobProgressBar,
   PriceBreakdownCard,
   MapView,
-  LanguageSelector,
   OTPDisplay,
   OTPInput,
   StarRating,
@@ -68,7 +67,6 @@ export function ShowcasePage() {
               </div>
             </div>
           </div>
-          <LanguageSelector />
         </div>
       </header>
 

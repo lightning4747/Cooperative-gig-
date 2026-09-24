@@ -13,9 +13,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useCustomerProfile } from '@/hooks/useCustomerProfile'
-import { useLanguageStore, type LanguageCode, LANGUAGES } from '@/store/languageStore'
 import { cn } from '@/lib/utils'
-import { LanguageModal } from '@/components/customer/LanguageModal'
 import { EditProfileModal } from '@/components/customer/EditProfileModal'
 import { SavedAddressesModal } from '@/components/customer/SavedAddressesModal'
 import { RecentBookingsModal } from '@/components/customer/RecentBookingsModal'
@@ -32,15 +30,13 @@ interface MenuItem {
 }
 
 export function CustomerProfilePage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { user, updateProfile, logout } = useAuth()
   const { profile } = useCustomerProfile()
-  const { language, setLanguage } = useLanguageStore()
   const navigate = useNavigate()
 
   // Modal States
   const [showRecentBookingsModal, setShowRecentBookingsModal] = useState(false)
-  const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showAddressModal, setShowAddressModal] = useState(false)
   const [userName, setUserName] = useState(user?.name || 'Ravi Kumar')
@@ -51,24 +47,11 @@ export function CustomerProfilePage() {
     navigate('/login')
   }
 
-  const handleLanguageChange = async (code: LanguageCode) => {
-    setLanguage(code)
-    i18n.changeLanguage(code)
-    if (user && updateProfile) {
-      try {
-        await updateProfile(user.name, code)
-      } catch (e) {
-        console.warn('Could not sync language preference to backend profile', e)
-      }
-    }
-    setShowLanguageModal(false)
-  }
-
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault()
     if (updateProfile && user) {
       try {
-        await updateProfile(userName, language)
+        await updateProfile(userName, 'en')
       } catch (err) {
         console.error('Failed to update profile on backend', err)
       }
@@ -86,14 +69,6 @@ export function CustomerProfilePage() {
       icon: FileText,
       badge: t('customer.profile.menu.invoices', { defaultValue: 'Invoices' }),
       action: () => setShowRecentBookingsModal(true),
-    },
-    {
-      id: 'language',
-      title: t('customer.profile.menu.language', { defaultValue: 'Language' }),
-      subtitle: t('customer.profile.menu.languageSub', { defaultValue: '' }),
-      icon: Globe,
-      badge: LANGUAGES.find((l) => l.code === language)?.nativeName || 'English',
-      action: () => setShowLanguageModal(true),
     },
     {
       id: 'addresses',
@@ -293,12 +268,6 @@ export function CustomerProfilePage() {
       </footer>
 
       {/* Modals */}
-      <LanguageModal
-        isOpen={showLanguageModal}
-        currentLanguage={language}
-        onSelectLanguage={handleLanguageChange}
-        onClose={() => setShowLanguageModal(false)}
-      />
 
       <EditProfileModal
         isOpen={showEditModal}

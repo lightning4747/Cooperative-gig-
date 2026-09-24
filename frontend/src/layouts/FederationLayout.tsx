@@ -18,7 +18,6 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useFederationDashboard, useFederationWorkers } from '@/hooks/useFederationDashboard'
-import { LanguageSelector } from '@/components/shared/LanguageSelector'
 import { NavBrandHeader } from './components/NavBrandHeader'
 import { DesktopNavLinks, type NavItemConfig } from './components/DesktopNavLinks'
 import { UserNavFooter } from './components/UserNavFooter'
@@ -208,10 +207,6 @@ export function FederationLayout() {
               <UserCheck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
               <span>{pendingCount || 1} Pending</span>
             </Link>
-
-            <div className="h-4 w-px bg-slate-200" />
-
-            <LanguageSelector />
           </div>
         </header>
 
