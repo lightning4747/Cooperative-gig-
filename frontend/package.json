@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "db:reset": "node ../scripts/demo-reset.js",
     "demo:reset": "node ../scripts/demo-reset.js"
   },
   "dependencies": {

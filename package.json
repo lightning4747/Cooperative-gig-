@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "db:reset": "node scripts/demo-reset.js",
     "demo:reset": "node scripts/demo-reset.js"
   }
 }
