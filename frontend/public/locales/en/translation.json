@@ -143,7 +143,7 @@
       "searching": "Finding Worker",
       "offered": "Offered to Worker",
       "broadcast": "Emergency Broadcast",
-      "accepted": "Worker Assigned",
+      "accepted": "Accepted",
       "travelling": "Worker Travelling",
       "arrived": "Worker Arrived",
       "in_progress": "In Progress",
@@ -887,7 +887,7 @@
   "entities": {
     "user": {
       "ravi_kumar": "Ravi Kumar",
-      "arun_electrician": "Arun Electrician",
+      "arun_electrician": "Arun",
       "karthik_plumber": "Karthik Plumber",
       "selvam_carpenter": "Selvam Carpenter",
       "ramu_painter": "Ramu Painter",
@@ -911,7 +911,7 @@
     "alreadyRegistered": "Already registered?",
     "signIn": "Sign In",
     "nameLabel": "Full Legal Name",
-    "namePlaceholder": "e.g. Arun Electrician / Kavitha",
+    "namePlaceholder": "e.g. Arun / Kavitha",
     "phoneLabel": "Mobile Phone Number",
     "phonePlaceholder": "Enter 10-digit mobile number",
     "genderLabel": "Gender",

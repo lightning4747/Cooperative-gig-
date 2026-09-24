@@ -19,7 +19,7 @@ All accounts use the universal fixed verification code **`123456`** in demo mode
 | Role | Persona Name | Mobile Number | OTP Code | Description & Neighbourhood |
 | :--- | :--- | :--- | :--- | :--- |
 | **Customer** *(Main Demo)* | **Meena** | `9000000001` | `123456` | RS Puram resident (`142 DB Road, RS Puram`). Pre-verified account with 3 completed past bookings in history. |
-| **Worker** *(Verified Demo)* | **Arun Electrician** | `9000000011` | `123456` | Senior verified electrician in RS Puram (< 200m from Meena). High rating (4.92★) and fully enrolled in PMSBY/PMJJBY insurance. |
+| **Worker** *(Verified Demo)* | **Arun** | `9000000011` | `123456` | Senior verified electrician & multi-trade technician in RS Puram (< 200m from Meena). High rating (4.92★) and fully enrolled in PMSBY/PMJJBY insurance. |
 | **Worker** *(Demand Surge)* | **Karthik Plumber** | `9000000015` | `123456` | Sole active plumber in Saibaba Colony (`NSR Road`). Experiences high monsoon demand surge in historical data. |
 | **Worker** *(Live Registration)* | **Ravi** | `9000000099` | `123456` | **NOT pre-seeded.** Reserved for live sign-up during presentation, followed by live admin verification. |
 | **Federation Admin** | **Federation Admin** | `9000000000` | `123456` | State Labour Cooperative Federation Administrator with oversight across all 3 societies. |
@@ -106,7 +106,7 @@ Whenever the backend starts up with `DEMO_MODE=true` (the default), `DemoDataSee
 3. Point out Meena's past completed jobs (switchboard repair, tap repair, deep cleaning).
 4. Tap **Electrical** -> **Switchboard repair**.
 5. Select **On-Demand Doorstep Service** -> confirm RS Puram address.
-6. Submit booking -> Platform dispatches immediately to nearby verified technician **Arun Electrician** (< 200m away).
+6. Submit booking -> Platform dispatches immediately to nearby verified technician **Arun** (< 200m away).
 
 #### Act 2: Worker Perspective & Transparent Earnings (Arun)
 1. Log out or open an incognito window -> `/login`.

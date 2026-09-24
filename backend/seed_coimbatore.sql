@@ -53,7 +53,7 @@ INSERT INTO app_user (id, phone, role, name) VALUES
 ('83cf9fc2-33be-4b62-82c6-73396ab41283', '+919876543210', 'CUSTOMER', 'Ravi Kumar'),
 ('609085ab-595e-421d-a85e-cfaeb621ab57', '+919876543200', 'ADMIN', 'Federation administrator'),
 ('1916482f-a640-4cf8-b486-58fb85e9087e', '+919999999999', 'ADMIN', 'Federation administrator'),
-('bb97f076-d171-48df-9982-68bc3e9cfee5', '+919876543211', 'WORKER', 'Arun Electrician'),
+('bb97f076-d171-48df-9982-68bc3e9cfee5', '+919876543211', 'WORKER', 'Arun'),
 ('a1111111-1111-1111-1111-111111111112', '+919876543212', 'WORKER', 'Karthik Plumber'),
 ('a1111111-1111-1111-1111-111111111113', '+919876543213', 'WORKER', 'Selvam Carpenter'),
 ('a1111111-1111-1111-1111-111111111114', '+919876543214', 'WORKER', 'Ramu Painter'),
@@ -64,7 +64,7 @@ ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name;
 
 -- 4. Worker Profiles (All in Coimbatore, active, available, enrolled in social security)
--- Arun Electrician: Coimbatore City Labour Society (Gandhipuram: 11.0183, 76.9644)
+-- Arun: Coimbatore City Labour Society (Gandhipuram: 11.0183, 76.9644)
 INSERT INTO worker (
   user_id, society_id, membership_id, uan_encrypted, uan_fingerprint, uan_last4,
   certifications, verification_status, verification_note, is_available,
@@ -215,7 +215,7 @@ INSERT INTO worker (
   avg_rating = 4.900;
 
 -- 5. Worker Skills Mapping
--- Arun Electrician: Verified in Electrical and all categories
+-- Arun: Verified in Electrical and all categories
 INSERT INTO worker_skill (worker_id, category_id, verified)
 SELECT 'bb97f076-d171-48df-9982-68bc3e9cfee5', id, true FROM category
 ON CONFLICT (worker_id, category_id) DO UPDATE SET verified = true;

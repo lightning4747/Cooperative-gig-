@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Search, User } from 'lucide-react'
+import { Search, User, X, CheckCircle2, ShieldCheck } from 'lucide-react'
 import type { WorkerProfile, WorkerStatus } from '@/types/worker'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { formatPhone } from '@/lib/utils'
-
+import { formatPhone, formatCurrency } from '@/lib/utils'
 
 interface WorkerTableProps {
   workers: WorkerProfile[]
@@ -22,6 +21,7 @@ export function WorkerTable({
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL')
   const [selectedSociety, setSelectedSociety] = useState<string>('ALL')
+  const [selectedModalWorker, setSelectedModalWorker] = useState<WorkerProfile | null>(null)
 
   // Extract unique societies
   const societies = Array.from(new Set(workers.map((w) => w.societyName))).filter(Boolean)
@@ -123,7 +123,10 @@ export function WorkerTable({
                   <tr
                     key={worker.userId}
                     className="hover:bg-muted/30 transition-colors cursor-pointer"
-                    onClick={() => onSelectWorker?.(worker)}
+                    onClick={() => {
+                      setSelectedModalWorker(worker)
+                      onSelectWorker?.(worker)
+                    }}
                   >
                     {/* Worker Info */}
                     <td className="px-4 py-3">
@@ -149,17 +152,29 @@ export function WorkerTable({
                       </span>
                     </td>
 
-                    {/* Skills */}
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {worker.skills.map((sk) => (
+                    {/* Skills (Compact & Non-Breaking) */}
+                    <td className="px-4 py-3 max-w-[240px]">
+                      <div className="flex flex-wrap items-center gap-1">
+                        {worker.skills.slice(0, 2).map((sk) => (
                           <span
                             key={sk.id}
-                            className="px-1.5 py-0.5 rounded text-[11px] font-medium border border-border bg-muted/40 text-foreground"
+                            className="px-1.5 py-0.5 rounded text-[11px] font-medium border border-border bg-muted/40 text-foreground truncate max-w-[100px]"
+                            title={sk.subserviceName}
                           >
                             {sk.subserviceName}
                           </span>
                         ))}
+                        {worker.skills.length > 2 && (
+                          <span
+                            className="px-1.5 py-0.5 rounded text-[10px] font-semibold border border-border bg-secondary text-muted-foreground shrink-0 cursor-help"
+                            title={worker.skills.map((s) => s.subserviceName).join(', ')}
+                          >
+                            +{worker.skills.length - 2} more
+                          </span>
+                        )}
+                        {worker.skills.length === 0 && (
+                          <span className="text-muted-foreground text-[11px] italic">None</span>
+                        )}
                       </div>
                     </td>
 
@@ -194,7 +209,10 @@ export function WorkerTable({
                         )}
                         <button
                           type="button"
-                          onClick={() => onSelectWorker?.(worker)}
+                          onClick={() => {
+                            setSelectedModalWorker(worker)
+                            onSelectWorker?.(worker)
+                          }}
                           className="h-7 px-2.5 rounded border border-border bg-background hover:bg-muted text-foreground text-xs font-medium transition-colors"
                         >
                           {t('federation.workerTable.details', { defaultValue: 'Details' })}
@@ -250,6 +268,138 @@ export function WorkerTable({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Comprehensive Worker Member Details Modal */}
+      {selectedModalWorker && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xs animate-in fade-in duration-150"
+          onClick={() => setSelectedModalWorker(null)}
+        >
+          <div
+            className="w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl border border-border bg-card p-5 sm:p-6 shadow-xl space-y-5 animate-in zoom-in-95"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-3 border-b border-border pb-3.5">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-11 h-11 rounded-lg bg-secondary text-foreground font-bold text-sm flex items-center justify-center border border-border shrink-0">
+                  {selectedModalWorker.name[0]}
+                </div>
+                <div className="min-w-0 space-y-0.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-base font-bold text-foreground">
+                      {selectedModalWorker.name}
+                    </h3>
+                    <StatusBadge status={selectedModalWorker.status} />
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="font-mono">{formatPhone(selectedModalWorker.phone)}</span>
+                    <span>·</span>
+                    <span className="truncate">{selectedModalWorker.societyName}</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedModalWorker(null)}
+                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-3 gap-2.5">
+              <div className="p-3 rounded-lg bg-secondary/30 border border-border/60 space-y-0.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                  Rating
+                </span>
+                <div className="text-base font-black font-mono text-foreground">
+                  {selectedModalWorker.rating > 0 ? `${selectedModalWorker.rating.toFixed(2)} ★` : '-'}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/30 border border-border/60 space-y-0.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                  Completed Tasks
+                </span>
+                <div className="text-base font-black font-mono text-foreground">
+                  {selectedModalWorker.totalJobsCompleted}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/30 border border-border/60 space-y-0.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                  Welfare Balance
+                </span>
+                <div className="text-base font-black font-mono text-foreground">
+                  {formatCurrency(selectedModalWorker.welfareBalance || 0)}
+                </div>
+              </div>
+            </div>
+
+            {/* Verified Skills & Trades (Beautifully handles 10+ trades gracefully) */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+                  <span>Verified Trades &amp; Qualifications</span>
+                </h4>
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground border border-border">
+                  {selectedModalWorker.skills.length} Certified {selectedModalWorker.skills.length === 1 ? 'Trade' : 'Trades'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-56 overflow-y-auto p-1.5 rounded-lg border border-border bg-muted/20">
+                {selectedModalWorker.skills.map((sk) => (
+                  <div
+                    key={sk.id}
+                    className="p-2.5 rounded-md border border-border bg-card text-xs flex items-center gap-2 shadow-2xs"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span className="font-medium text-foreground truncate" title={sk.subserviceName}>
+                      {sk.subserviceName}
+                    </span>
+                  </div>
+                ))}
+                {selectedModalWorker.skills.length === 0 && (
+                  <div className="col-span-full py-4 text-center text-xs text-muted-foreground italic">
+                    No verified skill credentials found.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Statutory Identifiers Strip */}
+            <div className="p-3 rounded-lg bg-muted/40 border border-border text-xs space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Cooperative Membership:</span>
+                <span className="font-mono font-semibold text-foreground">{selectedModalWorker.membershipId || 'MEM-CBE-001'}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">National e-Shram UAN:</span>
+                <span className="font-mono font-semibold text-foreground">{selectedModalWorker.eShramUAN}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Accidental Cover (PMSBY):</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">{selectedModalWorker.insurancePMSBY}</span>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setSelectedModalWorker(null)}
+                className="h-8 px-4 rounded-md bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

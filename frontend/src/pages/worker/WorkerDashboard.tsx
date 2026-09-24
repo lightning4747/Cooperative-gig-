@@ -57,7 +57,7 @@ export function WorkerDashboard() {
     Boolean(user?.phone?.includes('9876543211') || user?.name?.toLowerCase().includes('arun'))
 
   // For new workers: only show emergency broadcast jobs.
-  // Arun Electrician gets all routed jobs (on-demand, scheduled, and emergency).
+  // Arun gets all routed jobs (on-demand, scheduled, and emergency).
   const visibleOffers = pendingOffers.filter((o) => {
     if (isArun) return true
     return o.isEmergency || o.bookingType === 'EMERGENCY' || o.status === 'BROADCAST'
@@ -97,7 +97,7 @@ export function WorkerDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
             <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-              {getTranslatedPersonName(t, user?.name || 'Arun Electrician')}
+              {getTranslatedPersonName(t, user?.name || 'Arun')}
             </h1>
             <p className="text-xs text-muted-foreground">
               {getTranslatedSocietyName(t, profile?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society')}

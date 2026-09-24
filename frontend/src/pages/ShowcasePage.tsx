@@ -25,7 +25,7 @@ const sampleInvoice = {
   serviceCategory: 'Plumbing',
   subservice: 'Tap & Valve Repair',
   customerName: 'Ravi Kumar',
-  workerName: 'Arun Electrician',
+  workerName: 'Arun',
   societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
   societyRegistrationNumber: 'TN-CBE-2023-011',
   workerEShramRef: 'XXXXXXXX9011',
@@ -170,7 +170,7 @@ export function ShowcasePage() {
               longitude={76.9644}
               label="Gandhipuram, Coimbatore"
               markers={[
-                { id: '1', latitude: 11.0195, longitude: 76.9655, title: 'Arun Electrician (0.4 km)', isWorker: true },
+                { id: '1', latitude: 11.0195, longitude: 76.9655, title: 'Arun (0.4 km)', isWorker: true },
                 { id: '2', latitude: 11.0160, longitude: 76.9620, title: 'Karthik Plumber (0.7 km)', isWorker: true },
               ]}
             />

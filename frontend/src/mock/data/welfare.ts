@@ -3,7 +3,7 @@ import type { WelfareLedger } from '@/types/welfare'
 export const mockWelfareLedgers: Record<string, WelfareLedger> = {
   '83cf9fc2-33be-4b62-82c6-73396ab41281': {
     workerId: '83cf9fc2-33be-4b62-82c6-73396ab41281',
-    workerName: 'Arun Electrician',
+    workerName: 'Arun',
     societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
     totalContributions: 2400,
     balance: 2400,

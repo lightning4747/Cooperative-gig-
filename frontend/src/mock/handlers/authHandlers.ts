@@ -32,7 +32,7 @@ export async function loginWithPhoneAndRole(
     }
     return {
       id: wrk?.userId || 'wrk-demo-arun',
-      name: wrk?.name || 'Arun Electrician',
+      name: wrk?.name || 'Arun',
       phone: wrk?.phone || '9876543211',
       role: 'WORKER',
     }

@@ -204,7 +204,7 @@ export async function simulateIncomingOffer(workerId: string, isEmergency: boole
         customerName: 'Vikram Singh',
         customerPhone: '9845077889',
         workerId,
-        workerName: 'Arun Electrician',
+        workerName: 'Arun',
         workerPhone: '9876543211',
         serviceCategoryId: 'cat-electrical',
         serviceCategoryName: 'Electrical',

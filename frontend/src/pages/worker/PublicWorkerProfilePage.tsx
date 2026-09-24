@@ -73,7 +73,7 @@ export function PublicWorkerProfilePage() {
   const [selectedDetails, setSelectedDetails] = useState<VerifiedSkill | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const workerName = 'Arun Electrician'
+  const workerName = 'Arun'
   const phone = '+91 98765 43211'
   const societyName = 'Coimbatore City Labour & Artisans Cooperative Society'
 

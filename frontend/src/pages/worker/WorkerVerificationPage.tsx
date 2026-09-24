@@ -36,7 +36,7 @@ export function WorkerVerificationPage() {
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t('worker.verification.workerName', 'Worker Name')}:</span>
             <span className="font-bold text-foreground">
-              {getTranslatedPersonName(t, user?.name || 'Arun Electrician')}
+              {getTranslatedPersonName(t, user?.name || 'Arun')}
             </span>
           </div>
           <div className="flex justify-between">

@@ -143,7 +143,7 @@
       "searching": "श्रमिक खोज",
       "offered": "श्रमिक को ऑफर",
       "broadcast": "आपातकालीन प्रेषण",
-      "accepted": "श्रमिक नियुक्त",
+      "accepted": "स्वीकृत (Accepted)",
       "travelling": "मार्ग में",
       "arrived": "पहुंच गए",
       "in_progress": "प्रगति में",
@@ -885,7 +885,7 @@
   "entities": {
     "user": {
       "ravi_kumar": "रवि कुमार (Ravi Kumar)",
-      "arun_electrician": "अरुण इलेक्ट्रीशियन (Arun Electrician)",
+      "arun_electrician": "अरुण (Arun)",
       "karthik_plumber": "कार्तिक प्लंबर (Karthik Plumber)",
       "selvam_carpenter": "सेल्वम बढ़ई (Selvam Carpenter)",
       "ramu_painter": "रामु पेंटर (Ramu Painter)",

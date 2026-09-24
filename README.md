@@ -103,6 +103,6 @@ The platform includes pre-seeded demonstration accounts for immediate exploratio
 | Role | Demo Name | Demo Mobile Number | Default Capabilities |
 | :--- | :--- | :--- | :--- |
 | **Customer** | Ravi Kumar | `9876543210` | Book services, track dispatches, inspect invoices |
-| **Worker** | Arun Electrician | `9876543211` | Receive offers, verify doorstep OTP, view earnings & welfare |
+| **Worker** | Arun | `9876543211` | Receive offers, verify doorstep OTP, view earnings & welfare |
 | **Federation Admin** | Apex Administrator | `9999999999` | Verify workers, inspect welfare ledger, configure tariffs |
 

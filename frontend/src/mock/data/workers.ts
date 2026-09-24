@@ -3,7 +3,7 @@ import type { WorkerProfile } from '@/types/worker'
 export const mockWorkers: WorkerProfile[] = [
   {
     userId: '83cf9fc2-33be-4b62-82c6-73396ab41281',
-    name: 'Arun Electrician',
+    name: 'Arun',
     phone: '9876543211',
     societyId: '00000000-0000-0000-0000-000000000010',
     societyName: 'Coimbatore City Labour & Artisans Cooperative Society',

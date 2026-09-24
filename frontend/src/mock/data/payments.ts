@@ -58,7 +58,7 @@ export const mockInvoices: Invoice[] = [
     serviceCategory: 'Electrical',
     subservice: 'MCB wiring',
     customerName: 'Anand Kumar',
-    workerName: 'Arun Electrician',
+    workerName: 'Arun',
     societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
     societyRegistrationNumber: 'TN-CBE-2023-011',
     workerEShramRef: 'UAN-9821-4432-0001',

@@ -228,7 +228,7 @@ export function EmergencyDispatchPanel({
                     ) : (
                       <>
                         <option value="bb97f076-d171-48df-9982-68bc3e9cfee5">
-                          Arun Electrician (+91 98765 43211) - Coimbatore City Labour & Artisans Cooperative Society
+                          Arun (+91 98765 43211) - Coimbatore City Labour & Artisans Cooperative Society
                         </option>
                         <option value="a1111111-1111-1111-1111-111111111112">
                           Karthik Plumber (+91 98765 43212) - RS Puram Cooperative Workers Union

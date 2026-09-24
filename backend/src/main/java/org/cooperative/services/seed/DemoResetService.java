@@ -203,8 +203,8 @@ public class DemoResetService {
     // Note: Saibaba Colony has ONLY 1 plumber (Karthik), creating the demand surge mismatch!
     // RS Puram has verified workers for all services near Meena.
     List<WorkerSeed> workers = List.of(
-        // Electrical (4 verified)
-        new WorkerSeed(UUID.fromString("00000000-0000-0000-0000-000000000301"), "+919000000011", "Arun Electrician", socRsPuram, "MEM-CBE-001", "9011", 11.0092, 76.9485, List.of("electrical"), "ACTIVE", true, 4.92),
+        // Multi-Trade Lead Artisan: Arun has verified credentials across all core trades
+        new WorkerSeed(UUID.fromString("00000000-0000-0000-0000-000000000301"), "+919000000011", "Arun", socRsPuram, "MEM-CBE-001", "9011", 11.0092, 76.9485, List.of("electrical", "plumbing", "carpentry", "painting", "domestic_help", "cleaning", "caregiving", "driving", "gardening", "technician"), "ACTIVE", true, 4.92),
         new WorkerSeed(UUID.fromString("00000000-0000-0000-0000-000000000302"), "+919000000012", "Murugan Electrician", socGandhipuram, "MEM-CBE-002", "9012", 11.0185, 76.9640, List.of("electrical"), "ACTIVE", true, 4.75),
         new WorkerSeed(UUID.fromString("00000000-0000-0000-0000-000000000303"), "+919000000013", "Deepa Electrician", socGandhipuram, "MEM-CBE-003", "9013", 11.0160, 76.9620, List.of("electrical"), "ACTIVE", true, 4.85),
         new WorkerSeed(UUID.fromString("00000000-0000-0000-0000-000000000304"), "+919000000014", "Rajesh Electrician", socRsPuram, "MEM-CBE-004", "9014", 11.0070, 76.9460, List.of("electrical"), "ACTIVE", true, 4.60),
@@ -588,11 +588,16 @@ public class DemoResetService {
 
     // 6. Invoice
     String invNum = "INV-2026-" + invoiceNum;
+    String snapshotJson = String.format(
+        java.util.Locale.US,
+        "{\"status\":\"PAID\",\"paymentStatus\":\"PAID\",\"baseWage\":%.2f,\"grossAmount\":%.2f,\"surplus\":%.2f,\"welfareContribution\":%.2f,\"workerEarning\":%.2f}",
+        basePrice, grossAmount, surplus, welfare, workerEarning
+    );
     db.update("""
         INSERT INTO invoice (id, job_id, invoice_number, snapshot, created_at)
-        VALUES (:id, :jid, :invNum, '{"status":"PAID"}'::jsonb, :t)
+        VALUES (:id, :jid, :invNum, CAST(:snap AS jsonb), :t)
     """, p(
-        "id", invoiceId, "jid", jobId, "invNum", invNum, "t", time.plusMinutes(46)
+        "id", invoiceId, "jid", jobId, "invNum", invNum, "snap", snapshotJson, "t", time.plusMinutes(46)
     ));
 
     // 7. Rating

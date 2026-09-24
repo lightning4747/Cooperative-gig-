@@ -124,7 +124,7 @@ export function JobTrackingCard({ job, onCancel, className }: JobTrackingCardPro
       {job.workerId && job.status !== 'SEARCHING' && job.status !== 'BROADCAST' && (
         <MatchedWorkerProfileCard
           workerId={job.workerId}
-          name={job.workerName || 'Arun Electrician'}
+          name={job.workerName || 'Arun'}
           phone={job.workerPhone ? (job.workerPhone.startsWith('+91') ? job.workerPhone : `+91 ${job.workerPhone}`) : '+91 98765 43211'}
           societyName={job.societyName || 'Coimbatore City Labour & Artisans Cooperative Society'}
           societyRegistration="TN-CBE-2023-011"

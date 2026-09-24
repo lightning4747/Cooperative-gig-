@@ -121,15 +121,23 @@ export function VerificationQueue({
                     {t('federation.verificationQueue.claimedSkills', { defaultValue: 'Skills & Certifications' })}
                   </span>
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
-                    {worker.skills.map((sk) => (
+                    {worker.skills.slice(0, 3).map((sk) => (
                       <span
                         key={sk.id}
                         className="px-1.5 py-0.5 rounded border border-border bg-background text-[11px] font-normal text-foreground flex items-center gap-1"
                       >
-                        <FileText className="w-3 h-3 text-muted-foreground" />
-                        <span>{sk.subserviceName}</span>
+                        <FileText className="w-3 h-3 text-muted-foreground shrink-0" />
+                        <span className="truncate max-w-[120px]">{sk.subserviceName}</span>
                       </span>
                     ))}
+                    {worker.skills.length > 3 && (
+                      <span
+                        className="px-1.5 py-0.5 rounded border border-border bg-muted/50 text-[10px] font-medium text-muted-foreground self-center"
+                        title={worker.skills.map((s) => s.subserviceName).join(', ')}
+                      >
+                        +{worker.skills.length - 3} more
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

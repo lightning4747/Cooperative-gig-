@@ -18,7 +18,7 @@ export const mockRatings: Rating[] = [
     customerId: 'cust-anand-kumar',
     customerName: 'Anand Kumar',
     workerId: '83cf9fc2-33be-4b62-82c6-73396ab41281',
-    workerName: 'Arun Electrician',
+    workerName: 'Arun',
     stars: 5,
     feedback: 'Resolved MCB neutral fault safely in Peelamedu. Transparent guaranteed pricing.',
     createdAt: '2026-09-18T16:15:00.000Z',

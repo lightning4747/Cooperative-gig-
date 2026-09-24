@@ -72,7 +72,7 @@ export const mockJobs: Job[] = [
     customerName: 'Anand Kumar',
     customerPhone: '9845023456',
     workerId: '83cf9fc2-33be-4b62-82c6-73396ab41281',
-    workerName: 'Arun Electrician',
+    workerName: 'Arun',
     workerPhone: '9876543211',
     societyName: 'Coimbatore City Labour & Artisans Cooperative Society',
     workerRating: 4.9,

@@ -30,7 +30,7 @@ export interface MatchedWorkerProfileCardProps {
 
 export function MatchedWorkerProfileCard({
   workerId = 'bb97f076-d171-48df-9982-68bc3e9cfee5',
-  name = 'Arun Electrician',
+  name = 'Arun',
   phone = '+91 98765 43211',
   photoUrl: _photoUrl,
   societyName = 'Coimbatore City Labour & Artisans Cooperative Society',

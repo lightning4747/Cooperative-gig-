@@ -14,7 +14,7 @@ if docker ps --format '{{.Names}}' | grep -q "cooperativegig-db"; then
 INSERT INTO app_user (id, phone, role, name, preferred_lang)
 VALUES
   (gen_random_uuid(), '+919876543210', 'CUSTOMER', 'Ravi Kumar', 'en'),
-  (gen_random_uuid(), '+919876543211', 'WORKER', 'Arun Electrician', 'en'),
+  (gen_random_uuid(), '+919876543211', 'WORKER', 'Arun', 'en'),
   (gen_random_uuid(), '+919876543220', 'WORKER', 'Pooja Sharma', 'en'),
   (gen_random_uuid(), '+919876543225', 'WORKER', 'Vijay Plumber', 'en'),
   (gen_random_uuid(), '+919999999999', 'ADMIN', 'Federation administrator', 'en')

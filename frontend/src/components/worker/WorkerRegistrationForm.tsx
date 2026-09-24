@@ -180,7 +180,7 @@ export function WorkerRegistrationForm({ onComplete, className }: WorkerRegistra
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Arun Electrician"
+                  placeholder="e.g. Arun"
                   {...register('name')}
                   className="w-full p-3 rounded-xl border border-input text-xs font-medium bg-background min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />

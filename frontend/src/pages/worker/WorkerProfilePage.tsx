@@ -77,7 +77,7 @@ export function WorkerProfilePage() {
   const [idDownloaded, setIdDownloaded] = useState(false)
 
   const workerId = user?.id || profile?.membershipId || '83cf9fc2-33be-4b62-82c6-73396ab41281'
-  const workerName = user?.name || 'Arun Electrician'
+  const workerName = user?.name || 'Arun'
   const societyName = profile?.societyName || 'Coimbatore City Labour & Artisans Cooperative Society'
 
   const publicProfileUrl =
