@@ -123,12 +123,18 @@ public class Security {
   }
 
   @Bean
-  CorsConfigurationSource cors(@Value("${app.cors-origins}") String origins) {
+  CorsConfigurationSource cors(@Value("${app.cors-origins:*}") String origins) {
     var config = new CorsConfiguration();
-    config.setAllowedOrigins(Arrays.asList(origins.split(",")));
-    config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "OPTIONS"));
-    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Idempotency-Key", "X-Demo-Reset-Token"));
-    config.setExposedHeaders(List.of("X-Request-Id", "Retry-After"));
+    if (origins == null || origins.isBlank() || "*".equals(origins.trim())) {
+      config.addAllowedOriginPattern("*");
+    } else {
+      for (String o : origins.split(",")) {
+        config.addAllowedOriginPattern(o.trim());
+      }
+    }
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+    config.addAllowedHeader("*");
+    config.setExposedHeaders(List.of("X-Request-Id", "Retry-After", "Authorization"));
     config.setAllowCredentials(false);
     var source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);

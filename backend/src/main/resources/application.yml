@@ -32,7 +32,7 @@ app:
   encryption-key: ${ENCRYPTION_KEY}
   dev-auth: false
   sandbox-payments: false
-  cors-origins: ${CORS_ORIGINS:http://localhost:5173}
+  cors-origins: ${CORS_ORIGINS:*}
   bootstrap-admin-phone: ${BOOTSTRAP_ADMIN_PHONE:}
   forecast-url: ${FORECAST_URL:}
   forecast-token: ${FORECAST_TOKEN:}
