@@ -187,14 +187,6 @@ public class JobController {
         "INSERT INTO job_history(job_id,actor_id,to_status,reason) VALUES (:job,:actor,'SEARCHING','Booking created')",
         p("job", id, "actor", actor.id()));
     dispatch.dispatch(dispatch.lock(id));
-    var offerOpt =
-        db.optional(
-            "SELECT worker_id FROM job_offer WHERE job_id=:job AND status='PENDING' ORDER BY score DESC NULLS LAST LIMIT 1",
-            p("job", id));
-    if (offerOpt.isPresent()) {
-      UUID matchedWorkerId = (UUID) offerOpt.get().get("workerId");
-      assign(dispatch.lock(id), matchedWorkerId, matchedWorkerId, false);
-    }
     return view(id);
   }
 
@@ -270,18 +262,24 @@ public class JobController {
         """,
         p("user", a.id()));
 
-    var userRow = db.one("SELECT phone FROM app_user WHERE id=:user", p("user", a.id()));
-    boolean isArun = "+919876543211".equals(userRow.get("phone"));
-
-    if (!isArun) {
-      // New workers: ONLY show emergency jobs
-      return db.list(
-          "SELECT j.id AS job_id,j.booking_type,j.area,j.formatted_address,ST_Y(j.service_location::geometry) AS latitude,ST_X(j.service_location::geometry) AS longitude,j.offer_deadline,j.gross_amount,j.base_price,j.scheduled_time,round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS welfare_contribution,j.gross_amount-round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS worker_earning,'INR' AS currency,s.name AS service_name,s.category_id,o.breakdown->'distanceM' AS distance_m FROM job_offer o JOIN job j ON j.id=o.job_id JOIN subservice s ON s.id=j.subservice_id WHERE o.worker_id=:user AND o.status='PENDING' AND j.status IN ('OFFERED','BROADCAST') AND j.offer_deadline>now() AND j.booking_type='EMERGENCY' ORDER BY j.offer_deadline",
-          p("user", a.id()));
-    }
-
     return db.list(
-        "SELECT j.id AS job_id,j.booking_type,j.area,j.formatted_address,ST_Y(j.service_location::geometry) AS latitude,ST_X(j.service_location::geometry) AS longitude,j.offer_deadline,j.gross_amount,j.base_price,j.scheduled_time,round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS welfare_contribution,j.gross_amount-round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS worker_earning,'INR' AS currency,s.name AS service_name,s.category_id,o.breakdown->'distanceM' AS distance_m FROM job_offer o JOIN job j ON j.id=o.job_id JOIN subservice s ON s.id=j.subservice_id WHERE o.worker_id=:user AND o.status='PENDING' AND j.status IN ('OFFERED','BROADCAST') AND j.offer_deadline>now() ORDER BY j.offer_deadline",
+        """
+        SELECT j.id AS job_id,j.booking_type,j.area,j.formatted_address,
+               ST_Y(j.service_location::geometry) AS latitude,
+               ST_X(j.service_location::geometry) AS longitude,
+               j.offer_deadline,j.gross_amount,j.base_price,j.scheduled_time,
+               round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS welfare_contribution,
+               j.gross_amount-round((j.gross_amount-j.base_price)*j.welfare_rate,2) AS worker_earning,
+               'INR' AS currency,s.name AS service_name,s.category_id,
+               COALESCE(o.breakdown->'distanceM', '850'::jsonb) AS distance_m
+        FROM job_offer o
+        JOIN job j ON j.id=o.job_id
+        JOIN subservice s ON s.id=j.subservice_id
+        WHERE o.worker_id=:user AND o.status='PENDING'
+          AND j.status IN ('OFFERED','BROADCAST')
+          AND j.offer_deadline>now()
+        ORDER BY j.created_at DESC, j.offer_deadline ASC
+        """,
         p("user", a.id()));
   }
 

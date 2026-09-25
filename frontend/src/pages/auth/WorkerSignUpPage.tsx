@@ -536,7 +536,7 @@ export function WorkerSignUpPage() {
           <div className="space-y-1.5" ref={societyDropdownRef}>
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-foreground block">
-                Primary Cooperative Society *
+                Cooperative Society *
               </label>
               <span className="text-[11px] text-muted-foreground font-medium">
                 {societies.length} Societies Available

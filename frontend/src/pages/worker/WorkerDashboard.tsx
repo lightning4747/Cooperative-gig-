@@ -54,7 +54,7 @@ export function WorkerDashboard() {
   const pendingOffers = offers.filter((o) => !dismissedOfferIds.includes(o.id))
 
   const isArun =
-    Boolean(user?.phone?.includes('9876543211') || user?.name?.toLowerCase().includes('arun'))
+    Boolean(user?.phone?.includes('9000000011') || user?.phone?.includes('9876543211') || user?.name?.toLowerCase().includes('arun'))
 
   // For new workers: only show emergency broadcast jobs.
   // Arun gets all routed jobs (on-demand, scheduled, and emergency).
