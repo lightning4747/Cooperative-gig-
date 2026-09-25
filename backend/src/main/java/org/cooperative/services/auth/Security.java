@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.*;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -87,7 +88,7 @@ public class Security {
         };
 
     return http.csrf(c -> c.disable())
-        .cors(c -> {})
+        .cors(c -> c.configurationSource(corsConfigurationSource()))
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             a ->
@@ -123,21 +124,21 @@ public class Security {
   }
 
   @Bean
-  CorsConfigurationSource cors(@Value("${app.cors-origins:*}") String origins) {
+  public CorsConfigurationSource corsConfigurationSource() {
     var config = new CorsConfiguration();
-    if (origins == null || origins.isBlank() || "*".equals(origins.trim())) {
-      config.addAllowedOriginPattern("*");
-    } else {
-      for (String o : origins.split(",")) {
-        config.addAllowedOriginPattern(o.trim());
-      }
-    }
+    config.addAllowedOriginPattern("*");
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
     config.addAllowedHeader("*");
     config.setExposedHeaders(List.of("X-Request-Id", "Retry-After", "Authorization"));
     config.setAllowCredentials(false);
+    config.setMaxAge(3600L);
     var source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return source;
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+    return new CorsFilter(corsConfigurationSource());
   }
 }
