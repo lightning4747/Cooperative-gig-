@@ -73,7 +73,12 @@ public class Security {
     BearerTokenResolver resolver =
         request -> {
           String path = request.getRequestURI();
-          if (path.startsWith("/api/v1/auth/")
+          if (path.equals("/")
+              || path.equals("/health")
+              || path.startsWith("/health/")
+              || path.startsWith("/api/health")
+              || path.startsWith("/api/v1/health")
+              || path.startsWith("/api/v1/auth/")
               || path.startsWith("/api/v1/catalog")
               || path.startsWith("/api/v1/societies")
               || path.startsWith("/api/demo/")
@@ -95,12 +100,20 @@ public class Security {
                 a.requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
                     .requestMatchers(
+                        "/",
+                        "/health",
+                        "/health/**",
+                        "/api/health",
+                        "/api/health/**",
+                        "/api/v1/health",
+                        "/api/v1/health/**",
                         "/api/demo/**",
                         "/api/v1/demo/**",
                         "/api/v1/auth/**",
                         "/api/v1/catalog/**",
                         "/api/v1/societies",
-                        "/actuator/health/**",
+                        "/actuator",
+                        "/actuator/**",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/docs/swagger-ui/**",
